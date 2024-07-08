@@ -1,0 +1,7 @@
+Flask
+flask_sqlalchemy
+flask_login
+PyMySQL
+cryptography
+mysql-connector-python
+python-dotenv

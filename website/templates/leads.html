@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Leads{% endblock %}
+
+
+{% block content %}
+
+    <div class="filter-container">
+        <div class="container-1">
+            <div class="name-search-div">
+            <input type="text" name="name-search" id="name-search" placeholder="Vendor name">
+            </div>
+            <div class="lead-status-select-div">
+                <select class="lead-status-select" >
+                    <option value="all">Select Lead Status</option>
+                    {% for lead_status in lead_status_unique_values %}
+                        <option value="{{ lead_status }}">{{ lead_status }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+    
+
+    <table class="leads-table">
+        <thead>
+            <tr>
+                {% for column in column_names %}
+                    <th class="{{ column }}">{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table_rows %}
+                <tr>
+                    {% for column in column_names %}
+                        <td class="{{ column }}">{{ row[column] }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+       
+    </table>
+
+{% endblock %}
