@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, jsonify, request, redirect, url_for, session
-from sqlalchemy import Table, MetaData, select
+from sqlalchemy import Table, MetaData, select, DateTime, Date
 from . import db, table_names
 from .models import Leads
 
@@ -27,12 +27,14 @@ def dashboard():
         report_start_date = request.get_json()['reportStartDate']
         report_end_date = request.get_json()['reportEndDate']
         columns_for_sorting = request.get_json()['columnsForSorting']
+        active_datetime_column = request.get_json()['activeDateTimeColumn']
         session['active_list_items'] = active_list_items
         session['active_card_table_name'] = active_card_table_name
         session['report_name'] = report_name
         session['report_start_date'] = report_start_date
         session['report_end_date'] = report_end_date
         session['columns_for_sorting'] = columns_for_sorting
+        session['active_datetime_column'] = active_datetime_column
         return redirect(url_for('views.leads'))
 
 
@@ -57,6 +59,7 @@ def leads():
     active_list_items = session.get('active_list_items')
     active_card_table_name = session.get('active_card_table_name')
     columns_for_sorting = session.get('columns_for_sorting')
+    active_datetime_column = session.get('active_datetime_column')
 
 
     table = Table(active_card_table_name, meta, autoload_with=db.engine)
@@ -74,3 +77,19 @@ def leads():
     for lead in db.session.query(Leads.lead_status).distinct():
         lead_status_unique_values.append(lead.lead_status)
     return render_template('leads.html', table_rows=table_rows, column_names=column_names, lead_status_unique_values=lead_status_unique_values)
+
+
+@views.route('/datetime-columns', methods=['POST'])
+def datetime_columns():
+    active_list_items =  request.get_json()['activeListItems']
+    active_card_table_name = session.get('active_card_table_name')
+
+    table = Table(active_card_table_name, meta, autoload_with=db.engine)
+
+    # datetime_columns = []
+    # for column in table.columns:
+    #     if column in active_list_items:
+    #         datetime_columns += column.name if isinstance(table.columns[column].type, DateTime)
+
+    datetime_columns = [column.name for column in table.columns if column.name in active_list_items and (isinstance(column.type, Date) or isinstance(column.type, DateTime))]
+    return jsonify(datetime_columns)

@@ -489,14 +489,14 @@ body {
 
 
 .list-item:hover {
-    background: #96968d;
+    background: #787871;
     color: var(--secondary-color);
 
 }
 
 
 .list-item.active {
-    background: #787871;
+    background:  #96968d;
     color: var(--secondary-color);
 
 }
@@ -626,9 +626,45 @@ body {
     padding-top: 10px;
 }
 
+#tab2 .right-panel {
+    background-color: transparent;
+    border: 3px solid var(--secondary-color);
+}
+
+#tab2 .right-panel .subheading-right-panel {
+    font-size: 24px;
+    font-weight: 500;
+    
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    color: var(--secondary-color);
+}
+
+#tab2 .right-panel .list-item {
+    display: flex;
+    justify-content: left;
+    padding: 10px;
+    border-bottom: 1px solid #605d5d;
+    margin: 3px;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--secondary-color);
+}
 
 
+#tab2 .right-panel .list-item:hover {
+    background: #787871;
+    color: var(--primary-color);
 
+}
+
+
+#tab2 .right-panel .list-item.active {
+    background:  #96968d;
+    color: var(--secondary-color);
+
+}
 
 
 .btn {

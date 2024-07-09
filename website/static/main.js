@@ -74,7 +74,7 @@ $(document).ready(function() {
         type: 'GET',
         dataType: 'json',
         success: function(columns) {
-            const $list = $('.middle-panel .list');
+            const $list = $('#tab1 .middle-panel .list');
             $list.empty(); 
             $.each(columns, function(index, column) {
                 const $listItem = $('<div></div>', {
@@ -155,7 +155,7 @@ $(document).ready(function() {
             return $(this).text().trim(); 
         }).get(); 
         
-
+        // in middle-panel
         const $list = $('#tab2 .middle-panel .list');
         $list.empty(); 
         $.each(activeListItems, function(index, activeListItem) {
@@ -165,6 +165,40 @@ $(document).ready(function() {
             });
             $list.append($listItem); 
         });
+
+        // in left-panel
+        const $leftList = $('#tab2 .search-container .list');
+        $leftList.empty(); 
+        $.each(activeListItems, function(index, activeListItem) {
+            const $listItem = $('<div></div>', {
+                'class': 'list-item',
+                'html': `${activeListItem}`
+            });
+            $leftList.append($listItem); 
+        });
+
+        // displaying columns with Date or Datetime
+        $.ajax({
+            url: `/datetime-columns`,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                activeListItems: activeListItems
+            }),
+            dataType: 'json',
+            success: function(columns) {
+                console.log(columns);
+                const $list = $('#tab2 .initial-section .list');
+                $list.empty(); 
+                $.each(columns, function(index, column) {
+                    const $listItem = $('<div></div>', {
+                        'class': 'list-item',
+                        'html': `${column}`
+                    });
+                    $list.append($listItem); 
+                });
+            }
+        });
     });
 
 
@@ -173,14 +207,26 @@ $(document).ready(function() {
 
     // -------------------------------------------------- Tab 2 --------------------------------------------------
 
+    // Datetime list selection toggle 
+    $("#tab2 .initial-section .list").on('click', '.list-item', function() {
+        $("#tab2 .initial-section .list-item").removeClass('active');
+        $(this).toggleClass('active');
+    })
 
-    // Columns list selection toggle for tab2
+    // Search list selection toggle 
+    $("#tab2 .right-panel .list").on('click', '.list-item', function() {
+        $("#tab2 .right-panel .list-item").removeClass('active');
+        $(this).toggleClass('active');
+    })
+    
+
+    // Columns list selection toggle for tab2 middle list
     $("#tab2 .middle-panel .list").on('click', '.list-item', function() {
         $(this).toggleClass('active');
     });
     
-
-
+    
+   
 
 
     // Generate Report button 
@@ -192,12 +238,15 @@ $(document).ready(function() {
         var activeCardTableName = $('.card.active .title').text().trim();
 
         var reportName = $('.report-name-title').val();
+
+        var activeDateTimeColumn = $('#tab2 .initial-section .list-item.active').text();
         var reportStartDate = $('#reportrange').data('daterangepicker').startDate.format('DD-MM-YYYY');
         var reportEndDate = $('#reportrange').data('daterangepicker').endDate.format('DD-MM-YYYY');
 
-        var columnsForSorting = $('#tab2 .list-item.active').map(function() {
+        var columnsForSorting = $('#tab2 .middle-panel .list-item.active').map(function() {
             return $(this).text().trim(); 
         }).get();
+        
 
         // Sending POST request to backend
         $.ajax({
@@ -210,7 +259,8 @@ $(document).ready(function() {
                 reportName: reportName,
                 reportStartDate: reportStartDate,
                 reportEndDate: reportEndDate,
-                columnsForSorting: columnsForSorting
+                columnsForSorting: columnsForSorting,
+                activeDateTimeColumn: activeDateTimeColumn
             }),
             success: function(response) {
                 console.log('Success:', response);
