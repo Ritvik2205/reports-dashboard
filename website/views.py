@@ -26,11 +26,13 @@ def dashboard():
         report_name = request.get_json()['reportName']
         report_start_date = request.get_json()['reportStartDate']
         report_end_date = request.get_json()['reportEndDate']
+        columns_for_sorting = request.get_json()['columnsForSorting']
         session['active_list_items'] = active_list_items
         session['active_card_table_name'] = active_card_table_name
         session['report_name'] = report_name
         session['report_start_date'] = report_start_date
         session['report_end_date'] = report_end_date
+        session['columns_for_sorting'] = columns_for_sorting
         return redirect(url_for('views.leads'))
 
 
@@ -54,6 +56,9 @@ def leads():
     report_end_date = session.get('report_end_date')
     active_list_items = session.get('active_list_items')
     active_card_table_name = session.get('active_card_table_name')
+    columns_for_sorting = session.get('columns_for_sorting')
+
+
     table = Table(active_card_table_name, meta, autoload_with=db.engine)
 
     stmt = select(table)  # Create a select statement for the table

@@ -148,48 +148,9 @@ $(document).ready(function() {
     // Columns list selection toggle for tab1
     $("#tab1 .middle-panel .list").on('click', '.list-item', function() {
         $(this).toggleClass('active');
-    });
 
 
-
-    // Generate Report button 
-    $('.generate-report-btn').click(function() {
-        var activeListItems = $('.list-item.active').map(function() {
-            return $(this).text().trim(); 
-        }).get(); 
-
-        var activeCardTableName = $('.card.active .title').text().trim();
-
-        var reportName = $('.report-name-title').val();
-        var reportStartDate = $('#reportrange').data('daterangepicker').startDate.format('DD-MM-YYYY');
-        var reportEndDate = $('#reportrange').data('daterangepicker').endDate.format('DD-MM-YYYY');
-
-        // Sending POST request to backend
-        $.ajax({
-            url: '/dashboard',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                activeListItems: activeListItems,
-                activeCardTableName: activeCardTableName,
-                reportName: reportName,
-                reportStartDate: reportStartDate,
-                reportEndDate: reportEndDate
-            }),
-            success: function(response) {
-                console.log('Success:', response);
-                window.location.href = '/leads'; 
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-            }
-        });
-    });
-
-    // -------------------------------------------------- Tab 2 --------------------------------------------------
-
-
-    $('.tab-btn2').click(function() {
+        // Displaying selected columns in tab2
         var activeListItems = $('#tab1 .list-item.active').map(function() {
             return $(this).text().trim(); 
         }).get(); 
@@ -205,10 +166,61 @@ $(document).ready(function() {
             $list.append($listItem); 
         });
     });
-    
+
+
 
     
 
+    // -------------------------------------------------- Tab 2 --------------------------------------------------
+
+
+    // Columns list selection toggle for tab2
+    $("#tab2 .middle-panel .list").on('click', '.list-item', function() {
+        $(this).toggleClass('active');
+    });
+    
+
+
+
+
+    // Generate Report button 
+    $('.generate-report-btn').click(function() {
+        var activeListItems = $('#tab1 .list-item.active').map(function() {
+            return $(this).text().trim(); 
+        }).get(); 
+
+        var activeCardTableName = $('.card.active .title').text().trim();
+
+        var reportName = $('.report-name-title').val();
+        var reportStartDate = $('#reportrange').data('daterangepicker').startDate.format('DD-MM-YYYY');
+        var reportEndDate = $('#reportrange').data('daterangepicker').endDate.format('DD-MM-YYYY');
+
+        var columnsForSorting = $('#tab2 .list-item.active').map(function() {
+            return $(this).text().trim(); 
+        }).get();
+
+        // Sending POST request to backend
+        $.ajax({
+            url: '/dashboard',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                activeListItems: activeListItems,
+                activeCardTableName: activeCardTableName,
+                reportName: reportName,
+                reportStartDate: reportStartDate,
+                reportEndDate: reportEndDate,
+                columnsForSorting: columnsForSorting
+            }),
+            success: function(response) {
+                console.log('Success:', response);
+                window.location.href = '/leads'; 
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    });
 
 });
 
