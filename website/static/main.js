@@ -145,8 +145,8 @@ $(document).ready(function() {
     })
 
 
-    // Columns list selection toggle
-    $(".middle-panel .list").on('click', '.list-item', function() {
+    // Columns list selection toggle for tab1
+    $("#tab1 .middle-panel .list").on('click', '.list-item', function() {
         $(this).toggleClass('active');
     });
 
@@ -186,6 +186,26 @@ $(document).ready(function() {
         });
     });
 
+    // -------------------------------------------------- Tab 2 --------------------------------------------------
+
+
+    $('.tab-btn2').click(function() {
+        var activeListItems = $('#tab1 .list-item.active').map(function() {
+            return $(this).text().trim(); 
+        }).get(); 
+        
+
+        const $list = $('#tab2 .middle-panel .list');
+        $list.empty(); 
+        $.each(activeListItems, function(index, activeListItem) {
+            const $listItem = $('<div></div>', {
+                'class': 'list-item',
+                'html': `${activeListItem}`
+            });
+            $list.append($listItem); 
+        });
+    });
+    
 
     
 
