@@ -29,7 +29,8 @@ $(document).ready(function() {
     })
 
     // Report Name entered
-    $('.report-name-enter').click(function() {
+    // $('.report-name-enter').click(function() {
+    $('.report-name-input').on('input', function() {
         var reportName = $('.report-name-input').val();
         if (reportName != "") {
             $(".report-name-title").text(reportName);
@@ -37,6 +38,7 @@ $(document).ready(function() {
             $(".report-name-title").text("New Report");
         }
     });
+        
 
     // Date Range Picker
     var start = moment().subtract(29, 'days');
@@ -122,7 +124,7 @@ $(document).ready(function() {
 
         };
         
-
+        // Dispaying column names
         const tableName = $(this).attr('table-name');
         $.ajax({
             url: `/get-columns/${tableName}`,
@@ -158,7 +160,7 @@ $(document).ready(function() {
 
         var activeCardTableName = $('.card.active .title').text().trim();
 
-        var reportName = $('.report-name-input').val();
+        var reportName = $('.report-name-title').val();
         var reportStartDate = $('#reportrange').data('daterangepicker').startDate.format('DD-MM-YYYY');
         var reportEndDate = $('#reportrange').data('daterangepicker').endDate.format('DD-MM-YYYY');
 
