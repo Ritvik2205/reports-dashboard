@@ -240,6 +240,7 @@ $(document).ready(function() {
         var reportName = $('.report-name-title').val();
 
         var activeDateTimeColumn = $('#tab2 .initial-section .list-item.active').text();
+        var activeSearchColumn = $('#tab2 .right-panel .list-item.active').text();
         var reportStartDate = $('#reportrange').data('daterangepicker').startDate.format('DD-MM-YYYY');
         var reportEndDate = $('#reportrange').data('daterangepicker').endDate.format('DD-MM-YYYY');
 
@@ -260,7 +261,8 @@ $(document).ready(function() {
                 reportStartDate: reportStartDate,
                 reportEndDate: reportEndDate,
                 columnsForSorting: columnsForSorting,
-                activeDateTimeColumn: activeDateTimeColumn
+                activeDateTimeColumn: activeDateTimeColumn,
+                activeSearchColumn: activeSearchColumn
             }),
             success: function(response) {
                 console.log('Success:', response);
