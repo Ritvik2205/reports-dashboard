@@ -22,6 +22,7 @@
 
 html {
     background-color: #444444;
+    font-family: 'Exo 2 Variable', sans-serif;
     
 }
 
@@ -110,11 +111,52 @@ td {
 /* -----------------------------------------------------------------------------------------------------  */
 
 body {
-    font-family: 'Exo 2 Variable', sans-serif;
     background-color: var(--primary-color);
     margin: 0;
     padding: 0;
 }
+
+.tab {
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-top: 5px;
+    background-color: var(--secondary-color);
+    height: 7vh;
+}
+
+.tablink {
+    position: relative;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    height: 35px;
+    width: 100px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 18px; 
+    margin-bottom: 0;
+    transition: all 0.2s ease-in;
+}
+
+.tablink.active {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    border-radius: 20px 20px 0 0;
+}
+
+.tablink.active::after {
+    content: "";
+    display: block;
+    height: 20px; /* Height of the extended part */
+    width: 100%;
+    background-color: var(--primary-color); /* Same as button background color */
+    position: absolute;
+    bottom: -20px; /* Same as height */
+    left: 0;
+  }
 
 .tabcontent {
     display: none;
@@ -244,7 +286,7 @@ body {
 
 .daterangepicker .calendar-table {
     width: 310px;
-    border-radius: 5px;
+    /* border-radius: 5px; */
     background-color: var(--secondary-color);
     padding: 0;
     border: none;
@@ -268,6 +310,7 @@ body {
     color: var(--secondary-color);
     border: var(--secondary-color) 1px solid;
     margin: 1px;
+    border-radius: 0;
     /* color: #FFFFFF; */
 }
 
@@ -279,13 +322,14 @@ body {
 
 .daterangepicker .table-condensed td.active.start-date,
 .daterangepicker .table-condensed td.active.end-date {
-    background-color: #F25C05;
-    color: var(--secondary-color);
-
+    background-color: #343431;
+    color: var(--text-color);
+    border-radius: 7px;
+    scale: 1.2;
 }
 
 .daterangepicker .table-condensed td.in-range {
-    background-color: #f0b886a1;
+    background-color: #787871;
     color: var(--secondary-color);
 
 }
@@ -419,7 +463,7 @@ body {
 }
 
 .middle-panel-heading {
-    color: #E5E1D8;
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     font-size: 24px;
@@ -569,6 +613,23 @@ body {
     text-align: left;
     margin-bottom: 7px;
 }
+
+/* ----------------------------------------------------- */
+
+.sort-by-subheading {
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    padding-top: 10px;
+}
+
+
+
+
+
 
 .btn {
     background-color: #333333;
