@@ -4,95 +4,109 @@
 
 {% block content %}
 
+<div class="tab">
+    <button class="tablink" data-tab-value="#tab1">Step 1</button>
+    <button class="tablink" data-tab-value="#tab2">Step 2</button>
+    <button class="tablink" data-tab-value="#tab3">Step 3</button>
+  </div>
 
-<div class="container">
-    <div class="left-panel">
-        <div class="initial-section">
-            <div class="report-name-title">New Report</div>
-            <input type="text" class="report-name-input" placeholder="Report Name">
-            <div class="report-name-enter">Enter</div>
-            <div class="date-selector-subheading">Choose Report Period</div>
-            <div id="reportrange">
-                <i class="fa fa-calendar"></i>&nbsp;
-                <span></span> <i class="fa fa-caret-down"></i>
-            </div>
-        </div>
-        <div class="cards-section">
-            <div class="subheading-left-panel">All Tables</div>
-            {% for table_name in table_names %}
-                <div class="card" table-name="{{ table_name }}">
-                        <div class="icon"></div>
-                    <div class="title"> {{ table_name.capitalize() }} </div>
-                    <div class="description"></div>
+<div class="tabcontent active" id="tab1">
+    <div class="container">
+        <div class="left-panel">
+            <div class="initial-section">
+                <div class="report-name-title">New Report</div>
+                <input type="text" class="report-name-input" placeholder="Report Name">
+                <div class="report-name-enter">Enter</div>
+                <div class="date-selector-subheading">Choose Report Period</div>
+                <div id="reportrange">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span></span> <i class="fa fa-caret-down"></i>
                 </div>
-            {% endfor %}
+            </div>
+            <div class="cards-section">
+                <div class="subheading-left-panel">All Tables</div>
+                {% for table_name in table_names %}
+                    <div class="card" table-name="{{ table_name }}">
+                            <div class="icon"></div>
+                        <div class="title"> {{ table_name.capitalize() }} </div>
+                        <div class="description"></div>
+                    </div>
+                {% endfor %}
+                
+            </div>
             
         </div>
-        
-    </div>
-    <div class="middle-panel">
-        <div class="middle-panel-heading">Select Columns</div>
-        <div class="list">
-            <!-- {% for column in column_names %} -->
-                <!-- <div class="list-item"> {{ column }} <input type="checkbox" ></div> -->
-            <!-- {% endfor %} -->
-            
-        </div>
-    </div>
-    <div class="right-panel">
-        <div class="view-type">
-            <div class="view-title">View Type</div>
-            <div class="view-description">Choose view type for the report - table, bar graph etc.</div>
-            <div class="view-item">
-                <div class="view-icon">A</div>
-                <div class="view-text">Table</div>
-                <input type="checkbox" >
-            </div>
-            <div class="view-item">
-                <div class="view-icon">A</div>
-                <div class="view-text">bar Graph</div>
-                <input type="checkbox" >
-            </div>
-            <div class="view-item">
-                <div class="view-icon">A</div>
-                <div class="view-text">Pi Chart</div>
-                <input type="checkbox" >
+        <div class="middle-panel">
+            <div class="middle-panel-heading">Select Columns</div>
+            <div class="list">
+                <!-- {% for column in column_names %} -->
+                    <!-- <div class="list-item"> {{ column }} <input type="checkbox" ></div> -->
+                <!-- {% endfor %} -->
+                
             </div>
         </div>
-        <div class="actions">
-            <button class="action-btn">Action 1</button>
-        </div>
+        <div class="right-panel">
+            <div class="view-type">
+                <div class="view-title">View Type</div>
+                <div class="view-description">Choose view type for the report - table, bar graph etc.</div>
+                <div class="view-item">
+                    <div class="view-icon">A</div>
+                    <div class="view-text">Table</div>
+                    <input type="checkbox" >
+                </div>
+                <div class="view-item">
+                    <div class="view-icon">A</div>
+                    <div class="view-text">bar Graph</div>
+                    <input type="checkbox" >
+                </div>
+                <div class="view-item">
+                    <div class="view-icon">A</div>
+                    <div class="view-text">Pi Chart</div>
+                    <input type="checkbox" >
+                </div>
+            </div>
+            <div class="actions">
+                <button class="action-btn">Action 1</button>
+            </div>
 
-        <div class="previews">
-            <div class="preview">
-                <div class="subheading">Default Previews</div>
-                <div class="preview-item">
-                    <div class="image-placeholder"></div>
-                    <div class="preview-item-body">
-                        <div class="preview-title">Title</div>
-                        <div class="preview-body">Body text for whatever you'd like to say.</div>
-                        <button class="btn">Button</button>
-                    </div>    
-                </div>
-                <div class="preview-item">
-                    <div class="image-placeholder"></div>
-                    <div class="preview-item-body">
-                        <div class="preview-title">Title</div>
-                        <div class="preview-body">Body text for whatever you'd like to say.</div>
-                        <button class="btn">Button</button>
-                    </div>    
-                </div>
-                <div class="preview-item">
-                    <div class="image-placeholder"></div>
-                    <div class="preview-item-body">
-                        <div class="preview-title">Title</div>
-                        <div class="preview-body">Body text for whatever you'd like to say.</div>
-                        <button class="btn">Button</button>
-                    </div>    
+            <div class="previews">
+                <div class="preview">
+                    <div class="subheading">Default Previews</div>
+                    <div class="preview-item">
+                        <div class="image-placeholder"></div>
+                        <div class="preview-item-body">
+                            <div class="preview-title">Title</div>
+                            <div class="preview-body">Body text for whatever you'd like to say.</div>
+                            <button class="btn">Button</button>
+                        </div>    
+                    </div>
+                    <div class="preview-item">
+                        <div class="image-placeholder"></div>
+                        <div class="preview-item-body">
+                            <div class="preview-title">Title</div>
+                            <div class="preview-body">Body text for whatever you'd like to say.</div>
+                            <button class="btn">Button</button>
+                        </div>    
+                    </div>
+                    <div class="preview-item">
+                        <div class="image-placeholder"></div>
+                        <div class="preview-item-body">
+                            <div class="preview-title">Title</div>
+                            <div class="preview-body">Body text for whatever you'd like to say.</div>
+                            <button class="btn">Button</button>
+                        </div>    
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<div class="tabcontent" id="tab2">
+    <h1>This is tab 2</h1>
+</div>
+<div class="tabcontent" id="tab3">
+    <h1>This is tab 3</h1>
 </div>
 <button class="generate-report-btn">Generate Report</button>
 

@@ -3,6 +3,31 @@ $(document).ready(function() {
     $(".lead-status-select").change(applyFilters)
     $("#name-search").keyup(applyFilters)
 
+    // Tabs logic
+    var $tablink = $("tablink");
+    var $tabContent = $(".tabcontent");
+    $tablink.click(function(e) {
+        e.preventDefault();
+        var $this = $(this);
+        var $target = $($this.attr('href'));
+        $tablink.removeClass('active');
+        $tabContent.removeClass('active');
+        $this.addClass('active');
+        $target.addClass('active');
+    });
+
+    $(".tablink").click(function() {
+        $(".tablink").removeClass("active");
+        $(".tabcontent").removeClass("active").hide();
+
+        $(this).addClass("active");
+
+        var $tab = $(this).data("tab-value");
+
+        $($tab).addClass("active").show();
+
+    })
+
     // Report Name entered
     $('.report-name-enter').click(function() {
         var reportName = $('.report-name-input').val();
