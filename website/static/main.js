@@ -60,10 +60,44 @@ $(document).ready(function() {
     });
 
     
+    // Card - icon moving functionality
+    var $icon = $('.icon');
+    var $iconContainer = $icon.parent();
+
+    if ($iconContainer.hasClass('active')) {
+        var containerWidth = $iconContainer.width();
+        var iconWidth = $icon.width();
+        var distanceToMove = containerWidth - iconWidth;
+        $activeIcon = $('.card.active .icon')
+
+        $activeIcon.css('transform', 'translateX(' + distanceToMove + 'px)');
+    } else {
+
+    };
+
+
     // Showing the name of the tables and its columns 
     $(".card").click(function() {
         $(".card").removeClass("active");
+        $('.icon').css('transform', '');
         $(this).addClass('active');
+
+        // Card - icon moving functionality on each click
+        var $icon = $(this).find('.icon');
+        var $iconContainer = $(this);
+
+        if ($iconContainer.hasClass('active')) {
+            var containerWidth = $iconContainer.width();
+            var iconWidth = $icon.width();
+            var distanceToMove = containerWidth - iconWidth;
+            $activeIcon = $('.card.active .icon')
+
+            $activeIcon.css('transform', 'translateX(' + distanceToMove + 'px)');
+        } else {
+
+        };
+        
+
         const tableName = $(this).attr('table-name');
         $.ajax({
             url: `/get-columns/${tableName}`,

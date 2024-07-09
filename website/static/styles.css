@@ -377,7 +377,8 @@ body {
 
 .card.active .icon {
     /* left: 220px; */
-    transform: translateX(215px);
+    /* transform: translateX(215px); */
+    
     background-color: var(--primary-color);
 }
 
