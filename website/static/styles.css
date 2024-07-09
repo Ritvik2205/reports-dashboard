@@ -661,8 +661,8 @@ body {
 
 
 #tab2 .right-panel .list-item.active {
-    background:  #96968d;
-    color: var(--secondary-color);
+    background:  #343431;
+    color: var(--primary-color);
 
 }
 
