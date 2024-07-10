@@ -718,6 +718,7 @@ body {
 
 #tab3 .left-panel {
     background-color: var(--secondary-color);
+    overflow: scroll;
 }
 
 #tab3 .left-panel .left-subheading {
@@ -731,6 +732,51 @@ body {
     color: var(--text-color);
 }
 
+#tab3 .left-panel .table-name {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: 600; 
+    cursor: pointer;
+    transition: all 0.1s ease-in;
+}
+
+#tab3 .left-panel .table-name:hover {
+    background-color: #787871;
+}
+
+#tab3 .left-panel .table-name::before {
+    content: "+";
+    margin-right: 10px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+
+
+#tab3 .left-panel .table-container .list {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.8s ease-in;
+}
+
+
+#tab3 .left-panel .table-name.active ~ .list {
+    max-height: fit-content;
+    /* height: 400px; */
+    
+}
+
+#tab3 .left-panel .table-name.active::before {
+    content: '-';
+}
+
+#tab3 .left-panel .table-container .list .list-item {
+    margin-left: 30px;
+    font-size: 16px;
+    border: none;
+}
 
 #tab3 .middle-panel {
     background-color: transparent;
@@ -743,6 +789,9 @@ body {
     border-radius: 10px;
     margin-bottom: 20px;
     height: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #tab3 .middle-panel .top-subheading {
@@ -754,6 +803,22 @@ body {
     justify-content: center;
     color: var(--text-color);
 
+}
+
+#tab3 .middle-panel .report-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 50px;
+    border-radius: 50px;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-size: 28px;
+    font-weight: 500;
+    margin-top: 18px;
+    margin-bottom: 10px;
 }
 
 

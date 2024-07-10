@@ -282,6 +282,19 @@ $(document).ready(function() {
         tabThreeOnClick();
         
     });
+
+    $("#tab3 .left-panel .selected-tables .table-name").addClass('active');
+
+    $("#tab3 .left-panel .selected-tables .table-name").click(function() {
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            
+        } else {
+            $("#tab3 .left-panel .selected-tables .table-name").removeClass('active');
+            $(this).addClass('active');
+            
+        }
+    })
     
 
 
@@ -344,7 +357,7 @@ function tabThreeOnClick() {
     $('#tab3 .table-name').each(function() {
         var tableName = $(this).attr('table-name');
         if ($activeTableNames.includes(tableName)) {
-            $(this).css('display', '');
+            $(this).parent().css('display', '');
 
             $.ajax({
                 url: `/get-columns/${tableName}`,
@@ -370,7 +383,7 @@ function tabThreeOnClick() {
                 }
             });
         } else {
-            $(this).css('display', 'none');
+            $(this).parent().css('display', 'none');
         }    
     });
 }

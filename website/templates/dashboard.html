@@ -145,11 +145,13 @@
         <div class="left-panel">
             <div class="left-subheading">Selected Columns</div>
             <div class="selected-tables">
-                {% for table_name in table_names %}
-                    <div class="table-name" table-name="{{ table_name }}">{{ table_name }}</div>
-                    <div class="list {{ table_name }}">
-
+                {% for table_name in table_names  %}
+                    <div class="table-container" id="{{ loop.index }}">
+                        <!-- <input type="checkbox" class="table-radio" checked> -->
+                        <label for="{{ loop.index }}" class="table-name" table-name="{{ table_name }}">{{ table_name }}</label>
+                        <div class="list {{ table_name }}"></div>
                     </div>
+                    
                 {% endfor %}
             </div>
         </div>
