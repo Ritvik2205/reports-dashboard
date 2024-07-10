@@ -78,7 +78,7 @@ $(document).ready(function() {
             $list.empty(); 
             $.each(columns, function(index, column) {
                 const $listItem = $('<div></div>', {
-                    'class': 'list-item',
+                    'class': 'list-item selectable',
                     'html': `${column}`
                 });
                 $list.append($listItem); 
@@ -135,7 +135,7 @@ $(document).ready(function() {
                 $list.empty(); 
                 $.each(columns, function(index, column) {
                     const $listItem = $('<div></div>', {
-                        'class': 'list-item',
+                        'class': 'list-item selectable',
                         'html': `${column}`
                     });
                     $list.append($listItem); 
@@ -148,8 +148,20 @@ $(document).ready(function() {
     // Columns list selection toggle for tab1
     $("#tab1 .middle-panel .list").on('click', '.list-item', function() {
         $(this).toggleClass('active');
+        
+    });
+
+    $('#selectAllColumns').click(function() {
+        $('#tab1 .middle-panel .list-item').addClass('active');
+    
+    });
 
 
+    
+
+    // -------------------------------------------------- Tab 2 --------------------------------------------------
+
+    $('#tab1 .middle-panel .selectable').click(function() {
         // Displaying selected columns in tab2
         var activeListItems = $('#tab1 .list-item.active').map(function() {
             return $(this).text().trim(); 
@@ -166,15 +178,15 @@ $(document).ready(function() {
             $list.append($listItem); 
         });
 
-        // in left-panel
-        const $leftList = $('#tab2 .search-container .list');
-        $leftList.empty(); 
+        // in right-panel
+        const $rightList = $('#tab2 .search-container .list');
+        $rightList.empty(); 
         $.each(activeListItems, function(index, activeListItem) {
             const $listItem = $('<div></div>', {
                 'class': 'list-item',
                 'html': `${activeListItem}`
             });
-            $leftList.append($listItem); 
+            $rightList.append($listItem); 
         });
 
         // displaying columns with Date or Datetime
@@ -199,13 +211,7 @@ $(document).ready(function() {
                 });
             }
         });
-    });
-
-
-
-    
-
-    // -------------------------------------------------- Tab 2 --------------------------------------------------
+    })
 
     // Datetime list selection toggle 
     $("#tab2 .initial-section .list").on('click', '.list-item', function() {
