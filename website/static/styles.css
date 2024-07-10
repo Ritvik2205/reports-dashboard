@@ -132,7 +132,7 @@ body {
     border: none;
 }
 
-.prev {
+.tab .prev {
     position: absolute;
     left: 40px;
     top: 50%;
@@ -142,7 +142,7 @@ body {
     cursor: pointer;
 }
 
-.next {
+.tab .next {
     position: absolute;
     right: 40px;
     top: 50%;
@@ -152,8 +152,8 @@ body {
     cursor: pointer;
 }
 
-.prev img,
-.next img {
+.tab .prev img,
+.tab .next img {
     filter: invert(87%) sepia(15%) saturate(133%) hue-rotate(21deg) brightness(91%) contrast(84%);
     scale: 2;
 }
@@ -180,18 +180,6 @@ body {
     border: none;
     transform: scale(1.2);
 }
-
-/* .tablink.active::after {
-    content: "";
-    display: block;
-    height: 20px; 
-    width: 100%;
-    background-color: var(--primary-color); 
-    position: absolute;
-    bottom: -20px; 
-    left: 0;
-  } */
-  
 
 .tabcontent {
     display: none;
@@ -725,6 +713,49 @@ body {
 
 }
 
+/* ----------------------------------------------- Tab 3  ----------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------ */
+
+#tab3 .left-panel {
+    background-color: var(--secondary-color);
+}
+
+#tab3 .left-panel .left-subheading {
+    font-size: 24px;
+    font-weight: 500;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    padding-top: 5px;
+    display: flex;
+    justify-content: center;
+    color: var(--text-color);
+}
+
+
+#tab3 .middle-panel {
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+}
+
+#tab3 .middle-panel .top-section {
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    height: 40%;
+}
+
+#tab3 .middle-panel .top-subheading {
+    font-size: 24px;
+    font-weight: 500;
+    padding-top: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    color: var(--text-color);
+
+}
+
 
 .btn {
     background-color: #333333;
@@ -735,7 +766,44 @@ body {
     cursor: pointer;
 }
 
-.generate-report-btn {
+.navigation-btn {
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    padding: 25px 35px;
+    border-radius: 40px;
+    cursor: pointer;
+    position: fixed;
+    bottom: 55px;
+    box-shadow: 0 7px 25px #ffffff87;
+    backdrop-filter: blur(6.2px);
+    -webkit-backdrop-filter: blur(6.2px);
+    font-size: 17px;
+    transition: transform 0.2s ease;
+}
+
+#tab2 .navigation-btn {
+    box-shadow: 0 7px 25px #000000c1;
+}
+
+.navigation-btn.prev {
+    left: 40px;
+}
+
+.navigation-btn.next {
+    right: 40px;
+}
+
+.navigation-btn:hover {
+    box-shadow: 0 7px 25px #ffffffcc;
+    transform: scale(1.10);
+}
+
+#tab2 .navigation-btn:hover {
+    box-shadow: 0 7px 25px #000000;
+}
+
+/* .generate-report-btn {
     background-color: #333333;
     color: #ffffff;
     border: none;
@@ -755,4 +823,4 @@ body {
 .generate-report-btn:hover {
     box-shadow: 0 7px 25px #ffffffcc;
     transform: scale(1.10);
-}
+} */

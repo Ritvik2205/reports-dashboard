@@ -28,6 +28,7 @@ $(document).ready(function() {
 
     })
 
+    // Navigation button - next
     $(".next").click(function() {
         var $currentActiveTab = $(".tablink.active");
         var $nextTab = $currentActiveTab.next(".tablink");
@@ -41,6 +42,7 @@ $(document).ready(function() {
         }
     })
 
+    // Navigation button - previous
     $(".prev").click(function() {
         var $currentActiveTab = $(".tablink.active");
         var $prevTab = $currentActiveTab.prev(".tablink");
@@ -57,7 +59,7 @@ $(document).ready(function() {
     // Report Name entered
     // $('.report-name-enter').click(function() {
     $('.report-name-input').on('input', function() {
-        var reportName = $('.report-name-input').val();
+        var reportName = $('#tab1 .report-name-input').val();
         if (reportName != "") {
             $(".report-name-title").text(reportName);
         } else {
@@ -104,7 +106,7 @@ $(document).ready(function() {
             $list.empty(); 
             $.each(columns, function(index, column) {
                 const $listItem = $('<div></div>', {
-                    'class': 'list-item selectable',
+                    'class': `list-item selectable ${column}`,
                     'html': `${column}`
                 });
                 $list.append($listItem); 
@@ -224,8 +226,7 @@ $(document).ready(function() {
                 activeListItems: activeListItems
             }),
             dataType: 'json',
-            success: function(columns) {
-                console.log(columns);
+            success: function(columns) {                
                 const $list = $('#tab2 .initial-section .list');
                 $list.empty(); 
                 $.each(columns, function(index, column) {
@@ -270,12 +271,22 @@ $(document).ready(function() {
         $(this).toggleClass('active');
     });
     
+    // -------------------------------------------------- Tab 3 --------------------------------------------------
     
-   
+    $(".tab-btn3").click(function() {
+        tabThreeOnClick();
+        
+    });
+    
+    $("#tab2 .next").click(function() {
+        tabThreeOnClick();
+        
+    });
+    
 
 
     // Generate Report button 
-    $('.generate-report-btn').click(function() {
+    $('#tab3 .generate-report-btn').click(function() {
         var activeListItems = $('#tab1 .list-item.active').map(function() {
             return $(this).text().trim(); 
         }).get(); 
@@ -322,7 +333,47 @@ $(document).ready(function() {
 });
 
 
+function tabThreeOnClick() {
+    var reportName = $('#tab1 .report-name-title').text();
+    $('#tab3 .middle-panel .report-name').text(reportName);
 
+    var $activeTableNames = $('#tab1 .card.active').map(function() {
+        return $(this).attr('table-name'); 
+    }).get();
+
+    $('#tab3 .table-name').each(function() {
+        var tableName = $(this).attr('table-name');
+        if ($activeTableNames.includes(tableName)) {
+            $(this).css('display', '');
+
+            $.ajax({
+                url: `/get-columns/${tableName}`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(columns) {
+                    
+                    const $list = $(`#tab3 .left-panel .list.${tableName}`);
+                    $list.empty(); 
+                    var i = 0;
+                    $.each(columns, function(index, column) {
+                         console.log(i);
+                         i++;
+                        if ($(`#tab1 .middle-panel .${column}`).hasClass('active')) {
+                            const $listItem = $('<div></div>', {
+                                'class': 'list-item selectable',
+                                'html': `${column}`
+                            });
+                            $list.append($listItem);
+                            console.log(i-1);
+                        }                        
+                    });
+                }
+            });
+        } else {
+            $(this).css('display', 'none');
+        }    
+    });
+}
 
 
 function applyFilters() {
