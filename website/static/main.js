@@ -28,6 +28,32 @@ $(document).ready(function() {
 
     })
 
+    $(".next").click(function() {
+        var $currentActiveTab = $(".tablink.active");
+        var $nextTab = $currentActiveTab.next(".tablink");
+        if ($nextTab.length) {
+            $currentActiveTab.removeClass("active");
+            $nextTab.addClass("active");
+
+            var $tab = $nextTab.data("tab-value");
+            $(".tabcontent").removeClass("active").hide();
+            $($tab).addClass("active").show();
+        }
+    })
+
+    $(".prev").click(function() {
+        var $currentActiveTab = $(".tablink.active");
+        var $prevTab = $currentActiveTab.prev(".tablink");
+        if ($prevTab.length) {
+            $currentActiveTab.removeClass("active");
+            $prevTab.addClass("active");
+
+            var $tab = $prevTab.data("tab-value");
+            $(".tabcontent").removeClass("active").hide();
+            $($tab).addClass("active").show();
+        }
+    })
+
     // Report Name entered
     // $('.report-name-enter').click(function() {
     $('.report-name-input').on('input', function() {
@@ -213,16 +239,29 @@ $(document).ready(function() {
         });
     })
 
+    $('#tab2 .date-section').css('display', 'none');
     // Datetime list selection toggle 
     $("#tab2 .initial-section .list").on('click', '.list-item', function() {
-        $("#tab2 .initial-section .list-item").removeClass('active');
-        $(this).toggleClass('active');
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            $('#tab2 .date-section').css('display', 'none');
+        } else {
+            $("#tab2 .initial-section .list-item").removeClass('active');
+            $(this).addClass('active');
+            $('#tab2 .date-section').css('display', '');
+        }
     })
 
     // Search list selection toggle 
     $("#tab2 .right-panel .list").on('click', '.list-item', function() {
-        $("#tab2 .right-panel .list-item").removeClass('active');
-        $(this).toggleClass('active');
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            
+        } else {
+            $("#tab2 .right-panel .list-item").removeClass('active');
+            $(this).addClass('active');
+            
+        }
     })
     
 

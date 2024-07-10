@@ -114,49 +114,84 @@ body {
     background-color: var(--primary-color);
     margin: 0;
     padding: 0;
+    z-index: -10;
 }
 
 .tab {
     position: relative;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
     padding-top: 5px;
     background-color: var(--secondary-color);
     height: 7vh;
 }
 
+.tab-nav {
+    background-color: transparent;
+    border: none;
+}
+
+.prev {
+    position: absolute;
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-color);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.next {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-color);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.prev img,
+.next img {
+    filter: invert(87%) sepia(15%) saturate(133%) hue-rotate(21deg) brightness(91%) contrast(84%);
+    scale: 2;
+}
+
 .tablink {
+    left: -15px;
+    top: 15px;
     position: relative;
     background-color: var(--secondary-color);
     color: var(--primary-color);
     border: 2px solid var(--primary-color);
     height: 35px;
     width: 100px;
-    border-radius: 50px;
+    border-radius: 20px 20px 0 0;
     cursor: pointer;
     font-size: 18px; 
     margin-bottom: 0;
-    transition: all 0.2s ease-in;
+    transition: transform 0.2s ease-in; 
 }
 
 .tablink.active {
     background-color: var(--primary-color);
     color: var(--secondary-color);
     border: none;
-    border-radius: 20px 20px 0 0;
+    transform: scale(1.2);
 }
 
-.tablink.active::after {
+/* .tablink.active::after {
     content: "";
     display: block;
-    height: 20px; /* Height of the extended part */
+    height: 20px; 
     width: 100%;
-    background-color: var(--primary-color); /* Same as button background color */
+    background-color: var(--primary-color); 
     position: absolute;
-    bottom: -20px; /* Same as height */
+    bottom: -20px; 
     left: 0;
-  }
+  } */
+  
 
 .tabcontent {
     display: none;
@@ -248,103 +283,7 @@ body {
     cursor: pointer;
 }
 
-.date-selector-subheading {
-    margin-top: 30px;
-    font-size: 24px;
-}
 
-#reportrange {
-    background: var(--secondary-color);
-    color: var(--primary-color);
-    cursor: pointer;
-    padding: 5px 10px;
-    padding-bottom: 7px; 
-    margin-top: 15px;
-    width: 70%;
-    height: 30px;
-    border: var(--primary-color) 2px solid;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50px;
-}
-
-.daterangepicker.ltr.show-ranges.opensright {
-    background-color: var(--secondary-color);
-}
-
-.daterangepicker.ltr.show-ranges.opensright.show-calendar {
-    width: 820px;
-}
-
-.daterangepicker .ranges li:hover,
-.daterangepicker .ranges li.active {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-
-}
-
-.daterangepicker .calendar-table {
-    width: 310px;
-    /* border-radius: 5px; */
-    background-color: var(--secondary-color);
-    padding: 0;
-    border: none;
-}
-
-.daterangepicker .drp-calendar.left,
-.daterangepicker .drp-calendar.right,
-.daterangepicker .table-condensed {
-    max-width: 300px;
-    margin-right: 10px;
-    padding: 10px;
-    
-}
-
-.daterangepicker .drp-calendar.left .table-condensed {
-    margin-left: 10px ;
-}
-
-.daterangepicker .table-condensed td {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    border: var(--secondary-color) 1px solid;
-    margin: 1px;
-    border-radius: 0;
-    /* color: #FFFFFF; */
-}
-
-.daterangepicker .table-condensed td.off {
-    background-color: #A09F8D;
-    color: var(--secondary-color);
-
-}
-
-.daterangepicker .table-condensed td.active.start-date,
-.daterangepicker .table-condensed td.active.end-date {
-    background-color: #343431;
-    color: var(--text-color);
-    border-radius: 7px;
-    scale: 1.2;
-}
-
-.daterangepicker .table-condensed td.in-range {
-    background-color: #787871;
-    color: var(--secondary-color);
-
-}
-
-.daterangepicker .table-condensed thead tr:nth-child(1) {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-
-}
-
-.daterangepicker .drp-calendar.right {
-    max-width: 300px;
-    padding: 10px;
-    margin-left: 10px;
-}
 
 
 .cards-section {
@@ -472,6 +411,20 @@ body {
 
 }
 
+#selectAllColumns {
+    display: flex;
+    justify-content: end;
+    /* align-items: center; */
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in;
+    padding: 5px;
+}
+
+#selectAllColumns:hover {
+    background-color: #444444;
+}
+
 .list {
     display: flex;
     flex-direction: column;
@@ -485,6 +438,7 @@ body {
     margin: 3px;
     font-size: 18px;
     font-weight: 600;
+    cursor: pointer;
 }
 
 
@@ -616,7 +570,7 @@ body {
 
 /* ----------------------------------------------------- */
 
-.sort-by-subheading {
+.initial-subheading {
     color: var(--text-color);
     display: flex;
     justify-content: center;
@@ -624,6 +578,111 @@ body {
     font-weight: 500;
     margin-bottom: 20px;
     padding-top: 10px;
+}
+
+.date-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* display: none; */
+}
+
+.date-selector-subheading {
+    margin-top: 30px;
+    font-size: 24px;
+}
+
+#reportrange {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 5px 10px;
+    padding-bottom: 7px; 
+    margin-top: 15px;
+    width: 100%;
+    height: 30px;
+    border: var(--primary-color) 2px solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+}
+
+.daterangepicker.ltr.show-ranges.opensright {
+    background-color: var(--secondary-color);
+}
+
+.daterangepicker.ltr.show-ranges.opensright.show-calendar {
+    width: 820px;
+}
+
+.daterangepicker .ranges li:hover,
+.daterangepicker .ranges li.active {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+
+}
+
+.daterangepicker .calendar-table {
+    width: 310px;
+    /* border-radius: 5px; */
+    background-color: var(--secondary-color);
+    padding: 0;
+    border: none;
+}
+
+.daterangepicker .drp-calendar.left,
+.daterangepicker .drp-calendar.right,
+.daterangepicker .table-condensed {
+    max-width: 300px;
+    margin-right: 10px;
+    padding: 10px;
+    
+}
+
+.daterangepicker .drp-calendar.left .table-condensed {
+    margin-left: 10px ;
+}
+
+.daterangepicker .table-condensed td {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: var(--secondary-color) 1px solid;
+    margin: 1px;
+    border-radius: 0;
+    /* color: #FFFFFF; */
+}
+
+.daterangepicker .table-condensed td.off {
+    background-color: #A09F8D;
+    color: var(--secondary-color);
+
+}
+
+.daterangepicker .table-condensed td.active.start-date,
+.daterangepicker .table-condensed td.active.end-date {
+    background-color: #343431;
+    color: var(--text-color);
+    border-radius: 7px;
+    scale: 1.2;
+}
+
+.daterangepicker .table-condensed td.in-range {
+    background-color: #787871;
+    color: var(--secondary-color);
+
+}
+
+.daterangepicker .table-condensed thead tr:nth-child(1) {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+
+}
+
+.daterangepicker .drp-calendar.right {
+    max-width: 300px;
+    padding: 10px;
+    margin-left: 10px;
 }
 
 #tab2 .right-panel {
