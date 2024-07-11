@@ -8,7 +8,7 @@
     <!-- <button class="prev tab-nav"><img src="../static/assets/leftArrow.svg" alt="Left Arrow"></button> -->
     <button class="tab-btn1 tablink active" data-tab-value="#tab1">Step 1</button>
     <button class="tab-btn2 tablink" data-tab-value="#tab2">Step 2</button>
-    <!-- <button class="tab-btn3 tablink" data-tab-value="#tab3">Step 3</button> -->
+    <button class="tab-btn3 tablink" data-tab-value="#tab3">Step 3</button>
     <!-- <button class="next tab-nav"><img src="../static/assets/rightArrow.svg" alt="Right Arrow"></button> -->
   </div>
 
@@ -158,14 +158,13 @@
     </div>
 </div>
 
-<!-- <div class="tabcontent" id="tab3">
+<div class="tabcontent" id="tab3">
     <div class="container">
         <div class="left-panel">
             <div class="left-subheading">Selected Columns</div>
             <div class="selected-tables">
                 {% for table_name in table_names  %}
                     <div class="table-container" id="{{ loop.index }}">
-                        <input type="checkbox" class="table-radio" checked>
                         <label for="{{ loop.index }}" class="table-name" table-name="{{ table_name }}">{{ table_name }}</label>
                         <div class="list {{ table_name }}"></div>
                     </div>
@@ -180,7 +179,7 @@
                 <div class="top-name-field config-name">New Configuration</div>
             </div>
             <div class="bottom-section">
-                For future additions
+                <!-- For future additions -->
             </div>
         </div>
         <div class="right-panel">
@@ -188,7 +187,6 @@
             <div class="selected-tables-for-sorting">
                 {% for table_name in table_names  %}
                     <div class="table-container" id="{{ loop.index }}">
-                        <input type="checkbox" class="table-radio" checked>
                         <label for="{{ loop.index }}" class="table-name" table-name="{{ table_name }}">{{ table_name }}</label>
                         <div class="list {{ table_name }}"></div>
                     </div>
@@ -198,7 +196,7 @@
     </div>
     <button class="prev navigation-btn">Previous</button>
     <button class="next navigation-btn generate-report-btn">Generate Report</button>
-</div> -->
+</div>
 
 
 
