@@ -370,7 +370,7 @@ $(document).ready(function() {
             }),
             success: function(response) {
                 console.log('Success:', response);
-                window.location.href = '/leads'; 
+                window.location.href = '/report'; 
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);

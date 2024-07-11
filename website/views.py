@@ -37,7 +37,7 @@ def dashboard():
         session['columns_for_sorting'] = columns_for_sorting
         session['active_datetime_column'] = active_datetime_column
         session['active_search_column'] = active_search_column
-        return redirect(url_for('views.leads'))
+        return redirect(url_for('views.report'))
 
 
 
@@ -52,8 +52,8 @@ def get_columns(table_name):
         return jsonify([])
 
 
-@views.route('/leads')
-def leads():
+@views.route('/report')
+def report():
     report_name = session.get('report_name')
     report_start_date = session.get('report_start_date')
     report_end_date = session.get('report_end_date')
@@ -78,7 +78,7 @@ def leads():
     lead_status_unique_values = []
     for lead in db.session.query(Leads.lead_status).distinct():
         lead_status_unique_values.append(lead.lead_status)
-    return render_template('leads.html', table_rows=table_rows, column_names=column_names, lead_status_unique_values=lead_status_unique_values)
+    return render_template('report.html', table_rows=table_rows, column_names=column_names, lead_status_unique_values=lead_status_unique_values)
 
 
 @views.route('/datetime-columns', methods=['POST'])
