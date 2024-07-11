@@ -83,7 +83,7 @@ def leads():
 
 @views.route('/datetime-columns', methods=['POST'])
 def datetime_columns():
-    active_list_items =  request.get_json()['activeListItems']
+    active_columns =  request.get_json()['activeColumns']
     active_card_table_name = session.get('active_card_table_name')
 
     table = Table(active_card_table_name, meta, autoload_with=db.engine)
@@ -93,5 +93,5 @@ def datetime_columns():
     #     if column in active_list_items:
     #         datetime_columns += column.name if isinstance(table.columns[column].type, DateTime)
 
-    datetime_columns = [column.name for column in table.columns if column.name in active_list_items and (isinstance(column.type, Date) or isinstance(column.type, DateTime))]
+    datetime_columns = [column.name for column in table.columns if column.name in active_columns and (isinstance(column.type, Date) or isinstance(column.type, DateTime))]
     return jsonify(datetime_columns)

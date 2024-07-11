@@ -302,29 +302,27 @@ $(document).ready(function() {
         $(this).toggleClass('active');
     });
     
-    // -------------------------------------------------- Tab 3 --------------------------------------------------
-    
-    
-    $(".tab-btn3").click(function() {
-        tabThreeOnClick();
-    });
-    
-    
-    $("#tab2 .next").click(function() {
-        tabThreeOnClick();
-        
-    });
 
-    $("#tab3 .left-panel .selected-tables .table-name").addClass('active');
 
-    $("#tab3 .left-panel .selected-tables .table-name").click(function() {
+    $(".selected-tables .table-name").addClass('active');
+
+    $("#tab2 .middle-panel .selected-tables .table-name").click(function() {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             
         } else {
-            $("#tab3 .left-panel .selected-tables .table-name").removeClass('active');
-            $(this).addClass('active');
+            $("#tab2 .middle-panel .selected-tables .table-name").removeClass('active');
+            $(this).addClass('active');            
+        }
+    })
+
+    $("#tab2 .right-panel .selected-tables .table-name").click(function() {
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
             
+        } else {
+            $("#tab2 .right-panel .selected-tables .table-name").removeClass('active');
+            $(this).addClass('active');            
         }
     })
     
@@ -377,51 +375,6 @@ $(document).ready(function() {
 
 });
 
-
-function tabThreeOnClick() {
-    var reportName = $('#tab1 .report-name-title').text();
-    $('#tab3 .middle-panel .report-name').text(reportName);
-
-    var $activeTableNames = $('#tab1 .card.active').map(function() {
-        return $(this).attr('table-name'); 
-    }).get();
-
-    $('#tab3 .left-panel .table-name').each(function() {
-        var tableName = $(this).attr('table-name');
-        if ($activeTableNames.includes(tableName)) {
-            $(this).parent().css('display', '');
-
-            $.ajax({
-                url: `/get-columns/${tableName}`,
-                type: 'GET',
-                dataType: 'json',
-                success: function(columns) {                
-                    const $list = $(`#tab3 .left-panel .list.${tableName}`);
-                    $list.empty();                 
-                    $.each(columns, function(index, column) {
-                        if ($(`#tab1 .middle-panel .${column}`).hasClass('active')) {
-                            const $listItem = $('<div></div>', {
-                                'class': 'list-item selectable',
-                                'html': `${column}`
-                            });
-                            $list.append($listItem);                            
-                        }                        
-                    });
-                }
-            });
-
-            var columnsForSorting = $('#tab2 .middle-panel .list-item.active').map(function() {
-                return $(this).text().trim(); 
-            }).get();
-            const $sortingList = $('#tab3 .right-panel .selected-tables-for-sorting')
-
-
-
-        } else {
-            $(this).parent().css('display', 'none');
-        }    
-    });
-}
 
 
 function applyFilters() {
