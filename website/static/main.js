@@ -173,6 +173,11 @@ $(document).ready(function() {
     
     });
 
+    // View Type Selection
+    $('#tab1 .right-panel .view-item').click(function() {
+        $(this).toggleClass('active');
+    })
+
 
     
 
