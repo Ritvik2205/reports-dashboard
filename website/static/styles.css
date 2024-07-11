@@ -45,7 +45,7 @@ body {
 .tab {
     position: relative;
     display: flex;
-    justify-content: space-around;
+    justify-content: start;
     align-items: center;
     padding-top: 5px;
     background-color: var(--secondary-color);
@@ -67,6 +67,10 @@ body {
     font-size: 18px; 
     margin-bottom: 0;
     transition: transform 0.2s ease-in; 
+}
+
+.tablink:first-child {
+    margin-left: 100px;
 }
 
 .tablink.active {
