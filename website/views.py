@@ -43,8 +43,7 @@ def dashboard():
 
 @views.route('/get-columns/<table_name>')
 def get_columns(table_name):
-    if table_name != "undefined":
-        
+    if table_name != "undefined":    
         table = Table(table_name, meta, autoload_with=db.engine)
         columns = [column.name for column in table.columns]
         # print({'column_names': column_names})

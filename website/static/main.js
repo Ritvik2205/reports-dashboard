@@ -163,7 +163,7 @@ $(document).ready(function() {
                 $list.empty(); 
                 $.each(columns, function(index, column) {
                     const $listItem = $('<div></div>', {
-                        'class': 'list-item selectable',
+                        'class': `list-item selectable ${column}`,
                         'html': `${column}`
                     });
                     $list.append($listItem); 
@@ -363,21 +363,16 @@ function tabThreeOnClick() {
                 url: `/get-columns/${tableName}`,
                 type: 'GET',
                 dataType: 'json',
-                success: function(columns) {
-                    
+                success: function(columns) {                
                     const $list = $(`#tab3 .left-panel .list.${tableName}`);
-                    $list.empty(); 
-                    var i = 0;
+                    $list.empty();                 
                     $.each(columns, function(index, column) {
-                         console.log(i);
-                         i++;
                         if ($(`#tab1 .middle-panel .${column}`).hasClass('active')) {
                             const $listItem = $('<div></div>', {
                                 'class': 'list-item selectable',
                                 'html': `${column}`
                             });
-                            $list.append($listItem);
-                            console.log(i-1);
+                            $list.append($listItem);                            
                         }                        
                     });
                 }
