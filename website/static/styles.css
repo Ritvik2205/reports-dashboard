@@ -344,7 +344,6 @@ body {
     background-color: transparent;
     box-shadow: none;
     padding: 0;
-    color: var(--secondary-color);
 }
 
 .view-type {
@@ -354,6 +353,7 @@ body {
     padding: 10px;
     border: 5px solid var(--secondary-color);
     border-radius: 10px;
+    color: var(--secondary-color);
 }
 
 .view-title {
@@ -429,10 +429,15 @@ body {
 
 .previews {
     margin-top: 20px;
+    background-color: var(--secondary-color);
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .preview {
-    border-top: 1px solid #cccccc;
     padding-top: 10px;
 }
 
