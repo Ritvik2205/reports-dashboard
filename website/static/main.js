@@ -3,19 +3,8 @@ $(document).ready(function() {
     $(".lead-status-select").change(applyFilters)
     $("#name-search").keyup(applyFilters)
 
+    
     // Tabs logic
-    var $tablink = $("tablink");
-    var $tabContent = $(".tabcontent");
-    $tablink.click(function(e) {
-        e.preventDefault();
-        var $this = $(this);
-        var $target = $($this.attr('href'));
-        $tablink.removeClass('active');
-        $tabContent.removeClass('active');
-        $this.addClass('active');
-        $target.addClass('active');
-    });
-
     $(".tablink").click(function() {
         $(".tablink").removeClass("active");
         $(".tabcontent").removeClass("active").hide();
@@ -27,6 +16,7 @@ $(document).ready(function() {
         $($tab).addClass("active").show();
 
     })
+    
 
     // Navigation button - next
     $(".next").click(function() {
@@ -57,7 +47,6 @@ $(document).ready(function() {
     })
 
     // Report Name entered
-    // $('.report-name-enter').click(function() {
     $('.report-name-input').on('input', function() {
         var reportName = $('#tab1 .report-name-input').val();
         if (reportName != "") {
@@ -191,31 +180,73 @@ $(document).ready(function() {
 
     $('#tab1 .middle-panel .selectable').click(function() {
         // Displaying selected columns in tab2
-        var activeListItems = $('#tab1 .list-item.active').map(function() {
+        var activeColumns = $('#tab1 .list-item.active').map(function() {
             return $(this).text().trim(); 
         }).get(); 
+
+        var $activeTableNames = $('#tab1 .card.active').map(function() {
+            return $(this).attr('table-name'); 
+        }).get();
         
+
         // in middle-panel
-        const $list = $('#tab2 .middle-panel .list');
-        $list.empty(); 
-        $.each(activeListItems, function(index, activeListItem) {
-            const $listItem = $('<div></div>', {
-                'class': 'list-item',
-                'html': `${activeListItem}`
-            });
-            $list.append($listItem); 
+        $('#tab2 .middle-panel .table-name').each(function() {
+            var tableName = $(this).attr('table-name');
+            if ($activeTableNames.includes(tableName)) {
+                $(this).parent().css('display', '');
+
+                $.ajax({
+                    url: `/get-columns/${tableName}`,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(columns) {
+                        const $middleList = $(`#tab2 .middle-panel .list.${tableName}`);                        
+                        $middleList.empty();             
+                        $.each(columns, function(index, column) {
+                            if (activeColumns.includes(column)) {
+                                const $listItem = $('<div></div>', {
+                                    'class': `list-item ${column}`,
+                                    'html': `${column}`
+                                });
+                                $middleList.append($listItem);                             
+                            }                        
+                        });
+                    }
+                });
+            } else {
+                $(this).parent().css('display', 'none');
+            }
         });
 
-        // in right-panel
-        const $rightList = $('#tab2 .search-container .list');
-        $rightList.empty(); 
-        $.each(activeListItems, function(index, activeListItem) {
-            const $listItem = $('<div></div>', {
-                'class': 'list-item',
-                'html': `${activeListItem}`
-            });
-            $rightList.append($listItem); 
+        // right panel
+        $('#tab2 .right-panel .table-name').each(function() {
+            var tableName = $(this).attr('table-name');
+            if ($activeTableNames.includes(tableName)) {
+                $(this).parent().css('display', '');
+
+                $.ajax({
+                    url: `/get-columns/${tableName}`,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(columns) {
+                        const $rightList = $(`#tab2 .right-panel .list.${tableName}`);                                     
+                        $rightList.empty();                 
+                        $.each(columns, function(index, column) {
+                            if (activeColumns.includes(column)) {
+                                const $listItem = $('<div></div>', {
+                                    'class': `list-item ${column}`,
+                                    'html': `${column}`
+                                });                          
+                                $rightList.append($listItem);                            
+                            }                        
+                        });
+                    }
+                });
+            } else {
+                $(this).parent().css('display', 'none');
+            }
         });
+
 
         // displaying columns with Date or Datetime
         $.ajax({
@@ -223,7 +254,7 @@ $(document).ready(function() {
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
-                activeListItems: activeListItems
+                activeColumns: activeColumns
             }),
             dataType: 'json',
             success: function(columns) {                
@@ -273,10 +304,11 @@ $(document).ready(function() {
     
     // -------------------------------------------------- Tab 3 --------------------------------------------------
     
+    
     $(".tab-btn3").click(function() {
         tabThreeOnClick();
-        
     });
+    
     
     $("#tab2 .next").click(function() {
         tabThreeOnClick();
@@ -299,7 +331,7 @@ $(document).ready(function() {
 
 
     // Generate Report button 
-    $('#tab3 .generate-report-btn').click(function() {
+    $('#tab2 .generate-report-btn').click(function() {
         var activeListItems = $('#tab1 .list-item.active').map(function() {
             return $(this).text().trim(); 
         }).get(); 
@@ -354,7 +386,7 @@ function tabThreeOnClick() {
         return $(this).attr('table-name'); 
     }).get();
 
-    $('#tab3 .table-name').each(function() {
+    $('#tab3 .left-panel .table-name').each(function() {
         var tableName = $(this).attr('table-name');
         if ($activeTableNames.includes(tableName)) {
             $(this).parent().css('display', '');
@@ -377,6 +409,14 @@ function tabThreeOnClick() {
                     });
                 }
             });
+
+            var columnsForSorting = $('#tab2 .middle-panel .list-item.active').map(function() {
+                return $(this).text().trim(); 
+            }).get();
+            const $sortingList = $('#tab3 .right-panel .selected-tables-for-sorting')
+
+
+
         } else {
             $(this).parent().css('display', 'none');
         }    
