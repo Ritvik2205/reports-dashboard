@@ -119,6 +119,7 @@ $(document).ready(function() {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             $(this).find('.icon').css('transform', '');
+            $(`#tab1 .middle-panel .list.${tableName} .list-item`).removeClass('active')
             $activeTableNames = $activeTableNames.filter(tableName => tableName !== $(this).attr('table-name'));
             $(`#tab1 .middle-panel .table-container.${tableName}`).css('display', 'none');
             // $('.icon').css('transform', '');
@@ -255,6 +256,9 @@ $(document).ready(function() {
             }
         });
 
+        var activeTableNames = $('#tab1 .card.active').map(function() {
+            return $(this).text().trim(); 
+        }).get();
 
         // displaying columns with Date or Datetime
         $.ajax({
@@ -262,7 +266,8 @@ $(document).ready(function() {
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
-                activeColumns: activeColumns
+                activeColumns: activeColumns,
+                activeTableNames: activeTableNames
             }),
             dataType: 'json',
             success: function(columns) {                
@@ -344,9 +349,11 @@ $(document).ready(function() {
             return $(this).text().trim(); 
         }).get(); 
 
-        var activeCardTableName = $('.card.active .title').text().trim();
+        var activeTableNames = $('#tab1 .card.active .title').map(function() {
+            return $(this).text().trim(); 
+        }).get();
 
-        var reportName = $('.report-name-input').val();
+        var reportName = $('.report-name-title').text();
 
         var activeDateTimeColumn = $('#tab2 .initial-section .list-item.active').text();
         var activeSearchColumn = $('#tab2 .right-panel .list-item.active').text();
@@ -365,7 +372,7 @@ $(document).ready(function() {
             contentType: 'application/json',
             data: JSON.stringify({
                 activeListItems: activeListItems,
-                activeCardTableName: activeCardTableName,
+                activeTableNames: activeTableNames,
                 reportName: reportName,
                 reportStartDate: reportStartDate,
                 reportEndDate: reportEndDate,
@@ -374,7 +381,7 @@ $(document).ready(function() {
                 activeSearchColumn: activeSearchColumn
             }),
             success: function(response) {
-                console.log('Success:', response);
+                console.log('Success:');
                 window.location.href = '/report'; 
             },
             error: function(xhr, status, error) {

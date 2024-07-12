@@ -20,21 +20,21 @@ def dashboard():
         leads = Leads.query.all()
         table_name = str(Leads.__table__.name).capitalize()
         column_names = [column.name for column in Leads.__table__.columns]
-        return render_template('dashboard.html', table_names=table_names, column_names=column_names)
+        return render_template('dashboard.html', table_names=table_names)
     else:
         active_list_items =  request.get_json()['activeListItems']
-        active_card_table_name =  request.get_json()['activeCardTableName']
+        active_table_names =  request.get_json()['activeTableNames']
         report_name = request.get_json()['reportName']
         report_start_date = request.get_json()['reportStartDate']
         report_end_date = request.get_json()['reportEndDate']
         columns_for_sorting = request.get_json()['columnsForSorting']
         active_datetime_column = request.get_json()['activeDateTimeColumn']
         active_search_column = request.get_json()['activeSearchColumn']
-        log_reports(report_name, active_card_table_name, active_list_items,
+        log_reports(report_name, active_table_names, active_list_items,
                      columns_for_sorting, active_search_column, active_datetime_column,
                        report_start_date, report_end_date)
         session['active_list_items'] = active_list_items
-        session['active_card_table_name'] = active_card_table_name
+        session['active_table_names'] = active_table_names
         session['report_name'] = report_name
         session['report_start_date'] = report_start_date
         session['report_end_date'] = report_end_date
@@ -62,35 +62,37 @@ def report():
     report_start_date = session.get('report_start_date')
     report_end_date = session.get('report_end_date')
     active_list_items = session.get('active_list_items')
-    active_card_table_name = session.get('active_card_table_name')
+    active_table_names = session.get('active_table_names')
     columns_for_sorting = session.get('columns_for_sorting')
     active_datetime_column = session.get('active_datetime_column')
     active_search_column = session.get('active_search_column')
 
+    table_rows = []
+    column_names = []
+    for active_table in active_table_names:
+        table = Table(active_table, meta, autoload_with=db.engine)
 
-    table = Table(active_card_table_name, meta, autoload_with=db.engine)
+        stmt = select(table)  # Create a select statement for the table
+        with db.engine.connect() as connection:
+            result = connection.execute(stmt)
+            table_rows += result.fetchall()
 
-    stmt = select(table)  # Create a select statement for the table
-    with db.engine.connect() as connection:
-        result = connection.execute(stmt)
-        table_rows = result.fetchall()
-
-    if active_list_items:
-        column_names = active_list_items
-    else:
-        column_names = [column.name for column in table.columns]
+        if active_list_items:
+            column_names += active_list_items
+        else:
+            column_names += [column.name for column in table.columns]
     lead_status_unique_values = []
     for lead in db.session.query(Leads.lead_status).distinct():
         lead_status_unique_values.append(lead.lead_status)
-    return render_template('report.html', table_rows=table_rows, column_names=column_names, lead_status_unique_values=lead_status_unique_values)
+    return render_template('report.html', report_name=report_name, table_rows=table_rows, column_names=column_names, lead_status_unique_values=lead_status_unique_values)
 
 
 @views.route('/datetime-columns', methods=['POST'])
 def datetime_columns():
     active_columns =  request.get_json()['activeColumns']
-    active_card_table_name = session.get('active_card_table_name')
+    activeTableNames = request.get_json()['activeTableNames'][0]
 
-    table = Table(active_card_table_name, meta, autoload_with=db.engine)
+    table = Table(activeTableNames, meta, autoload_with=db.engine)
 
     # datetime_columns = []
     # for column in table.columns:
