@@ -32,8 +32,16 @@
         </div>
         <div class="middle-panel">
             <div class="middle-panel-heading">Select Columns</div>
-            <div id="selectAllColumns" class="selectable">Select All</div>            
-            <div class="list selectable"></div>
+            <div id="selectAllColumns" class="selectable">Select All</div>
+            <div class="selected-tables">
+                {% for table_name in table_names  %}
+                    <div class="table-container {{ table_name }} " id="{{ loop.index }}">
+                        <label for="{{ loop.index }}" class="table-name" table-name="{{ table_name }}">{{ table_name }}</label>
+                        <div class="list selectable {{ table_name }}"></div>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- <div class="list selectable"></div> -->
         </div>
         <div class="right-panel">
                 <div class="preview">

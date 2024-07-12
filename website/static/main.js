@@ -84,47 +84,68 @@ $(document).ready(function() {
 
 
     // Default table active
-    $(".card").first().addClass('active');
-    const tableName = $(".card").first().attr('table-name');
-    $.ajax({
-        url: `/get-columns/${tableName}`,
-        type: 'GET',
-        dataType: 'json',
-        success: function(columns) {
-            const $list = $('#tab1 .middle-panel .list');
-            $list.empty(); 
-            $.each(columns, function(index, column) {
-                const $listItem = $('<div></div>', {
-                    'class': `list-item selectable ${column}`,
-                    'html': `${column}`
-                });
-                $list.append($listItem); 
-            });
-        }
-    });
+    // $(".card").first().addClass('active');
+    // const tableName = $(".card").first().attr('table-name');
+    // $.ajax({
+    //     url: `/get-columns/${tableName}`,
+    //     type: 'GET',
+    //     dataType: 'json',
+    //     success: function(columns) {
+    //         const $list = $(`#tab1 .middle-panel .list.${tableName}`);
+    //         $list.empty(); 
+    //         $.each(columns, function(index, column) {
+    //             const $listItem = $('<div></div>', {
+    //                 'class': `list-item selectable ${column}`,
+    //                 'html': `${column}`
+    //             });
+    //             $list.append($listItem); 
+    //         });
+    //     }
+    // });
 
     
-    // Card - icon moving functionality
-    var $icon = $('.icon');
-    var $iconContainer = $icon.parent();
+    
 
-    if ($iconContainer.hasClass('active')) {
-        var containerWidth = $iconContainer.width();
-        var iconWidth = $icon.width();
-        var distanceToMove = containerWidth - iconWidth;
-        $activeIcon = $('.card.active .icon')
+    var $activeTableNames = $('#tab1 .card.active').map(function() {
+        return $(this).attr('table-name'); 
+    }).get();
 
-        $activeIcon.css('transform', 'translateX(' + distanceToMove + 'px)');
-    } else {
-
-    };
-
+    $(`#tab1 .middle-panel .table-container`).css('display', 'none');
 
     // Showing the name of the tables and its columns 
     $(".card").click(function() {
-        $(".card").removeClass("active");
-        $('.icon').css('transform', '');
-        $(this).addClass('active');
+        const tableName = $(this).attr('table-name');
+        // $(".card").removeClass("active");
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            $(this).find('.icon').css('transform', '');
+            $activeTableNames = $activeTableNames.filter(tableName => tableName !== $(this).attr('table-name'));
+            $(`#tab1 .middle-panel .table-container.${tableName}`).css('display', 'none');
+            // $('.icon').css('transform', '');
+        } else {
+            $(this).addClass('active');
+            $activeTableNames.push($(this).attr('table-name'));
+            $(`#tab1 .middle-panel .table-container.${tableName}`).css('display', '');
+
+            $.ajax({
+                url: `/get-columns/${tableName}`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(columns) {
+                    const $list = $(`#tab1 .middle-panel .list.${tableName}`);
+                    $list.empty(); 
+                    $.each(columns, function(index, column) {
+                        const $listItem = $('<div></div>', {
+                            'class': `list-item selectable ${column}`,
+                            'html': `${column}`
+                        });
+                        $list.append($listItem); 
+                    });
+                }
+            });
+        }
+        
+        // $(this).toggleClass('active');
 
         // Card - icon moving functionality on each click
         var $icon = $(this).find('.icon');
@@ -140,26 +161,7 @@ $(document).ready(function() {
         } else {
 
         };
-        
-        // Dispaying column names
-        const tableName = $(this).attr('table-name');
-        $.ajax({
-            url: `/get-columns/${tableName}`,
-            type: 'GET',
-            dataType: 'json',
-            success: function(columns) {
-                const $list = $('.middle-panel .list');
-                $list.empty(); 
-                $.each(columns, function(index, column) {
-                    const $listItem = $('<div></div>', {
-                        'class': `list-item selectable ${column}`,
-                        'html': `${column}`
-                    });
-                    $list.append($listItem); 
-                });
-            }
-        });
-    })
+    });
 
 
     // Columns list selection toggle for tab1
@@ -178,7 +180,8 @@ $(document).ready(function() {
         $(this).toggleClass('active');
     })
 
-
+    // Extending all table list by default
+    $("#tab1 .selected-tables .table-name").addClass('active');
     
 
     // -------------------------------------------------- Tab 2 --------------------------------------------------
@@ -308,19 +311,21 @@ $(document).ready(function() {
     });
     
 
+    // Extending all table list by default
+    $("#tab2 .selected-tables .table-name").addClass('active');
 
-    $(".selected-tables .table-name").addClass('active');
-
+    // Selected tables list selection toggle - middle panel
     $("#tab2 .middle-panel .selected-tables .table-name").click(function() {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             
         } else {
-            $("#tab2 .middle-panel .selected-tables .table-name").removeClass('active');
+            // $("#tab2 .middle-panel .selected-tables .table-name").removeClass('active');
             $(this).addClass('active');            
         }
     })
 
+    // Selected tables list selection toggle - right panel
     $("#tab2 .right-panel .selected-tables .table-name").click(function() {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');

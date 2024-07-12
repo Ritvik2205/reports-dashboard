@@ -288,7 +288,7 @@ body {
 
 
 .middle-panel {
-    width: 30%;
+    width: 40%;
 }
 
 .middle-panel-heading {
@@ -313,6 +313,11 @@ body {
 
 #selectAllColumns:hover {
     background-color: #444444;
+}
+
+#tab1 .selected-tables {
+    display: flex;
+    flex-direction: row;
 }
 
 .list {
@@ -347,7 +352,7 @@ body {
 
 
 .right-panel {
-    width: 30%;
+    width: 25%;
     background-color: transparent;
     box-shadow: none;
     padding: 15px;
