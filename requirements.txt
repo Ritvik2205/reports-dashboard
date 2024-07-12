@@ -5,3 +5,5 @@ PyMySQL
 cryptography
 mysql-connector-python
 python-dotenv
+pymongo
+Flask-PyMongo

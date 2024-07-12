@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from os import getenv
 from dotenv import load_dotenv
+from flask_pymongo import PyMongo
 
 load_dotenv()
 
@@ -14,6 +15,7 @@ MYSQL_PORT = getenv("MYSQL_PORT")
 MYSQL_HOST = getenv("MYSQL_HOST")
 
 db = SQLAlchemy()
+mongo = PyMongo()
 
 table_names = []
 
@@ -25,9 +27,12 @@ def create_app():
 
     app.config['SQLALCHEMY_DATABASE_URI'] = \
             f'mysql+pymysql://{MYSQL_USERNAME}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB_NAME}'
+    
+    app.config['MONGO_URI'] = 'mongodb://localhost:27017/tjReports'
 
 
     db.init_app(app)
+    mongo.init_app(app)
 
 
     from .views import views

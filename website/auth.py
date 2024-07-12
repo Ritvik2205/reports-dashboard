@@ -1,11 +1,24 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import Leads, User
-from . import db
+from . import db, mongo
 from flask_login import login_user, login_required, logout_user, current_user
 
 
 auth = Blueprint('auth', __name__)
+
+def log_reports(report_name, active_card_table_name, active_list_items, columns_for_sorting, active_search_column, active_datetime_column, report_start_date, report_end_date):
+    report = {
+        "report_name" : report_name,
+        "active_card_table_name" : active_card_table_name,
+        "active_list_items" : active_list_items,
+        "columns_for_sorting" : columns_for_sorting,
+        "active_search_column" : active_search_column,
+        "active_datetime_column" : active_datetime_column,
+        "report_start_date" : report_start_date,
+        "report_end_date" : report_end_date
+    }
+    mongo.db.reports.insert_one(report)
 
 
 @auth.route('/login', methods=['GET', 'POST'])

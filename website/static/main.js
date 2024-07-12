@@ -341,7 +341,7 @@ $(document).ready(function() {
 
         var activeCardTableName = $('.card.active .title').text().trim();
 
-        var reportName = $('.report-name-title').val();
+        var reportName = $('.report-name-input').val();
 
         var activeDateTimeColumn = $('#tab2 .initial-section .list-item.active').text();
         var activeSearchColumn = $('#tab2 .right-panel .list-item.active').text();
