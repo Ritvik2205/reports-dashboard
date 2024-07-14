@@ -119,7 +119,10 @@ $(document).ready(function() {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             $(this).find('.icon').css('transform', '');
-            $(`#tab1 .middle-panel .list.${tableName} .list-item`).removeClass('active')
+            $(`#tab1 .middle-panel .list.${tableName} .list-item`).each(function() {
+                $(this).removeClass('active').remove();        
+            })
+            $(`#tab1 .middle-panel .list.${tableName} .list-item`).hide();
             $activeTableNames = $activeTableNames.filter(tableName => tableName !== $(this).attr('table-name'));
             $(`#tab1 .middle-panel .table-container.${tableName}`).css('display', 'none');
             // $('.icon').css('transform', '');
@@ -186,8 +189,9 @@ $(document).ready(function() {
     
 
     // -------------------------------------------------- Tab 2 --------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------
 
-    $('#tab1 .middle-panel .selectable').click(function() {
+    $('#tab1 .selectable').click(function() {
         // Displaying selected columns in tab2
         var activeColumns = $('#tab1 .list-item.active').map(function() {
             return $(this).text().trim(); 
