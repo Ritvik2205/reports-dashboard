@@ -31,7 +31,35 @@ html {
 
 body {
     color: var(--text-color);
+}
 
+/* ----------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------- Homepage CSS -------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------- */
+
+#homepage .tab {
+    display: flex;
+    justify-content: center;
+}
+
+#homepage .left-panel {
+    background-color: var(--secondary-color);
+    width: 75%;    
+}
+
+#homepage .left-heading {
+    padding-left: 25px;
+    font-size: 30px;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+#homepage .right-panel {
+    background-color: var(--primary-color);
+    border: 5px solid var(--secondary-color);
+    width: 20%;
 }
 
 /* -----------------------------------------------------------------------------------------------------  */
@@ -289,6 +317,7 @@ body {
 
 .middle-panel {
     width: 40%;
+    overflow: scroll;
 }
 
 .middle-panel-heading {
@@ -297,8 +326,7 @@ body {
     justify-content: center;
     font-size: 24px;
     font-weight: 500;
-    margin-bottom: 20px;
-
+    margin-bottom: 20px;    
 }
 
 #selectAllColumns {
@@ -318,6 +346,7 @@ body {
 #tab1 .selected-tables {
     display: flex;
     flex-direction: row;
+    overflow: scroll;
 }
 
 .list {
@@ -678,20 +707,48 @@ body {
     padding-left: 0;
 }
 
+.table-wrapper {
+    top: 300px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: left;
+    /* padding-top: 15px; */
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 100vw;
+    max-height: calc(100svh - 300px);
+    overflow: scroll;
+}
+
 .leads-table {
-    background: var(--secondary-color);
+    /* background: var(--secondary-color); */
     position: relative;
     border: var(--secondary-color);
-    padding: 15px;
+    padding: 15px 0;
+    max-width: 100vw;
+    border-collapse: separate;
+    border-spacing: 0;
     /* max-width: 1200px; */
 }
 
 th,
 td {
     padding: 5px;
+    max-width: fit-content;
+    text-align: center;
+    border-left: 1px solid #262624;
+    border-right: 1px solid #262624; 
 }
 
-
+th {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-weight: 600;
+    position: sticky;
+    top: 0px;
+}
 
 .name-search-div {
     width: 100%;
