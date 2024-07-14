@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .models import Leads, User
 from . import db, mongo
 from flask_login import login_user, login_required, logout_user, current_user
-
+from datetime import datetime
 
 auth = Blueprint('auth', __name__)
 
@@ -16,7 +16,8 @@ def log_reports(report_name, active_card_table_name, active_list_items, columns_
         "active_search_column" : active_search_column,
         "active_datetime_column" : active_datetime_column,
         "report_start_date" : report_start_date,
-        "report_end_date" : report_end_date
+        "report_end_date" : report_end_date,
+        "date_time_created": datetime.now()
     }
     mongo.db.reports.insert_one(report)
 

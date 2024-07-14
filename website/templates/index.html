@@ -1,11 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report Generation</title>
-</head>
-<body>
-    <h1>Hello World</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %} HomePage {% endblock %}
+
+{% block content %}
+
+    <div id="homepage">
+        <div class="tab">
+            <h1>Techjockey Reports</h1>
+        </div>
+    
+        <div class="container">
+            <div class="left-panel">
+                <div class="left-heading">Report History</div>
+                <div class="report-container">
+                    
+                </div>
+            </div>
+            <div class="right-panel"></div>
+        </div>
+    </div>
+    
+
+
+
+{% endblock %}

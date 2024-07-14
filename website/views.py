@@ -5,6 +5,7 @@ from .models import Leads
 from .auth import log_reports
 
 
+
 meta = MetaData()
 views = Blueprint('views', __name__)
 
@@ -30,9 +31,12 @@ def dashboard():
         columns_for_sorting = request.get_json()['columnsForSorting']
         active_datetime_column = request.get_json()['activeDateTimeColumn']
         active_search_column = request.get_json()['activeSearchColumn']
+        if active_datetime_column == "":
+            report_start_date = ""
+            report_end_date = ""
         log_reports(report_name, active_table_names, active_list_items,
                      columns_for_sorting, active_search_column, active_datetime_column,
-                       report_start_date, report_end_date)
+                       report_start_date, report_end_date)        
         session['active_list_items'] = active_list_items
         session['active_table_names'] = active_table_names
         session['report_name'] = report_name
