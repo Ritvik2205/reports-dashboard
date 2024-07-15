@@ -12,15 +12,13 @@ views = Blueprint('views', __name__)
 
 @views.route('/')
 def home():
-    return render_template('index.html')
+    last_five_reports =  mongo.db.reports.find().sort([('_id', -1)]).limit(5)    
+    return render_template('index.html', last_five_reports=last_five_reports)
 
 
 @views.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     if request.method == 'GET':
-        leads = Leads.query.all()
-        table_name = str(Leads.__table__.name).capitalize()
-        column_names = [column.name for column in Leads.__table__.columns]
         return render_template('dashboard.html', table_names=table_names)
     else:
         active_list_items =  request.get_json()['activeListItems']
@@ -81,10 +79,10 @@ def report():
             result = connection.execute(stmt)
             table_rows += result.fetchall()
 
-        if active_list_items:
-            column_names += active_list_items
-        else:
-            column_names += [column.name for column in table.columns]
+        # if active_list_items:
+    column_names = active_list_items
+        # else:
+        #     column_names += [column.name for column in table.columns]
     lead_status_unique_values = []
     for lead in db.session.query(Leads.lead_status).distinct():
         lead_status_unique_values.append(lead.lead_status)

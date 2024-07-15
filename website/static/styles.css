@@ -42,9 +42,17 @@ body {
     justify-content: center;
 }
 
+.home-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+    height: 100svh;
+}
+
 #homepage .left-panel {
     background-color: var(--secondary-color);
-    width: 75%;    
+    width: 75%;      
 }
 
 #homepage .left-heading {
@@ -56,11 +64,213 @@ body {
     color: var(--text-color);
 }
 
-#homepage .right-panel {
-    background-color: var(--primary-color);
-    border: 5px solid var(--secondary-color);
-    width: 20%;
+#homepage .report-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: scroll;
+    align-items: center;
 }
+
+#homepage .report {    
+    margin-bottom: 10px;   
+    height: 20%; 
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid #635c5c;
+    width: 90%;
+}
+
+#homepage .report .date-created-container {
+    margin-right: 40px;
+    margin-left: 10px;
+    background-color: #444444a5;
+    height: 100%;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 80px 80px 0;    
+}
+
+.report-created-date {
+    font-size: 20px;
+    margin-top: 3px;
+}
+
+.report-info {
+    display: grid;
+    grid-template: 1fr 1fr / 200px 300px;
+    column-gap: 20px;
+    row-gap: 10px;
+}
+
+#homepage .report .report-name {
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+    grid-row: 1 / span 2;
+}
+
+#homepage .report .report-tables {
+    font-size: 18px;
+}
+
+.report-buttons {
+    height: 100%;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.report-buttons a {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.report-buttons a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--secondary-color);
+    z-index: -1;
+    transition: .4s;    
+    opacity: 0;
+}
+
+.report-buttons a:nth-child(2) {
+    background-color: transparent;
+    color: var(--primary-color);
+}
+
+.report-buttons a:nth-child(2):hover {
+    color: var(--secondary-color);
+}
+
+.report-buttons a:nth-child(2)::before {
+    background-color: var(--primary-color);    
+}
+
+.report-buttons a:hover {
+    color: var(--primary-color);    
+}
+
+.report-buttons a:hover::before {
+    width: 100%;
+    opacity: 1;
+}
+
+#homepage .right-panel {
+    width: 25%;
+    border: none;
+    padding: 0;
+    margin-left: 15px;  
+    height: 100%;  
+    display: flex;
+    flex-direction: column;
+}
+
+#homepage .right-panel .top-section {
+    width: 100%;
+    height: 60%;
+    margin-bottom: 10px;
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+    color: var(--text-color);
+}
+
+#homepage .right-panel .top-section .top-subeading {
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    padding: 15px;
+}
+
+#homepage .right-panel .bottom-section {
+    background-color: var(--primary-color);
+    border: 5px solid var(--secondary-color);    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 40%;
+    /* width: 100%; */
+    border-radius: 10px;
+}
+
+#homepage .right-panel .right-subheading {
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    padding: 15px;
+}
+
+#homepage .right-panel a {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 5px;
+    height: 60px;
+    width: 85%;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 26px;
+    margin-top: 60px;
+    border: 5px solid var(--secondary-color);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    z-index: 1;
+}
+
+#homepage .right-panel a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--primary-color);
+    z-index: -1;
+    transition: all 0.3s ease-in;
+    border-radius: 40px;
+    opacity: 0;
+}
+
+#homepage .right-panel a:hover {
+    color: var(--secondary-color);
+    font-size: 30px;
+}
+
+
+#homepage .right-panel a:hover::before {
+    width: 100%;
+    opacity: 1;
+}
+
 
 /* -----------------------------------------------------------------------------------------------------  */
 /* ------------------------------------------- Dashboard CSS -------------------------------------------  */
