@@ -3,7 +3,7 @@ from sqlalchemy import Table, MetaData, select, DateTime, Date
 from . import db, mongo, table_names
 from .models import Leads
 from .auth import log_reports
-
+from bson import ObjectId
 
 
 meta = MetaData()
@@ -88,6 +88,27 @@ def report():
         lead_status_unique_values.append(lead.lead_status)
     return render_template('report.html', report_name=report_name, table_rows=table_rows, column_names=column_names, lead_status_unique_values=lead_status_unique_values)
 
+@views.route('/report/<report_id>')
+def load_report(report_id):
+    report = mongo.db.reports.find_one({"_id": ObjectId(report_id)})
+    report_name = report['report_name']
+    active_list_items = report['active_list_items']
+    active_table_names = report['active_card_table_name']
+
+    table_rows = []
+    column_names = []
+    for active_table in active_table_names:
+        table = Table(active_table, meta, autoload_with=db.engine)
+
+        stmt = select(table)  # Create a select statement for the table
+        with db.engine.connect() as connection:
+            result = connection.execute(stmt)
+            table_rows += result.fetchall()
+
+
+    column_names = active_list_items
+
+    return render_template('report.html', report_name=report_name, table_rows=table_rows, column_names=column_names )    
 
 @views.route('/datetime-columns', methods=['POST'])
 def datetime_columns():
