@@ -943,9 +943,10 @@ body {
     /* max-width: 1200px; */
 }
 
+
 th,
 td {
-    padding: 5px;
+    padding: 12px;
     max-width: fit-content;
     text-align: center;
     border-left: 1px solid #262624;
@@ -956,8 +957,55 @@ th {
     background-color: var(--primary-color);
     color: var(--secondary-color);
     font-weight: 600;
+    font-size: 18px;
     position: sticky;
     top: 0px;
+    text-wrap: nowrap;
+    transition: all 0.2s ease;
+}
+
+th span {
+    display: inline-block;
+    vertical-align: middle;
+
+    height: 1.3rem;
+    width: 1.3rem;
+    margin-left: 5px;
+    border: 1.5px solid transparent;
+    border-radius: 50%;
+
+    font-size: 1rem;
+    text-align: center;
+    font-size: 1rem;
+    transition: border 0.2s ease-in-out, transform 0.3s ease-in-out;
+}
+
+th:hover span {
+    border: 1.5px solid #010326;
+}
+
+th.sort:hover {
+    cursor: pointer;
+    color: #010326;
+    background-color: var(--primary-hover-color);
+}
+
+th.active span {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+th.asc span {
+    transform: rotate(180deg);
+}
+
+th.active {
+    color: #010326;
+    background-color: var(--primary-hover-color);
+}
+
+td.active {
+    color: var(--primary-color);
 }
 
 .name-search-div {

@@ -31,7 +31,11 @@
             <thead>
                 <tr>
                     {% for column in column_names %}
-                        <th class="{{ column }}">{{ column }}</th>
+                        {% if column in columns_for_sorting %}
+                            <th class="{{ column }} sort">{{ column }} <span class="icon-arrow">&UpArrow;</span></th>
+                        {% else %}
+                            <th class="{{ column }}">{{ column }}</th>
+                        {% endif %}
                     {% endfor %}
                 </tr>
             </thead>

@@ -86,7 +86,8 @@ def report():
     lead_status_unique_values = []
     for lead in db.session.query(Leads.lead_status).distinct():
         lead_status_unique_values.append(lead.lead_status)
-    return render_template('report.html', report_name=report_name, table_rows=table_rows, column_names=column_names, lead_status_unique_values=lead_status_unique_values)
+    return render_template('report.html', report_name=report_name, table_rows=table_rows, column_names=column_names, columns_for_sorting=columns_for_sorting, lead_status_unique_values=lead_status_unique_values)
+
 
 @views.route('/report/<report_id>')
 def load_report(report_id):

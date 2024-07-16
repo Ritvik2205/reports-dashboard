@@ -394,6 +394,70 @@ $(document).ready(function() {
         });
     });
 
+    // --------------------------------------------------------------------------------------------------------------
+    // --------------------------------------------------- Report ---------------------------------------------------
+    // --------------------------------------------------------------------------------------------------------------
+       
+    
+
+    // $('.table-wrapper th.sort').each(function() {
+    //     let sort_asc = true;
+    //     $(this).click(function() {
+    //         var columnName = $(this).text();
+    //         $('.table-wrapper th.sort').removeClass('active');
+    //         $(this).addClass('active');
+            
+    //         $('.table-wrapper td').removeClass('active');
+    //         $(`td.${columnName}`).addClass('active');
+
+    //         $(this).toggleClass('asc', sort_asc);
+    //         sort_asc = !sort_asc;
+
+    //         tableRows.sort(function(a, b) {
+    //             var first_row = $(a).find(`td.${columnName}`).text().toLowerCase().trim();
+    //             var second_row = $(b).find(`td.${columnName}`).text().toLowerCase().trim();
+        
+    //             return sort_asc ? (first_row < second_row ? 1 : -1) : (first_row < second_row ? -1 : 1);
+    //         })
+
+    //         $('.table-wrapper tbody').empty().append(tableRows);
+    //     });
+    // });
+    const tableRows = $('.table-wrapper tbody tr').get();
+    const table_headings = document.querySelectorAll('.table-wrapper th.sort');
+
+    $('.table-wrapper th.sort').each(function(index) {
+        let sort_asc = true;
+        $(this).on('click', function() {
+            $('.table-wrapper th.sort').removeClass('active');
+            $(this).addClass('active');
+
+            $('.table-wrapper td').removeClass('active');
+            tableRows.forEach(row => {
+                $(row).find('td').eq(index).addClass('active');
+            });
+
+            $(this).toggleClass('asc', sort_asc);
+            sort_asc = !$(this).hasClass('asc');
+
+            sortTable(index, sort_asc);
+        });
+    });
+    
+    
+    function sortTable(column, sort_asc) {
+        tableRows.sort(function(a, b) {
+            var first_row = $(a).find(`td`).eq(column).text().toLowerCase().trim();
+            var second_row = $(b).find(`td`).eq(column).text().toLowerCase().trim();
+    
+            return sort_asc ? (first_row < second_row ? 1 : -1) : (first_row < second_row ? -1 : 1);
+        });
+
+        $.each(tableRows, function(index, row) {
+            $('.table-wrapper tbody').append(row);
+        });
+    }
+
 });
 
 
