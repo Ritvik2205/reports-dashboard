@@ -32,9 +32,9 @@
                 <tr>
                     {% for column in column_names %}
                         {% if column in columns_for_sorting %}
-                            <th class="{{ column }} sort">{{ column }} <span class="icon-arrow">&UpArrow;</span></th>
+                            <th class="{{ column }} sort" data-column-name="{{ column }}">{{ column }} <span class="icon-arrow">&UpArrow;</span></th>
                         {% else %}
-                            <th class="{{ column }}">{{ column }}</th>
+                            <th class="{{ column }}" data-column-name="{{ column }}">{{ column }}</th>
                         {% endif %}
                     {% endfor %}
                 </tr>

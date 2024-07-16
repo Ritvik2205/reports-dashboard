@@ -426,29 +426,32 @@ $(document).ready(function() {
     const tableRows = $('.table-wrapper tbody tr').get();
     const table_headings = document.querySelectorAll('.table-wrapper th.sort');
 
-    $('.table-wrapper th.sort').each(function(index) {
+    $('.table-wrapper th.sort').each(function() {
         let sort_asc = true;
         $(this).on('click', function() {
+            var columnName = $(this).data('column-name');
+
             $('.table-wrapper th.sort').removeClass('active');
             $(this).addClass('active');
 
             $('.table-wrapper td').removeClass('active');
+            console.log(columnName);
             tableRows.forEach(row => {
-                $(row).find('td').eq(index).addClass('active');
+                $(row).find('td').eq(columnName).addClass('active');
             });
 
             $(this).toggleClass('asc', sort_asc);
             sort_asc = !$(this).hasClass('asc');
 
-            sortTable(index, sort_asc);
+            sortTable(columnName, sort_asc);
         });
     });
     
     
     function sortTable(column, sort_asc) {
         tableRows.sort(function(a, b) {
-            var first_row = $(a).find(`td`).eq(column).text().toLowerCase().trim();
-            var second_row = $(b).find(`td`).eq(column).text().toLowerCase().trim();
+            var first_row = $(a).find(`td.${column}`).text().toLowerCase().trim();
+            var second_row = $(b).find(`td.${column}`).text().toLowerCase().trim();
     
             return sort_asc ? (first_row < second_row ? 1 : -1) : (first_row < second_row ? -1 : 1);
         });
