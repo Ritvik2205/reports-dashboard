@@ -13,7 +13,7 @@
     <div class="filter-container">
         <div class="container-1">
             <div class="name-search-div">
-            <input type="text" name="name-search" id="name-search" placeholder="Vendor name">
+            <input type="text" name="name-search" id="name-search" placeholder="{{ ' '.join(active_search_column.split('_')) }}">
             </div>
             <div class="lead-status-select-div">
                 <select class="lead-status-select" >
@@ -27,7 +27,7 @@
 
     
     <div class="table-wrapper">
-        <table class="leads-table">
+        <table class="leads-table" data-search-column="{{ active_search_column }}" data-datetime-column="{{ }}">
             <thead>
                 <tr>
                     {% for column in column_names %}

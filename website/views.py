@@ -86,7 +86,7 @@ def report():
     lead_status_unique_values = []
     for lead in db.session.query(Leads.lead_status).distinct():
         lead_status_unique_values.append(lead.lead_status)
-    return render_template('report.html', report_name=report_name, table_rows=table_rows, column_names=column_names, columns_for_sorting=columns_for_sorting, lead_status_unique_values=lead_status_unique_values)
+    return render_template('report.html', report_name=report_name, table_rows=table_rows, column_names=column_names, active_search_column=active_search_column, active_datetime_column=active_datetime_column, columns_for_sorting=columns_for_sorting, lead_status_unique_values=lead_status_unique_values)
 
 
 @views.route('/report/<report_id>')
@@ -95,6 +95,9 @@ def load_report(report_id):
     report_name = report['report_name']
     active_list_items = report['active_list_items']
     active_table_names = report['active_card_table_name']
+    active_search_column = report['active_search_column']
+    columns_for_sorting = report['columns_for_sorting']
+    active_datetime_column = report['active_datetime_column']
 
     table_rows = []
     column_names = []
@@ -109,7 +112,7 @@ def load_report(report_id):
 
     column_names = active_list_items
 
-    return render_template('report.html', report_name=report_name, table_rows=table_rows, column_names=column_names )    
+    return render_template('report.html', report_name=report_name, table_rows=table_rows, column_names=column_names, active_search_column=active_search_column, active_datetime_column=active_datetime_column, columns_for_sorting=columns_for_sorting )    
 
 @views.route('/datetime-columns', methods=['POST'])
 def datetime_columns():

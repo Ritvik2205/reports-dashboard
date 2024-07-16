@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
     $(".lead-status-select").change(applyFilters)
-    $("#name-search").keyup(applyFilters)
+    // $("#name-search").keyup(applyFilters)
 
     
     // Tabs logic
@@ -398,33 +398,8 @@ $(document).ready(function() {
     // --------------------------------------------------- Report ---------------------------------------------------
     // --------------------------------------------------------------------------------------------------------------
        
-    
-
-    // $('.table-wrapper th.sort').each(function() {
-    //     let sort_asc = true;
-    //     $(this).click(function() {
-    //         var columnName = $(this).text();
-    //         $('.table-wrapper th.sort').removeClass('active');
-    //         $(this).addClass('active');
-            
-    //         $('.table-wrapper td').removeClass('active');
-    //         $(`td.${columnName}`).addClass('active');
-
-    //         $(this).toggleClass('asc', sort_asc);
-    //         sort_asc = !sort_asc;
-
-    //         tableRows.sort(function(a, b) {
-    //             var first_row = $(a).find(`td.${columnName}`).text().toLowerCase().trim();
-    //             var second_row = $(b).find(`td.${columnName}`).text().toLowerCase().trim();
-        
-    //             return sort_asc ? (first_row < second_row ? 1 : -1) : (first_row < second_row ? -1 : 1);
-    //         })
-
-    //         $('.table-wrapper tbody').empty().append(tableRows);
-    //     });
-    // });
+    // Sorting table columns 
     const tableRows = $('.table-wrapper tbody tr').get();
-    const table_headings = document.querySelectorAll('.table-wrapper th.sort');
 
     $('.table-wrapper th.sort').each(function() {
         let sort_asc = true;
@@ -460,6 +435,14 @@ $(document).ready(function() {
             $('.table-wrapper tbody').append(row);
         });
     }
+
+    // Search table by chosen column
+    var searchColumn = $('.leads-table').data('search-column');
+    console.log(searchColumn);
+    $("#name-search").keyup(function() {
+        searchTable(searchColumn);    
+    });
+    
 
 });
 
@@ -499,17 +482,17 @@ function filterTableByLeadStatus() {
 
 
 
-function searchTableByName() {
-    var value = $("#name-search").val();
-    var searchValue = value.toUpperCase();
-    $('.leads-table tbody tr').each(function() {
-        console.log(searchValue);
-        var tdText = $(this).find("td:nth-child(3)").text().toUpperCase();
-        if (tdText.indexOf(searchValue) > -1) {
-            $(this).css('display', '');
+function searchTable(searchColumn) {
+    var nameValue = $("#name-search").val().toUpperCase();
+    $('.leads-table tbody tr').each(function() {        
+        var tdText = $(this).find(`td.${searchColumn}`).text().toUpperCase();        
+        var matchesName = (tdText.indexOf(nameValue) > -1 || nameValue === '');
+
+        if (matchesName) {
+            $(this).css('display', '').show();
         }
         else {
-            $(this).css('display', 'none');
+            $(this).css('display', 'none').hide();
         }
     });
 }
