@@ -21,7 +21,7 @@
                             </div>
                             <div class="report-info">
                                 <div class="report-name"> {{ report['report_name']}} </div>
-                                <div class="report-tables"> Tables used: {{ report['active_card_table_name'] }} </div>
+                                <div class="report-tables"> Tables used: {{ report['active_table_names'] }} </div>
                                 {% if report['report_start_date'] or report['report_end_date'] %}
                                     <div class="report-period">Period: {{ report['report_start_date'] }} to {{ report['report_end_date'] }} </div>
                                 {% else %}

@@ -438,11 +438,68 @@ $(document).ready(function() {
 
     // Search table by chosen column
     var searchColumn = $('.leads-table').data('search-column');
-    console.log(searchColumn);
     $("#name-search").keyup(function() {
         searchTable(searchColumn);    
     });
+
+    // Export to CSV
+    var $exportCsvBtn = $('#toCSV');
+
+    $exportCsvBtn.click(function() {
+        var reportName = $('.report-name-final').text();
+        
+        var $table = $('.leads-table');
+
+        const tHeads = $table.find('thead th'),
+            tRows = $table.find('tbody tr.visible');
+
+        var headings = [];
+        tHeads.each(function() {
+            var head = $(this).text().trim().split(' ');
+            var headText = head.splice(0, head.length - 1).join(" ").toLowerCase();
+            headings.push(headText);        
+        });
+        var headingsCsv = headings.join(',');
+
+        var rows = []
+        tRows.each(function() {
+            var row = [];
+            $(this).find('td').each(function() {
+                row.push($(this).text().trim());
+            });
+            rows.push(row.join(','));
+        });
+        var rowsCSV = rows.join('\n');
+        
+        var csvData = headingsCsv + "\n" + rowsCSV;
+        
+        downloadFile(csvData, 'csv', reportName);
+    });
     
+
+    // Download function
+    function downloadFile(data, fileType, fileName='') {
+        const mimeTypes = {
+            'csv': 'text/csv'
+        };
+
+        if (!mimeTypes[fileType]) {
+            console.error("Unsupported file type: " + fileType);
+            return;
+        }
+
+        const blob = new Blob([data], { type: mimeTypes[fileType] });
+        const url = URL.createObjectURL(blob);
+
+        const a = $(document.createElement('a'))
+            .attr('download', fileName)
+            .attr('href', url)
+            .css('display', 'none');    
+            
+        $('body').append(a);
+        a[0].click();
+        a.remove();
+    }
 
 });
 
@@ -489,10 +546,10 @@ function searchTable(searchColumn) {
         var matchesName = (tdText.indexOf(nameValue) > -1 || nameValue === '');
 
         if (matchesName) {
-            $(this).css('display', '').show();
+            $(this).css('display', '').addClass('visible').show();
         }
         else {
-            $(this).css('display', 'none').hide();
+            $(this).css('display', 'none').removeClass('visible').hide();
         }
     });
 }
