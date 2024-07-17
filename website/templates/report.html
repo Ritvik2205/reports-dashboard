@@ -6,8 +6,8 @@
 {% block content %}
 
     <div class="header">
+        <a href="/"><img src="../static/assets/homeIcon.svg" alt="Home Icon"></a>
         <h1> {{ report_name }} </h1>
-        <a href="/dashboard">dashboard</a>
     </div>
 
     <div class="filter-container">
@@ -24,10 +24,16 @@
                 </select>
             </div>
         </div>
+        <div class="container-2">
+            <div class="export-btns">
+                <div class="export-btn" id="toCSV">Export to CSV</div>
+            </div>
+        </div>
+    </div>
 
     
     <div class="table-wrapper">
-        <table class="leads-table" data-search-column="{{ active_search_column }}" data-datetime-column="{{ }}">
+        <table class="leads-table" data-search-column="{{ active_search_column }}" data-datetime-column="{{ active_datetime_column }}">
             <thead>
                 <tr>
                     {% for column in column_names %}
