@@ -446,7 +446,7 @@ $(document).ready(function() {
     var $exportCsvBtn = $('#toCSV');
 
     $exportCsvBtn.click(function() {
-        var reportName = $('.report-name-final').text();
+        var reportName = $('.report-name-final').text().trim();
         
         var $table = $('.leads-table');
 
@@ -517,9 +517,9 @@ function applyFilters() {
         
 
         if (matchesName && matchesStatus) {
-            $(this).show();
+            $(this).addClass('visible').show();
         } else {
-            $(this).hide();
+            $(this).removeClass('visible').hide();
         }
     });
 }
