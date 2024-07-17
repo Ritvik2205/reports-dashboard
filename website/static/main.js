@@ -398,6 +398,16 @@ $(document).ready(function() {
     // --------------------------------------------------- Report ---------------------------------------------------
     // --------------------------------------------------------------------------------------------------------------
        
+    var currentPage = 1;
+    var rowsPerPage = 10;
+    displayTableRows();
+
+    function displayTableRows() {
+        var start = (currentPage - 1) * rowsPerPage;
+        var end = start + rowsPerPage;
+        $('.table-wrapper tbody tr').hide().slice(start, end).show();
+    }
+
     // Sorting table columns 
     const tableRows = $('.table-wrapper tbody tr').get();
 
@@ -476,11 +486,45 @@ $(document).ready(function() {
         downloadFile(csvData, 'csv', reportName);
     });
     
+    // Export to Excel
+    var $exportExcelBtn = $('#toExcel');
 
+    $exportExcelBtn.click(function() {
+        var reportName = $('.report-name-final').text().trim();
+        
+        var $table = $('.leads-table');
+
+        const tHeads = $table.find('thead th'),
+            tRows = $table.find('tbody tr.visible');
+
+        var headings = [];
+        tHeads.each(function() {
+            var head = $(this).text().trim().split(' ');
+            var headText = head.splice(0, head.length - 1).join(" ").toLowerCase();
+            headings.push(headText);        
+        });
+        var headingsExcel = headings.join('\t');
+
+        var rows = []
+        tRows.each(function() {
+            var row = [];
+            $(this).find('td').each(function() {
+                row.push($(this).text().trim());
+            });
+            rows.push(row.join('\t'));
+        });
+        var rowsExcel = rows.join('\n');
+        
+        var excelData = headingsExcel + "\n" + rowsExcel;
+        
+        downloadFile(excelData, 'excel', reportName);
+    });
+    
     // Download function
     function downloadFile(data, fileType, fileName='') {
         const mimeTypes = {
-            'csv': 'text/csv'
+            'csv': 'text/csv',
+            'excel': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         };
 
         if (!mimeTypes[fileType]) {
@@ -522,6 +566,7 @@ function applyFilters() {
             $(this).removeClass('visible').hide();
         }
     });
+    displayTableRows();
 }
 
 function filterTableByLeadStatus() {
