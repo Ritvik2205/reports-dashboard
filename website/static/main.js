@@ -400,7 +400,7 @@ $(document).ready(function() {
        
     var currentPage = 1;
     var rowsPerPage = 10;
-    var window = 5;
+    var pageWindow = 5;
     var totalPages = Math.ceil($('.table-wrapper tbody tr').length / rowsPerPage);
     displayTableRows(currentPage, rowsPerPage);
     paginationControls(totalPages, currentPage);
@@ -415,16 +415,16 @@ $(document).ready(function() {
         var $paginationContainer = $('.pagination-container');
         $paginationContainer.empty();
 
-        var maxLeft = currentPage - Math.floor(window / 2);
-        var maxRight = currentPage + Math.floor(window / 2);
+        var maxLeft = currentPage - Math.floor(pageWindow / 2);
+        var maxRight = currentPage + Math.floor(pageWindow / 2);
 
         if (maxLeft < 1) {
             maxLeft = 1;
-            maxRight = window;
+            maxRight = pageWindow;
         }
 
         if (maxRight > totalPages) {
-            maxLeft = totalPages - (window - 1);
+            maxLeft = totalPages - (pageWindow - 1);
 
             if (maxLeft < 1) {
                 maxLeft = 1;
