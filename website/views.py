@@ -94,7 +94,7 @@ def load_report(report_id):
     report = mongo.db.reports.find_one({"_id": ObjectId(report_id)})
     report_name = report['report_name']
     active_list_items = report['active_list_items']
-    active_table_names = session.get('active_table_names')
+    active_table_names = report['active_table_names']
     active_search_column = report['active_search_column']
     columns_for_sorting = report['columns_for_sorting']
     active_datetime_column = report['active_datetime_column']
