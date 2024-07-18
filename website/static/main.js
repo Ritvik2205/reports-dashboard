@@ -436,7 +436,7 @@ $(document).ready(function() {
             $paginationContainer.append(`<button value=${1} class="page">&#171; First</button>`)
         }
 
-        $paginationContainer.append(`<button value=${currentPage - 1} class="page">Prev</button>`);
+        $paginationContainer.append(`<button value=${currentPage - 1} class="page page-prev">Prev</button>`);
 
         for (var page = maxLeft; page <= maxRight; page++) {
             $paginationContainer.append(`<button value=${page} class="page numb">${page}</button>`);
@@ -445,10 +445,18 @@ $(document).ready(function() {
             }
         }
 
-        $paginationContainer.append(`<button value=${currentPage + 1} class="page">Next</button>`);
+        $paginationContainer.append(`<button value=${currentPage + 1} class="page page-next">Next</button>`);
 
         if (currentPage != totalPages) {
             $paginationContainer.append(`<button value=${totalPages} class="page">Last &#187;</button>`)
+        }
+
+        if (currentPage - 1 < 1) {
+            $paginationContainer.find('.page.page-prev').prop('disabled', true);
+        } 
+
+        if (currentPage + 1 > totalPages) {
+            $paginationContainer.find('.page.page-next').prop('disabled', true);
         }
 
         $paginationContainer.find('.page').on('click', function() {
