@@ -1159,3 +1159,18 @@ body {
     color: var(--text-color);
 }
 
+.pagination-container {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    /* z-index: 5; */
+    background-color: var(--primary-color);
+    height: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.page.numb.active {
+    background-color: red;
+}

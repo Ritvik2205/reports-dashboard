@@ -400,12 +400,64 @@ $(document).ready(function() {
        
     var currentPage = 1;
     var rowsPerPage = 10;
-    displayTableRows();
+    var window = 5;
+    var totalPages = Math.ceil($('.table-wrapper tbody tr').length / rowsPerPage);
+    displayTableRows(currentPage, rowsPerPage);
+    paginationControls(totalPages, currentPage);
 
-    function displayTableRows() {
+    function displayTableRows(currentPage, rowsPerPage) {
         var start = (currentPage - 1) * rowsPerPage;
         var end = start + rowsPerPage;
         $('.table-wrapper tbody tr').hide().slice(start, end).show();
+    }
+
+    function paginationControls(totalPages, currentPage) {
+        var $paginationContainer = $('.pagination-container');
+        $paginationContainer.empty();
+
+        var maxLeft = currentPage - Math.floor(window / 2);
+        var maxRight = currentPage + Math.floor(window / 2);
+
+        if (maxLeft < 1) {
+            maxLeft = 1;
+            maxRight = window;
+        }
+
+        if (maxRight > totalPages) {
+            maxLeft = totalPages - (window - 1);
+
+            if (maxLeft < 1) {
+                maxLeft = 1;
+            }
+            maxRight = totalPages;
+        }
+
+        if (currentPage != 1) {
+            $paginationContainer.append(`<button value=${1} class="page">&#171; First</button>`)
+        }
+
+        $paginationContainer.append(`<button value=${currentPage - 1} class="page">Prev</button>`);
+
+        for (var page = maxLeft; page <= maxRight; page++) {
+            $paginationContainer.append(`<button value=${page} class="page numb">${page}</button>`);
+            if (page === currentPage) {
+                $paginationContainer.find('.page.numb').last().addClass('active');
+            }
+        }
+
+        $paginationContainer.append(`<button value=${currentPage + 1} class="page">Next</button>`);
+
+        if (currentPage != totalPages) {
+            $paginationContainer.append(`<button value=${totalPages} class="page">Last &#187;</button>`)
+        }
+
+        $paginationContainer.find('.page').on('click', function() {
+            currentPage = Number($(this).val());            
+            displayTableRows(currentPage, rowsPerPage);
+            paginationControls(totalPages, currentPage);
+        });
+
+
     }
 
     // Sorting table columns 
@@ -420,7 +472,7 @@ $(document).ready(function() {
             $(this).addClass('active');
 
             $('.table-wrapper td').removeClass('active');
-            console.log(columnName);
+            console.log(tableRows);
             tableRows.forEach(row => {
                 $(row).find('td').eq(columnName).addClass('active');
             });
@@ -444,6 +496,8 @@ $(document).ready(function() {
         $.each(tableRows, function(index, row) {
             $('.table-wrapper tbody').append(row);
         });
+        displayTableRows(currentPage, rowsPerPage);
+        paginationControls(totalPages, currentPage);
     }
 
     // Search table by chosen column
@@ -566,7 +620,7 @@ function applyFilters() {
             $(this).removeClass('visible').hide();
         }
     });
-    displayTableRows();
+    displayTableRows(currentPage, rowsPerPage);
 }
 
 function filterTableByLeadStatus() {
