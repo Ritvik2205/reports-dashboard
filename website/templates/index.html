@@ -31,7 +31,7 @@
                             </div>
                             <div class="report-buttons">
                                 <a href="/report/{{ report['_id'] }}" class="generate-report">Generate report</a>
-                                <a href="/dashboard" class="load-report">Edit report</a>
+                                <a class="load-report" data-report-id="{{ report['_id'] }}">Edit report</a>
                             </div>
                         </div>
                     {% endfor %}

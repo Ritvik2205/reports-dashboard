@@ -21,13 +21,12 @@
             <div class="cards-section">
                 <div class="subheading-left-panel">All Tables</div>
                 {% for table_name in table_names %}
-                    <div class="card selectable" table-name="{{ table_name }}">
-                            <div class="icon"></div>
-                        <div class="title"> {{ table_name.capitalize() }} </div>
+                    <div class="card selectable {{ table_name }}" table-name="{{ table_name }}">
+                        <div class="icon"></div>
+                        <div class="title"> {{ table_name }} </div>
                         <div class="description"></div>
                     </div>
                 {% endfor %}
-                
             </div>
             
         </div>
@@ -102,7 +101,7 @@
             <div class="middle-panel-heading">Select Columns to sort by - </div>
             <div class="selected-tables">
                 {% for table_name in table_names  %}
-                    <div class="table-container" id="{{ loop.index }}">
+                    <div class="table-container {{ table_name }}" id="{{ loop.index }}">
                         <label for="{{ loop.index }}" class="table-name" table-name="{{ table_name }}">{{ table_name }}</label>
                         <div class="list {{ table_name }}"></div>
                     </div>

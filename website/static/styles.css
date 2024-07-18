@@ -764,6 +764,10 @@ body {
     margin-left: 10px;
 }
 
+.table-container {
+    display: none;
+}
+
 .table-name {
     display: flex;
     align-items: center;

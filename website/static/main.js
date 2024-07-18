@@ -1,9 +1,65 @@
 
 $(document).ready(function() {
     $(".lead-status-select").change(applyFilters)
-    // $("#name-search").keyup(applyFilters)
 
+    // --------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------- Homepage -----------------------------------------------
+    // --------------------------------------------------------------------------------------------------------
+
+    $('.load-report').on('click', function(e) {
+        e.preventDefault();
+
+        var reportId = $(this).data('report-id');
+        $.ajax({
+            url: `/get-report`,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                reportId : reportId,
+            }),
+            dataType: 'json',
+            success: function(reportJSON) {                
+                localStorage.setItem('reportData', reportJSON);
+                window.location.href = '/dashboard';
+            }
+        });   
+    });
+
+
+    // --------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------- Dashboard -----------------------------------------------
+    // --------------------------------------------------------------------------------------------------------
     
+    var storedReport = localStorage.getItem('reportData');
+    if (storedReport) {
+        console.log('exists');
+        var report = JSON.parse(storedReport);
+        var reportName = report.report_name;
+        var tableNames = report.active_table_names;
+        var listItems = report.active_list_items;
+        var sortingColumns = report.columns_for_sorting;
+        var activeSearchColumn = report.active_search_column;
+        var activeDatetimeColumn = report.active_datetime_column;
+        var reportStartDate = report.report_start_date;
+        var reportEndDate = report.report_end_date;
+        var dateTimeCreated = report.date_time_created;
+
+        $('.report-name-title').text(reportName);
+        $('#tab1 .report-name-input').val(reportName);
+        var $activeTableNames = $('#tab1 .card.active').map(function() {
+            return $(this).attr('table-name'); 
+        }).get();
+        for (var i in tableNames) {  
+            console.log(tableNames[i]);     
+            // $(`.card.${tableNames[i]}`).click();                  
+            $activeTableNames = onCardClick($(`#tab1 .card.${tableNames[i]}`), $activeTableNames);
+        }
+
+        // $('#reportrange span').html(report.reportStartDate + ' - ' + report.reportEndDate);
+
+        localStorage.removeItem('reportData');
+    }
+
     // Tabs logic
     $(".tablink").click(function() {
         $(".tablink").removeClass("active");
@@ -106,30 +162,27 @@ $(document).ready(function() {
     
     
 
-    var $activeTableNames = $('#tab1 .card.active').map(function() {
-        return $(this).attr('table-name'); 
-    }).get();
+    
 
-    $(`#tab1 .middle-panel .table-container`).css('display', 'none');
+    // $(`#tab1 .middle-panel .table-container`).css('display', 'none');
 
-    // Showing the name of the tables and its columns 
-    $(".card").click(function() {
-        const tableName = $(this).attr('table-name');
+    function onCardClick(card, $activeTableNames) {
+        const tableName = card.attr('table-name');
         // $(".card").removeClass("active");
-        if ($(this).hasClass('active')) {
-            $(this).removeClass('active');
-            $(this).find('.icon').css('transform', '');
+        if (card.hasClass('active')) {
+            card.removeClass('active');
+            card.find('.icon').css('transform', '');
             $(`#tab1 .middle-panel .list.${tableName} .list-item`).each(function() {
                 $(this).removeClass('active').remove();        
             })
             $(`#tab1 .middle-panel .list.${tableName} .list-item`).hide();
-            $activeTableNames = $activeTableNames.filter(tableName => tableName !== $(this).attr('table-name'));
-            $(`#tab1 .middle-panel .table-container.${tableName}`).css('display', 'none');
+            $activeTableNames = $activeTableNames.filter(tableName => tableName !== card.attr('table-name'));
+            $(`#tab1 .middle-panel .table-container.${tableName}`).css('display', 'none').hide();
             // $('.icon').css('transform', '');
-        } else {
-            $(this).addClass('active');
-            $activeTableNames.push($(this).attr('table-name'));
-            $(`#tab1 .middle-panel .table-container.${tableName}`).css('display', '');
+        } else {    
+            card.addClass('active');
+            $activeTableNames.push(card.attr('table-name'));
+            $(`#tab1 .middle-panel .table-container.${tableName}`).css('display', '').show();
 
             $.ajax({
                 url: `/get-columns/${tableName}`,
@@ -148,12 +201,10 @@ $(document).ready(function() {
                 }
             });
         }
-        
-        // $(this).toggleClass('active');
 
         // Card - icon moving functionality on each click
-        var $icon = $(this).find('.icon');
-        var $iconContainer = $(this);
+        var $icon = card.find('.icon');
+        var $iconContainer = card;
 
         if ($iconContainer.hasClass('active')) {
             var containerWidth = $iconContainer.width();
@@ -165,6 +216,16 @@ $(document).ready(function() {
         } else {
 
         };
+
+        return $activeTableNames;
+    }
+
+    // Showing the name of the tables and its columns 
+    $(".card").on('click', function() {
+        var $activeTableNames = $('#tab1 .card.active').map(function() {
+            return $(this).attr('table-name'); 
+        }).get();
+        $activeTableNames = onCardClick($(this), $activeTableNames);
     });
 
 
@@ -206,7 +267,7 @@ $(document).ready(function() {
         $('#tab2 .middle-panel .table-name').each(function() {
             var tableName = $(this).attr('table-name');
             if ($activeTableNames.includes(tableName)) {
-                $(this).parent().css('display', '');
+                $(this).parent().css('display', '').show();
 
                 $.ajax({
                     url: `/get-columns/${tableName}`,
@@ -227,7 +288,7 @@ $(document).ready(function() {
                     }
                 });
             } else {
-                $(this).parent().css('display', 'none');
+                $(this).parent().css('display', 'none').hide();
             }
         });
 
@@ -265,27 +326,30 @@ $(document).ready(function() {
         }).get();
 
         // displaying columns with Date or Datetime
-        $.ajax({
-            url: `/datetime-columns`,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                activeColumns: activeColumns,
-                activeTableNames: activeTableNames
-            }),
-            dataType: 'json',
-            success: function(columns) {                
-                const $list = $('#tab2 .initial-section .list');
-                $list.empty(); 
-                $.each(columns, function(index, column) {
-                    const $listItem = $('<div></div>', {
-                        'class': 'list-item',
-                        'html': `${column}`
+        if (activeTableNames.length != 0) {
+            $.ajax({
+                url: `/datetime-columns`,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    activeColumns: activeColumns,
+                    activeTableNames: activeTableNames
+                }),
+                dataType: 'json',
+                success: function(columns) {                
+                    const $list = $('#tab2 .initial-section .list');
+                    $list.empty(); 
+                    $.each(columns, function(index, column) {
+                        const $listItem = $('<div></div>', {
+                            'class': 'list-item',
+                            'html': `${column}`
+                        });
+                        $list.append($listItem); 
                     });
-                    $list.append($listItem); 
-                });
-            }
-        });
+                }
+            });
+        }
+        
     })
 
     $('#tab2 .date-section').css('display', 'none');
