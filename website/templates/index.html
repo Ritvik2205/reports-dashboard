@@ -16,8 +16,9 @@
                     {% for report in last_five_reports %}
                         <div class="report">
                             <div class="date-created-container">
-                                <div>Date Created:</div>
+                                <div>Report Created:</div>
                                 <div class="report-created-date"> {{ report['date_time_created'].strftime('%d-%m-%Y') }} </div>
+                                <div class="report-created-date"> at {{ report['date_time_created'].strftime('%H:%M') }} </div>
                             </div>
                             <div class="report-info">
                                 <div class="report-name"> {{ report['report_name']}} </div>
