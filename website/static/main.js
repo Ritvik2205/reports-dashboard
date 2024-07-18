@@ -485,8 +485,15 @@ $(document).ready(function() {
         tableRows.sort(function(a, b) {
             var first_row = $(a).find(`td.${column}`).text().toLowerCase().trim();
             var second_row = $(b).find(`td.${column}`).text().toLowerCase().trim();
+
+            var first_row_num = isNaN(+first_row) ? first_row : +first_row;
+            var second_row_num = isNaN(+second_row) ? second_row : +second_row;
     
-            return sort_asc ? (first_row < second_row ? 1 : -1) : (first_row < second_row ? -1 : 1);
+            if (typeof first_row_num === 'number' && typeof second_row_num === 'number') {
+                return sort_asc ? (second_row_num - first_row_num) : (first_row_num - second_row_num);
+            } else {
+                return sort_asc ? (first_row < second_row ? 1 : -1) : (first_row < second_row ? -1 : 1);
+            }
         });
 
         $.each(tableRows, function(index, row) {
