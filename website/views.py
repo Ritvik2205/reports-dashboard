@@ -4,7 +4,7 @@ from . import db, mongo, table_names
 from .models import Leads
 from .auth import log_reports
 from bson import ObjectId
-
+from bson.json_util import dumps
 
 meta = MetaData()
 views = Blueprint('views', __name__)
@@ -128,3 +128,12 @@ def datetime_columns():
 
     datetime_columns = [column.name for column in table.columns if column.name in active_columns and (isinstance(column.type, Date) or isinstance(column.type, DateTime))]
     return jsonify(datetime_columns)
+
+
+@views.route('/get-report', methods=['POST'])
+def get_report():
+    report_id = request.get_json()['reportId']
+    report = mongo.db.reports.find_one({"_id": ObjectId(report_id)})
+    if report:
+        report['_id'] = str(report['_id'])
+        return jsonify(dumps(report))
