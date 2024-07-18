@@ -432,11 +432,8 @@ $(document).ready(function() {
             maxRight = totalPages;
         }
 
-        if (currentPage != 1) {
-            $paginationContainer.append(`<button value=${1} class="page">&#171; First</button>`)
-        }
-
-        $paginationContainer.append(`<button value=${currentPage - 1} class="page page-prev">Prev</button>`);
+        $paginationContainer.append(`<button value=${1} class="page ${currentPage == 1 ? 'disabled' : ''}">&#171; First</button>`);
+        $paginationContainer.append(`<button value=${currentPage - 1} class="page page-prev ${currentPage == 1 ? 'disabled' : ''}">Prev</button>`);
 
         for (var page = maxLeft; page <= maxRight; page++) {
             $paginationContainer.append(`<button value=${page} class="page numb">${page}</button>`);
@@ -445,21 +442,12 @@ $(document).ready(function() {
             }
         }
 
-        $paginationContainer.append(`<button value=${currentPage + 1} class="page page-next">Next</button>`);
+        $paginationContainer.append(`<button value=${currentPage + 1} class="page page-next ${currentPage == totalPages ? 'disabled' : ''}">Next</button>`);
+        $paginationContainer.append(`<button value=${totalPages} class="page ${currentPage == totalPages ? 'disabled' : ''}">Last &#187;</button>`);
 
-        if (currentPage != totalPages) {
-            $paginationContainer.append(`<button value=${totalPages} class="page">Last &#187;</button>`)
-        }
+        $paginationContainer.find('.disabled').prop('disabled', true);
 
-        if (currentPage - 1 < 1) {
-            $paginationContainer.find('.page.page-prev').prop('disabled', true);
-        } 
-
-        if (currentPage + 1 > totalPages) {
-            $paginationContainer.find('.page.page-next').prop('disabled', true);
-        }
-
-        $paginationContainer.find('.page').on('click', function() {
+        $paginationContainer.find('.page').not('.disabled').on('click', function() {
             currentPage = Number($(this).val());            
             displayTableRows(currentPage, rowsPerPage);
             paginationControls(totalPages, currentPage);
