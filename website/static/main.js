@@ -158,25 +158,24 @@ $(document).ready(function() {
     }, cb);
 
     cb(start, end);
-    
+
+    var activeTableColumns = {};
 
     // Clicking table names
-    function onCardClick(card, $activeTableNames) {
+    function onCardClick(card, activeTableColumns) {
         const tableName = card.attr('table-name');
         // $(".card").removeClass("active");
         if (card.hasClass('active')) {
             card.removeClass('active');
             card.find('.icon').css('transform', '');
-            $(`#tab1 .middle-panel .list.${tableName} .list-item`).each(function() {
-                $(this).removeClass('active').remove();        
+            $(`#tab1 .middle-panel .list.${tableName} .list-item`).each(function() {              
+                $(this).removeClass('active').remove();                   
             })
             $(`#tab1 .middle-panel .list.${tableName} .list-item`).hide();
-            $activeTableNames = $activeTableNames.filter(tableName => tableName !== card.attr('table-name'));
             $(`#tab1 .middle-panel .table-container.${tableName}`).css('display', 'none').hide();
-            // $('.icon').css('transform', '');
+            delete activeTableColumns[tableName];
         } else {    
             card.addClass('active');
-            $activeTableNames.push(card.attr('table-name'));
             $(`#tab1 .middle-panel .table-container.${tableName}`).css('display', '').show();
 
             $.ajax({
@@ -211,6 +210,7 @@ $(document).ready(function() {
                     });
                 }
             });
+            activeTableColumns[tableName] = [];
         }
 
         // Card - icon moving functionality on each click
@@ -228,27 +228,50 @@ $(document).ready(function() {
 
         };
 
-        return $activeTableNames;
+        return activeTableColumns;
     }
 
     // Showing the name of the tables and its columns 
     $(".card").on('click', function() {
-        var $activeTableNames = $('#tab1 .card.active').map(function() {
-            return $(this).attr('table-name'); 
-        }).get();
-        $activeTableNames = onCardClick($(this), $activeTableNames);
+        activeTableColumns = onCardClick($(this), activeTableColumns);
     });
 
+    
 
     // Columns list selection toggle for tab1
     $("#tab1 .middle-panel .list").on('click', '.list-item', function() {
         $(this).toggleClass('active');
-        
+        var tableName = $(this).closest('.list').data('table-name');
+        if (!activeTableColumns[tableName]) {
+            activeTableColumns[tableName] = [];
+        }
+        var columnName = $(this).text().trim();
+        if ($(this).hasClass('active')) {
+            if (!activeTableColumns[tableName].includes(columnName)) {
+                activeTableColumns[tableName].push(columnName);            
+            }
+        } else {
+            activeTableColumns[tableName] = activeTableColumns[tableName].filter(column => column !== columnName);
+        }
     });
 
-    $('#selectAllColumns').click(function() {
-        $('#tab1 .middle-panel .list-item').addClass('active');
-    
+    $('#selectAllColumns').click(function() {        
+
+        activeTableColumns = {};
+
+        $('#tab1 .card.active').each(function() {
+            var tableName = $(this).attr('table-name');
+            if (!activeTableColumns[tableName]) {
+                activeTableColumns[tableName] = [];
+            }
+
+            $(`#tab1 .middle-panel .list.${tableName} .list-item`).each(function() {
+                var columnName = $(this).text().trim();
+                activeTableColumns[tableName].push(columnName);
+                $(this).addClass('active');
+            })
+        })
+        console.log(activeTableColumns);
     });
 
     // View Type Selection
@@ -263,11 +286,11 @@ $(document).ready(function() {
     // -------------------------------------------------- Tab 2 --------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------
 
-    function selectablesClick() {
+    function selectablesClick(activeTableColumns) {
         // Displaying selected columns in tab2
-        var activeColumns = $('#tab1 .list-item.active').map(function() {
-            return $(this).text().trim(); 
-        }).get(); 
+        // var activeColumns = $('#tab1 .list-item.active').map(function() {
+        //     return $(this).text().trim(); 
+        // }).get(); 
 
         var $activeTableNames = $('#tab1 .card.active').map(function() {
             return $(this).attr('table-name'); 
@@ -280,31 +303,23 @@ $(document).ready(function() {
             if ($activeTableNames.includes(tableName)) {
                 $(this).parent().css('display', '').show();
 
-                $.ajax({
-                    url: `/get-columns/${tableName}`,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(columns) {
-                        const $middleList = $(`#tab2 .middle-panel .list.${tableName}`);  
-                        const $rightList = $(`#tab2 .right-panel .list.${tableName}`);                          
-                        $middleList.empty();  
-                        $rightList.empty();           
-                        $.each(columns, function(index, column) {
-                            if (activeColumns.includes(column)) {
-                                const $middleListItem = $('<div></div>', {
-                                    'class': `list-item ${column}`,
-                                    'html': `${column}`
-                                });
-                                const $rightListItem = $('<div></div>', {
-                                    'class': `list-item ${column}`,
-                                    'html': `${column}`
-                                });
-                                $middleList.append($middleListItem);   
-                                $rightList.append($rightListItem);                             
-                            }                        
-                        });
-                    }
-                });
+                var activeColumns = activeTableColumns[tableName];
+                const $middleList = $(`#tab2 .middle-panel .list.${tableName}`);  
+                const $rightList = $(`#tab2 .right-panel .list.${tableName}`);                          
+                $middleList.empty();  
+                $rightList.empty();
+                activeColumns.forEach(column => {
+                    const $middleListItem = $('<div></div>', {
+                        'class': `list-item ${column}`,
+                        'html': `${column}`
+                    });
+                    const $rightListItem = $('<div></div>', {
+                        'class': `list-item ${column}`,
+                        'html': `${column}`
+                    });
+                    $middleList.append($middleListItem);   
+                    $rightList.append($rightListItem);
+                })
             } else {
                 $(this).parent().css('display', 'none').hide();
             }
@@ -321,7 +336,7 @@ $(document).ready(function() {
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    activeColumns: activeColumns,
+                    activeTableColumns: activeTableColumns,
                     activeTableNames: activeTableNames
                 }),
                 dataType: 'json',
@@ -341,7 +356,7 @@ $(document).ready(function() {
     }
 
     $('#tab1 .selectable').click(function() {
-        selectablesClick();
+        selectablesClick(activeTableColumns);
     });
     
     // Datetime list selection toggle 
@@ -390,7 +405,7 @@ $(document).ready(function() {
             return $(this).text().trim(); 
         }).get(); 
         // distinct column names
-        activeListItems = [... new Set(activeListItems)];
+        // activeListItems = [... new Set(activeListItems)];
 
         var activeTableNames = $('#tab1 .card.active .title').map(function() {
             return $(this).text().trim(); 
