@@ -70,12 +70,13 @@ def report():
     active_datetime_column = session.get('active_datetime_column')
     active_search_column = session.get('active_search_column')
 
+    if active_datetime_column == "":
+            report_start_date = ""
+            report_end_date = ""
     table_rows = []
     column_names = []
     for active_table in active_table_names:
         table = Table(active_table, meta, autoload_with=db.engine)
-
-        
 
         try:
             datetime_column = table.c[active_datetime_column]
@@ -113,12 +114,26 @@ def load_report(report_id):
     columns_for_sorting = report['columns_for_sorting']
     active_datetime_column = report['active_datetime_column']
 
+    if active_datetime_column == "":
+            report_start_date = ""
+            report_end_date = ""
+
     table_rows = []
     column_names = []
     for active_table in active_table_names:
         table = Table(active_table, meta, autoload_with=db.engine)
 
-        stmt = select(table)  # Create a select statement for the table
+        try:
+            datetime_column = table.c[active_datetime_column]
+            # Create a select statement for the table
+            stmt = select(table).where(
+                and_(
+                    datetime_column >= datetime.strptime(report_start_date, '%d-%m-%Y'),
+                    datetime_column <= datetime.strptime(report_end_date, '%d-%m-%Y')                
+                )
+            )
+        except KeyError:
+            stmt = select(table)
         with db.engine.connect() as connection:
             result = connection.execute(stmt)
             table_rows += result.fetchall()
@@ -130,17 +145,20 @@ def load_report(report_id):
 
 @views.route('/datetime-columns', methods=['POST'])
 def datetime_columns():
-    active_columns =  request.get_json()['activeColumns']
-    activeTableNames = request.get_json()['activeTableNames'][0]
+    active_table_columns =  request.get_json()['activeTableColumns']
+    active_table_names = request.get_json()['activeTableNames']
+    
+    datetime_columns = []
+    for active_table in active_table_names:
+        table = Table(active_table, meta, autoload_with=db.engine)
 
-    table = Table(activeTableNames, meta, autoload_with=db.engine)
-
+        datetime_columns += [column.name for column in table.columns if column.name in active_table_columns[active_table] and (isinstance(column.type, Date) or isinstance(column.type, DateTime))]
     # datetime_columns = []
     # for column in table.columns:
     #     if column in active_list_items:
     #         datetime_columns += column.name if isinstance(table.columns[column].type, DateTime)
 
-    datetime_columns = [column.name for column in table.columns if column.name in active_columns and (isinstance(column.type, Date) or isinstance(column.type, DateTime))]
+        
     return jsonify(datetime_columns)
 
 
