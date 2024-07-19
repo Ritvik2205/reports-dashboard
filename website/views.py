@@ -1,10 +1,11 @@
 from flask import Blueprint, render_template, jsonify, request, redirect, url_for, session
-from sqlalchemy import Table, MetaData, select, DateTime, Date
+from sqlalchemy import Table, MetaData, select, DateTime, Date, and_
 from . import db, mongo, table_names
 from .models import Leads
 from .auth import log_reports
 from bson import ObjectId
 from bson.json_util import dumps
+from datetime import datetime
 
 meta = MetaData()
 views = Blueprint('views', __name__)
@@ -74,7 +75,20 @@ def report():
     for active_table in active_table_names:
         table = Table(active_table, meta, autoload_with=db.engine)
 
-        stmt = select(table)  # Create a select statement for the table
+        
+
+        try:
+            datetime_column = table.c[active_datetime_column]
+            # Create a select statement for the table
+            stmt = select(table).where(
+                and_(
+                    datetime_column >= datetime.strptime(report_start_date, '%d-%m-%Y'),
+                    datetime_column <= datetime.strptime(report_end_date, '%d-%m-%Y')                
+                )
+            )
+        except KeyError:
+            stmt = select(table)
+        
         with db.engine.connect() as connection:
             result = connection.execute(stmt)
             table_rows += result.fetchall()
