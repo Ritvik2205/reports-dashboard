@@ -45,21 +45,23 @@ $(document).ready(function() {
         var reportEndDate = report.report_end_date;
         var dateTimeCreated = report.date_time_created;
 
-        $('.report-name-title').text(reportName);
-        $('#tab1 .report-name-input').val(reportName);
-        var $activeTableNames = $('#tab1 .card.active').map(function() {
-            return $(this).attr('table-name'); 
-        }).get();
-        for (var i in tableNames) {  
-            console.log(tableNames[i]);     
-            // $(`.card.${tableNames[i]}`).click();                  
-            $activeTableNames = onCardClick($(`#tab1 .card.${tableNames[i]}`), $activeTableNames);
-        }
         setTimeout(function() {
-            for (var i in listItems) {
-                $(`#tab1 .list .list-item.${listItems[i]}`).click();
+            $('.report-name-title').text(reportName);
+            $('#tab1 .report-name-input').val(reportName);
+            var $activeTableNames = $('#tab1 .card.active').map(function() {
+                return $(this).attr('table-name'); 
+            }).get();
+            for (var i in tableNames) {  
+                console.log(tableNames[i]);     
+                $(`.card.${tableNames[i]}`).click();
             }
-        }, 5);
+            setTimeout(function() {
+                for (var i in listItems) {
+                    $(`#tab1 .list .list-item.${listItems[i]}`).click();
+                }
+            }, 10);
+        },5);
+        
         
         
 
@@ -234,7 +236,7 @@ $(document).ready(function() {
     // -------------------------------------------------- Tab 2 --------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------
 
-    $('#tab1 .selectable').click(function() {
+    function selectablesClick() {
         // Displaying selected columns in tab2
         var activeColumns = $('#tab1 .list-item.active').map(function() {
             return $(this).text().trim(); 
@@ -331,8 +333,11 @@ $(document).ready(function() {
                 }
             });
         }
-        
-    })
+    }
+
+    $('#tab1 .selectable').click(function() {
+        selectablesClick();
+    });
 
     $('#tab2 .date-section').css('display', 'none');
     // Datetime list selection toggle 
@@ -398,6 +403,8 @@ $(document).ready(function() {
         var activeListItems = $('#tab1 .list-item.active').map(function() {
             return $(this).text().trim(); 
         }).get(); 
+        // distinct column names
+        activeListItems = [... new Set(activeListItems)];
 
         var activeTableNames = $('#tab1 .card.active .title').map(function() {
             return $(this).text().trim(); 
