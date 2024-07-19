@@ -43,7 +43,8 @@ $(document).ready(function() {
         var activeDatetimeColumn = report.active_datetime_column;
         var reportStartDate = report.report_start_date;
         var reportEndDate = report.report_end_date;
-        var dateTimeCreated = report.date_time_created;
+        const startDate = moment(reportStartDate, 'DD-MM-YYYY');
+        const endDate = moment(reportEndDate, 'DD-MM-YYYY');
 
         setTimeout(function() {
             $('.report-name-title').text(reportName);
@@ -59,6 +60,16 @@ $(document).ready(function() {
                 for (var i in listItems) {
                     $(`#tab1 .list .list-item.${listItems[i]}`).click();
                 }
+                setTimeout(function() {
+                    for (var i in sortingColumns) {
+                        $(`#tab2 .middle-panel .list .list-item.${sortingColumns[i]}`).click();
+                    }
+                    setTimeout(function() {
+                        $(`#tab2 .right-panel .list .list-item.${activeSearchColumn}`).click();
+                        $(`#tab2 .initial-section .list .list-item.${activeDatetimeColumn}`).click();
+                        cb(startDate, endDate);
+                    }, 300);
+                }, 150);
             }, 50);
         },5);
         
@@ -325,7 +336,7 @@ $(document).ready(function() {
                     $list.empty(); 
                     $.each(columns, function(index, column) {
                         const $listItem = $('<div></div>', {
-                            'class': 'list-item',
+                            'class': `list-item ${column}`,
                             'html': `${column}`
                         });
                         $list.append($listItem); 
@@ -343,11 +354,11 @@ $(document).ready(function() {
     $("#tab2 .initial-section .list").on('click', '.list-item', function() {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
-            $('#tab2 .date-section').css('display', 'none');
+            $('#tab2 .date-section').css('display', 'none').hide();
         } else {
             $("#tab2 .initial-section .list-item").removeClass('active');
             $(this).addClass('active');
-            $('#tab2 .date-section').css('display', '');
+            $('#tab2 .date-section').css('display', '').show();
         }
     })
 
