@@ -275,7 +275,7 @@ $(document).ready(function() {
         
 
         // in middle-panel
-        $('#tab2 .middle-panel .table-name').each(function() {
+        $('#tab2 .table-name').each(function() {
             var tableName = $(this).attr('table-name');
             if ($activeTableNames.includes(tableName)) {
                 $(this).parent().css('display', '').show();
@@ -285,44 +285,22 @@ $(document).ready(function() {
                     type: 'GET',
                     dataType: 'json',
                     success: function(columns) {
-                        const $middleList = $(`#tab2 .middle-panel .list.${tableName}`);                        
-                        $middleList.empty();             
+                        const $middleList = $(`#tab2 .middle-panel .list.${tableName}`);  
+                        const $rightList = $(`#tab2 .right-panel .list.${tableName}`);                          
+                        $middleList.empty();  
+                        $rightList.empty();           
                         $.each(columns, function(index, column) {
                             if (activeColumns.includes(column)) {
-                                const $listItem = $('<div></div>', {
+                                const $middleListItem = $('<div></div>', {
                                     'class': `list-item ${column}`,
                                     'html': `${column}`
                                 });
-                                $middleList.append($listItem);                             
-                            }                        
-                        });
-                    }
-                });
-            } else {
-                $(this).parent().css('display', 'none').hide();
-            }
-        });
-
-        // right panel
-        $('#tab2 .right-panel .table-name').each(function() {
-            var tableName = $(this).attr('table-name');
-            if ($activeTableNames.includes(tableName)) {
-                $(this).parent().css('display', '').show();
-
-                $.ajax({
-                    url: `/get-columns/${tableName}`,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(columns) {
-                        const $rightList = $(`#tab2 .right-panel .list.${tableName}`);                                     
-                        $rightList.empty();                 
-                        $.each(columns, function(index, column) {
-                            if (activeColumns.includes(column)) {
-                                const $listItem = $('<div></div>', {
+                                const $rightListItem = $('<div></div>', {
                                     'class': `list-item ${column}`,
                                     'html': `${column}`
-                                });                          
-                                $rightList.append($listItem);                            
+                                });
+                                $middleList.append($middleListItem);   
+                                $rightList.append($rightListItem);                             
                             }                        
                         });
                     }
