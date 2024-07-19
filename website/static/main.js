@@ -59,7 +59,7 @@ $(document).ready(function() {
                 for (var i in listItems) {
                     $(`#tab1 .list .list-item.${listItems[i]}`).click();
                 }
-            }, 10);
+            }, 50);
         },5);
         
         
@@ -338,8 +338,7 @@ $(document).ready(function() {
     $('#tab1 .selectable').click(function() {
         selectablesClick();
     });
-
-    $('#tab2 .date-section').css('display', 'none');
+    
     // Datetime list selection toggle 
     $("#tab2 .initial-section .list").on('click', '.list-item', function() {
         if ($(this).hasClass('active')) {
@@ -365,7 +364,7 @@ $(document).ready(function() {
     })
     
 
-    // Columns list selection toggle for tab2 middle list
+    // Columns list selection toggle for tab2 middle list (sorting)
     $("#tab2 .middle-panel .list").on('click', '.list-item', function() {
         $(this).toggleClass('active');
     });
@@ -375,27 +374,9 @@ $(document).ready(function() {
     $("#tab2 .selected-tables .table-name").addClass('active');
 
     // Selected tables list selection toggle - middle panel
-    $("#tab2 .middle-panel .selected-tables .table-name").click(function() {
-        if ($(this).hasClass('active')) {
-            $(this).removeClass('active');
-            
-        } else {
-            // $("#tab2 .middle-panel .selected-tables .table-name").removeClass('active');
-            $(this).addClass('active');            
-        }
+    $("#tab2 .selected-tables .table-name").click(function() {
+        $(this).toggleClass('active');
     })
-
-    // Selected tables list selection toggle - right panel
-    $("#tab2 .right-panel .selected-tables .table-name").click(function() {
-        if ($(this).hasClass('active')) {
-            $(this).removeClass('active');
-            
-        } else {
-            $("#tab2 .right-panel .selected-tables .table-name").removeClass('active');
-            $(this).addClass('active');            
-        }
-    })
-    
 
 
     // Generate Report button 

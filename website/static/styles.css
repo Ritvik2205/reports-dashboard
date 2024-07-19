@@ -663,7 +663,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* display: none; */
+    display: none;
 }
 
 .date-selector-subheading {
