@@ -68,8 +68,8 @@ $(document).ready(function() {
                         $(`#tab2 .right-panel .list .list-item.${activeSearchColumn}`).click();
                         $(`#tab2 .initial-section .list .list-item.${activeDatetimeColumn}`).click();
                         cb(startDate, endDate);
-                    }, 300);
-                }, 150);
+                    }, 600);
+                }, 300);
             }, 50);
         },5);
         
@@ -191,7 +191,23 @@ $(document).ready(function() {
                             'class': `list-item selectable ${column}`,
                             'html': `${column}`
                         });
-                        $list.append($listItem); 
+
+                        const $itemContainer = $('<div></div>', {
+                            'class': 'item-container',
+                            'html': '',
+                            'css': {'float': 'left'}
+                        });
+
+                        const $checkBoxContainer = $('<div></div>', {
+                            'class': 'checkbox-container',
+                            'html': 
+                            '<input type="checkbox" class="list-item-checkbox"><span class="checkbox-span"></span>',
+                            'css': {'float': 'left'}
+                        })
+
+                        $itemContainer.append($checkBoxContainer);
+                        $itemContainer.append($listItem);
+                        $list.append($itemContainer); 
                     });
                 }
             });
