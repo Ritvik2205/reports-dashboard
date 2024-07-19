@@ -34,6 +34,7 @@ $(document).ready(function() {
     if (storedReport) {
         console.log('exists');
         var report = JSON.parse(storedReport);
+
         var reportName = report.report_name;
         var tableNames = report.active_table_names;
         var listItems = report.active_list_items;
@@ -54,6 +55,13 @@ $(document).ready(function() {
             // $(`.card.${tableNames[i]}`).click();                  
             $activeTableNames = onCardClick($(`#tab1 .card.${tableNames[i]}`), $activeTableNames);
         }
+        setTimeout(function() {
+            for (var i in listItems) {
+                $(`#tab1 .list .list-item.${listItems[i]}`).click();
+            }
+        }, 5);
+        
+        
 
         // $('#reportrange span').html(report.reportStartDate + ' - ' + report.reportEndDate);
 
@@ -137,35 +145,9 @@ $(document).ready(function() {
     }, cb);
 
     cb(start, end);
-
-
-    // Default table active
-    // $(".card").first().addClass('active');
-    // const tableName = $(".card").first().attr('table-name');
-    // $.ajax({
-    //     url: `/get-columns/${tableName}`,
-    //     type: 'GET',
-    //     dataType: 'json',
-    //     success: function(columns) {
-    //         const $list = $(`#tab1 .middle-panel .list.${tableName}`);
-    //         $list.empty(); 
-    //         $.each(columns, function(index, column) {
-    //             const $listItem = $('<div></div>', {
-    //                 'class': `list-item selectable ${column}`,
-    //                 'html': `${column}`
-    //             });
-    //             $list.append($listItem); 
-    //         });
-    //     }
-    // });
-
-    
     
 
-    
-
-    // $(`#tab1 .middle-panel .table-container`).css('display', 'none');
-
+    // Clicking table names
     function onCardClick(card, $activeTableNames) {
         const tableName = card.attr('table-name');
         // $(".card").removeClass("active");
@@ -296,7 +278,7 @@ $(document).ready(function() {
         $('#tab2 .right-panel .table-name').each(function() {
             var tableName = $(this).attr('table-name');
             if ($activeTableNames.includes(tableName)) {
-                $(this).parent().css('display', '');
+                $(this).parent().css('display', '').show();
 
                 $.ajax({
                     url: `/get-columns/${tableName}`,
@@ -317,7 +299,7 @@ $(document).ready(function() {
                     }
                 });
             } else {
-                $(this).parent().css('display', 'none');
+                $(this).parent().css('display', 'none').hide();
             }
         });
 
