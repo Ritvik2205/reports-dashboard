@@ -133,6 +133,21 @@ $(document).ready(function() {
         }
     });
         
+    // Table card search
+    $('#tab1 .table-search-input').on('keyup', function() {
+        var nameValue = $(this).val().toUpperCase();
+        $('.card').each(function() {        
+            var tableName = $(this).text().trim().toUpperCase();        
+            var matchesName = (tableName.indexOf(nameValue) > -1 || nameValue === '');
+
+            if (matchesName) {
+                $(this).css('display', '').show();
+            }
+            else {
+                $(this).css('display', 'none').hide();
+            }
+        });
+    })
 
     // Date Range Picker
     var start = moment().subtract(29, 'days');

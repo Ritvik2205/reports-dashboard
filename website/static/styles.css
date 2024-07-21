@@ -391,8 +391,8 @@ body {
 }
 
 .report-name-input:focus {
-    outline: none;
-    box-shadow: 0 0 4px 2px var(--primary-color)
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 
 }
 
@@ -424,6 +424,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: scroll;
 }
 
 .subheading-left-panel {
@@ -434,6 +435,31 @@ body {
     display: flex;
     justify-content: center;
     color: var(--secondary-color );
+}
+
+.table-search {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.table-search-input {
+    position: sticky;
+    margin-bottom: 10px;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    font-weight: 500;
+    border: none;
+    height: 25px;
+    width: 50%;
+    padding: 5px;
+    padding-left: 15px;
+    border-radius: 50px;
+}
+
+.table-search-input:focus {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 2px;
 }
 
 .card {
