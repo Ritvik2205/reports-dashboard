@@ -484,22 +484,19 @@ $(document).ready(function() {
     let dateTimeColumns = {};
     $("#tab2 .initial-section .list").on('click', '.list-item', function() {
         var tableName = $(this).closest('.list').data('table-name');
-        if (!dateTimeColumns[tableName]) {
-            dateTimeColumns[tableName] = [];
-        }
+        dateTimeColumns = {};
+        dateTimeColumns[tableName] = [];         
         var columnName = $(this).text().trim();
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             $('#tab2 .date-section').css('display', 'none').hide();
-            dateTimeColumns[tableName] = dateTimeColumns[tableName].filter(column => column !== columnName);            
+            dateTimeColumns = {};            
         } else {
             $("#tab2 .initial-section .list-item").removeClass('active');
             $(this).addClass('active');
-            $('#tab2 .date-section').css('display', '').show();
-            if (!dateTimeColumns[tableName].includes(columnName)) {
-                dateTimeColumns[tableName].push(columnName);            
-            }
-        }              
+            $('#tab2 .date-section').css('display', '').show();            
+            dateTimeColumns[tableName].push(columnName);                        
+        }            
     })
 
     // Search list selection toggle 
@@ -517,7 +514,6 @@ $(document).ready(function() {
             $(this).addClass('active');
             searchColumns[tableName].push(columnName);                        
         }
-        console.log(searchColumns);
     })
     
 
