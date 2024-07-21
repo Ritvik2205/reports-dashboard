@@ -395,7 +395,7 @@ $(document).ready(function() {
     // -------------------------------------------------- Tab 2 --------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------
 
-    function selectablesClick(activeTableColumns) {
+    function selectablesClick() {
         // Displaying selected columns in tab2
         var $activeTableNames = $('#tab1 .card.active').map(function() {
             return $(this).attr('table-name'); 
@@ -479,16 +479,28 @@ $(document).ready(function() {
         selectablesClick(activeTableColumns);
     });
     
+    
     // Datetime list selection toggle 
+    let dateTimeColumns = {};
     $("#tab2 .initial-section .list").on('click', '.list-item', function() {
+        var tableName = $(this).closest('.list').data('table-name');
+        if (!dateTimeColumns[tableName]) {
+            dateTimeColumns[tableName] = [];
+        }
+        var columnName = $(this).text().trim();
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             $('#tab2 .date-section').css('display', 'none').hide();
+            dateTimeColumns[tableName] = dateTimeColumns[tableName].filter(column => column !== columnName);            
         } else {
             $("#tab2 .initial-section .list-item").removeClass('active');
             $(this).addClass('active');
             $('#tab2 .date-section').css('display', '').show();
-        }
+            if (!dateTimeColumns[tableName].includes(columnName)) {
+                dateTimeColumns[tableName].push(columnName);            
+            }
+        }  
+        console.log(dateTimeColumns);              
     })
 
     // Search list selection toggle 

@@ -92,7 +92,7 @@
             <div class="initial-section">
                 <div class="initial-subheading">Select Time Period For:</div>
                 {% for table_name in table_names %}
-                    <div class="list {{ table_name }}"></div>
+                    <div class="list {{ table_name }}" data-table-name="{{ table_name }}"></div>
                 {% endfor %}
 
                 <div class="date-section">
