@@ -518,8 +518,22 @@ $(document).ready(function() {
     
 
     // Columns list selection toggle for tab2 middle list (sorting)
+    let activeSortingColumns = {};
     $("#tab2 .middle-panel .list").on('click', '.list-item', function() {
         $(this).toggleClass('active');
+        var tableName = $(this).closest('.list').data('table-name');
+        if (!activeSortingColumns[tableName]) {
+            activeSortingColumns[tableName] = [];
+        }
+        var columnName = $(this).text().trim();
+        if ($(this).hasClass('active')) {
+            if (!activeSortingColumns[tableName].includes(columnName)) {
+                activeSortingColumns[tableName].push(columnName);            
+            }
+        } else {
+            activeSortingColumns[tableName] = activeSortingColumns[tableName].filter(column => column !== columnName);
+        }
+        console.log(activeSortingColumns);
     });
     
 
