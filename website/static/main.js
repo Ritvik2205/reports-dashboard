@@ -284,8 +284,8 @@ $(document).ready(function() {
         }
     });
 
+    // Select All Button
     $('#selectAllColumns').click(function() {        
-
         activeTableColumns = {};
 
         $('#tab1 .card.active').each(function() {
@@ -317,10 +317,6 @@ $(document).ready(function() {
 
     function selectablesClick(activeTableColumns) {
         // Displaying selected columns in tab2
-        // var activeColumns = $('#tab1 .list-item.active').map(function() {
-        //     return $(this).text().trim(); 
-        // }).get(); 
-
         var $activeTableNames = $('#tab1 .card.active').map(function() {
             return $(this).attr('table-name'); 
         }).get();

@@ -624,6 +624,7 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
+    margin: 3px;
 }
 
 .list .checkbox-container {
@@ -663,6 +664,11 @@ body {
     border: 2px solid var(--primary-color);
 }
 
+.list .item-container:has(input:checked) {
+    border: 2px dotted red;
+    border-radius: 10px;
+}
+
 .list-item {
     display: flex;
     justify-content: left;
@@ -695,9 +701,18 @@ body {
     width: 25%;
     background-color: transparent;
     box-shadow: none;
+    padding: 0;
+}
+
+.preview {
+    display: flex;
+    flex-direction: column;
     padding: 15px;
+    background-color: transparent;
     border: 5px solid var(--secondary-color);
     color: var(--secondary-color);
+    border-radius: 10px;
+    height: 45%;
 }
 
 
@@ -745,6 +760,24 @@ body {
 .preview-body {
     text-align: left;
     margin-bottom: 7px;
+}
+
+.table-relations {
+    height: 55%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.relations-subheading {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 20px;
 }
 
 /* ------------------------------------------------- Tab2  ------------------------------------------------- */
