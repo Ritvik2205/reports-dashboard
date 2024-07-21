@@ -499,20 +499,25 @@ $(document).ready(function() {
             if (!dateTimeColumns[tableName].includes(columnName)) {
                 dateTimeColumns[tableName].push(columnName);            
             }
-        }  
-        console.log(dateTimeColumns);              
+        }              
     })
 
     // Search list selection toggle 
+    let searchColumns = {};
     $("#tab2 .right-panel .list").on('click', '.list-item', function() {
+        var tableName = $(this).closest('.list').data('table-name');
+        searchColumns = {};
+        searchColumns[tableName] = [];
+        var columnName = $(this).text().trim();
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
-            
+            searchColumns = {};  
         } else {
             $("#tab2 .right-panel .list-item").removeClass('active');
             $(this).addClass('active');
-            
+            searchColumns[tableName].push(columnName);                        
         }
+        console.log(searchColumns);
     })
     
 

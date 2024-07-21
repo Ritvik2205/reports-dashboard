@@ -126,7 +126,7 @@
                     {% for table_name in table_names  %}
                         <div class="table-container" id="{{ loop.index }}">
                             <label for="{{ loop.index }}" class="table-name" table-name="{{ table_name }}">{{ table_name }}</label>
-                            <div class="list {{ table_name }}"></div>
+                            <div class="list {{ table_name }}" data-table-name="{{ table_name }}"></div>
                         </div>
                     {% endfor %}
                 </div>
