@@ -76,14 +76,17 @@
     </div>
 </div>
 
+<!---------------------------------------------------- Tab2 ---------------------------------------------------->
+
 <div class="tabcontent" id="tab2">
     <div class="container">
         <div class="left-panel">
             <div class="initial-section">
                 <div class="initial-subheading">Select Time Period For:</div>
-                <div class="list">
+                {% for table_name in table_names %}
+                    <div class="list {{ table_name }}"></div>
+                {% endfor %}
 
-                </div>
                 <div class="date-section">
                     <div class="date-selector-subheading">Choose Report Period</div>
                 <div id="reportrange">

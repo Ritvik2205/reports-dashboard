@@ -329,7 +329,17 @@ $(document).ready(function() {
             return $(this).text().trim(); 
         }).get();
 
-        // displaying columns with Date or Datetime
+        $('#tab1 .card').each(function() {
+            var tableName = $(this).attr('table-name');
+            const $dateList = $(`#tab2 .initial-section .list.${tableName}`);
+            if (!activeTableNames.includes(tableName)) {
+                $dateList.css('display', 'none').hide();
+            } else {
+                // $dateList.css('display', '').show();
+            }
+        })
+
+        // displaying columns with Date or Datetime        
         if (activeTableNames.length != 0) {
             $.ajax({
                 url: `/datetime-columns`,
@@ -340,16 +350,21 @@ $(document).ready(function() {
                     activeTableNames: activeTableNames
                 }),
                 dataType: 'json',
-                success: function(columns) {                
-                    const $list = $('#tab2 .initial-section .list');
-                    $list.empty(); 
-                    $.each(columns, function(index, column) {
-                        const $listItem = $('<div></div>', {
-                            'class': `list-item ${column}`,
-                            'html': `${column}`
-                        });
-                        $list.append($listItem); 
-                    });
+                success: function(columnsDict) {    
+                    activeTableNames.forEach(activeTable => {
+                        if (columnsDict[activeTable]) {
+                            const $list = $(`#tab2 .initial-section .list.${activeTable}`);
+                            $list.css('display', '').show();
+                            $list.empty(); 
+                            $.each(columnsDict[activeTable], function(index, column) {
+                                const $listItem = $('<div></div>', {
+                                    'class': `list-item ${column}`,
+                                    'html': `${column}`
+                                });
+                                $list.append($listItem); 
+                            });
+                        }                        
+                    })            
                 }
             });
         }

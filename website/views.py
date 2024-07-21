@@ -148,11 +148,11 @@ def datetime_columns():
     active_table_columns =  request.get_json()['activeTableColumns']
     active_table_names = request.get_json()['activeTableNames']
     
-    datetime_columns = []
+    datetime_columns = {}
     for active_table in active_table_names:
         table = Table(active_table, meta, autoload_with=db.engine)
 
-        datetime_columns += [column.name for column in table.columns if column.name in active_table_columns[active_table] and (isinstance(column.type, Date) or isinstance(column.type, DateTime))]
+        datetime_columns[active_table] = [column.name for column in table.columns if column.name in active_table_columns[active_table] and (isinstance(column.type, Date) or isinstance(column.type, DateTime))]
     # datetime_columns = []
     # for column in table.columns:
     #     if column in active_list_items:
