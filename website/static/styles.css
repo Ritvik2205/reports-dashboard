@@ -527,8 +527,35 @@ body {
 
 
 .middle-panel {
+    position: relative;
     width: 40%;
     overflow: scroll;
+}
+
+.foreign-key-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25%;
+    padding: 5px;
+    margin: 7px 7px 5px 0;
+    font-size: 14px;
+    letter-spacing: 1px;
+    border: 2px solid var(--primary-color);
+    border-radius: 7px;
+    text-align: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.foreign-key-btn:hover,
+.foreign-key-btn.active {
+    background-color: var(--primary-hover-color);
+    color: var(--secondary-color);    
+}
+
+.foreign-key-btn.active {
+    background-color: var(--primary-color);
 }
 
 .middle-panel-heading {

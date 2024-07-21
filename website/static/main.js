@@ -201,7 +201,10 @@ $(document).ready(function() {
                             'class': 'checkbox-container',
                             'html': 
                             '<input type="checkbox" class="list-item-checkbox"><span class="checkbox-span"></span>',
-                            'css': {'float': 'left'}
+                            'css': {
+                                'float': 'left',
+                                'display': 'none'
+                            }
                         })
 
                         $itemContainer.append($checkBoxContainer);
@@ -235,6 +238,17 @@ $(document).ready(function() {
     $(".card").on('click', function() {
         activeTableColumns = onCardClick($(this), activeTableColumns);
     });
+
+    // Foreign key button toggle view
+    $('.foreign-key-btn').on('click', function() {
+        $(this).toggleClass('active');
+        if ($(this).hasClass('active')) {
+            $('.checkbox-container').css('display', '');
+        } else {
+            $('.checkbox-container').css('display', 'none');
+        }
+        
+    })
 
     
 
