@@ -305,8 +305,12 @@ $(document).ready(function() {
             'class': `table-relation-columns`,
             'html': `${selectedColumns[0]} - ${selectedColumns[1]}`
         });
-        relationHTML.append(relationTables);        
-        relationHTML.append(relationcolumns);  
+
+        const removeButton = $('<div></div>', {
+            'class': 'remove-relation-btn',
+            'html': '<img src="../static/assets/cross.svg" alt="cross">'
+        })
+        relationHTML.append(relationTables, relationcolumns, removeButton);                
 
         $('#tab1 .right-panel .relations-list').append(relationHTML);
     }

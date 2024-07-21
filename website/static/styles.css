@@ -790,11 +790,11 @@ body {
 }
 
 .table-relation {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
     align-items: center;
     margin: 5px;
+    padding-left: 10px;
     padding-bottom: 10px;
     width: 100%;
     border-bottom: 2px solid  var(--primary-hover-color);
@@ -807,6 +807,22 @@ body {
 .table-relation-columns {
     font-size: 17px;
     font-weight: 500;
+}
+
+.remove-relation-btn {
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-column-start: 2;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.remove-relation-btn img {
+    height: 60%;
+    width: 60%;
+    filter: invert(88%) sepia(7%) saturate(291%) hue-rotate(22deg) brightness(92%) contrast(83%);
 }
 
 /* ------------------------------------------------- Tab2  ------------------------------------------------- */
