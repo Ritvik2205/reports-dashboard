@@ -817,12 +817,18 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .remove-relation-btn img {
     height: 60%;
     width: 60%;
     filter: invert(88%) sepia(7%) saturate(291%) hue-rotate(22deg) brightness(92%) contrast(83%);
+}
+
+.remove-relation-btn:hover {
+    transform: scale(1.1);
 }
 
 /* ------------------------------------------------- Tab2  ------------------------------------------------- */

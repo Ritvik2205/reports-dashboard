@@ -264,6 +264,7 @@ $(document).ready(function() {
         }
     })
 
+    // Foreign key relations
     let tableRelations = [];
     let selectedColumns = [];
     let selectedTables = [];
@@ -290,6 +291,7 @@ $(document).ready(function() {
         }
     })
 
+    // function for display FK relations
     function displayForeignKeyRelation(selectedTables, selectedColumns) {
         const relationHTML = $('<div></div>', {
             'class': `table-relation`,
@@ -315,7 +317,7 @@ $(document).ready(function() {
         $('#tab1 .right-panel .relations-list').append(relationHTML);
     }
         
-
+    // stroing FK relations in JS object
     function addForeignKeyRelation(table1, table2, column1, column2) {
         const relation = {
             table1: table1,
@@ -325,6 +327,26 @@ $(document).ready(function() {
         }
         tableRelations.push(relation);
     }
+
+    // Removing FK relations
+    $('#tab1 .right-panel .relations-list').on('click', '.remove-relation-btn', function() {
+        const $relation = $(this).closest('.table-relation');
+        const relationTables = $relation.find('.table-relation-tables').text().split(' - ');
+        const relationColumns = $relation.find('.table-relation-columns').text().split(' - ');
+        const table1 = relationTables[0];
+        const table2 = relationTables[1];
+        const column1 = relationColumns[0];
+        const column2 = relationColumns[1];
+
+        tableRelations = tableRelations.filter(relation => {
+            !(relation.table1 === table1 && 
+                relation.table2 === table2 && 
+                relation.column1 === column1 && 
+                relation.column2 === column2);
+        });
+
+        $relation.remove();
+    });
 
     // Columns list selection toggle for tab1
     $("#tab1 .middle-panel .list").on('click', '.list-item', function() {
@@ -359,7 +381,6 @@ $(document).ready(function() {
                 $(this).addClass('active');
             })
         })
-        console.log(activeTableColumns);
     });
 
     // View Type Selection
