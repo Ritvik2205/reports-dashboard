@@ -262,10 +262,65 @@ $(document).ready(function() {
         } else {
             $('.checkbox-container').css('display', 'none');
         }
-        
     })
 
-    
+    let tableRelations = [];
+    let selectedColumns = [];
+    let selectedTables = [];
+
+    $('#tab1 .middle-panel .list').on('click', '.checkbox-container input' ,function() {
+        $(this).toggleClass('active');
+        var columnName = $(this).closest('.item-container').find('.list-item').text().trim();
+        var tableName = $(this).closest('.list').data('table-name');
+        if ($(this).hasClass('active')) {            
+            selectedColumns.push(columnName);
+            selectedTables.push(tableName);
+        } else {
+            selectedColumns = selectedColumns.filter(col => col !== columnName);
+            selectedTables = selectedTables.filter(table => table !== tableName);
+        }   
+        
+        if (selectedColumns.length == 2) {
+            addForeignKeyRelation(selectedTables[0], selectedTables[1], selectedColumns[0], selectedColumns[1]);
+            displayForeignKeyRelation(selectedTables, selectedColumns);
+            selectedColumns = [];
+            selectedTables = [];
+            $('#tab1 .checkbox-container input').prop('checked', false);            
+            $('#tab1 .checkbox-container input').removeClass('active');                        
+        }
+    })
+
+    function displayForeignKeyRelation(selectedTables, selectedColumns) {
+        const relationHTML = $('<div></div>', {
+            'class': `table-relation`,
+            'html': ''
+        });   
+        
+        const relationTables = $('<div></div>', {
+            'class': `table-relation-tables`,
+            'html': `${selectedTables[0]} - ${selectedTables[1]}`
+        });
+
+        const relationcolumns = $('<div></div>', {
+            'class': `table-relation-columns`,
+            'html': `${selectedColumns[0]} - ${selectedColumns[1]}`
+        });
+        relationHTML.append(relationTables);        
+        relationHTML.append(relationcolumns);  
+
+        $('#tab1 .right-panel .relations-list').append(relationHTML);
+    }
+        
+
+    function addForeignKeyRelation(table1, table2, column1, column2) {
+        const relation = {
+            table1: table1,
+            table2: table2,
+            column1: column1,
+            column2: column2
+        }
+        tableRelations.push(relation);
+    }
 
     // Columns list selection toggle for tab1
     $("#tab1 .middle-panel .list").on('click', '.list-item', function() {

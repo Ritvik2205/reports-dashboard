@@ -639,6 +639,7 @@ body {
 .list .item-container input {
     opacity: 0;
     z-index: 2;
+    cursor: pointer;
 }
 
 .list .checkbox-span {    
@@ -650,6 +651,7 @@ body {
     background-color: var(--primary-color);
     width: 20px;
     height: 20px;
+    cursor: pointer;
     /* transition: all .2s ease-in; */
 }
 
@@ -665,7 +667,7 @@ body {
 }
 
 .list .item-container:has(input:checked) {
-    border: 2px dotted red;
+    border: 2px dotted var(--primary-color);
     border-radius: 10px;
 }
 
@@ -778,6 +780,33 @@ body {
     font-size: 26px;
     font-weight: 700;
     margin-bottom: 20px;
+}
+
+.relations-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+}
+
+.table-relation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    padding-bottom: 10px;
+    width: 100%;
+    border-bottom: 2px solid  var(--primary-hover-color);
+}
+
+.table-relation-tables {
+    font-size: 22px;
+}
+
+.table-relation-columns {
+    font-size: 17px;
+    font-weight: 500;
 }
 
 /* ------------------------------------------------- Tab2  ------------------------------------------------- */
