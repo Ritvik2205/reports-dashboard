@@ -40,7 +40,7 @@ $(document).ready(function() {
         var listItems = report.active_list_items;
         var sortingColumns = report.columns_for_sorting;
         var activeSearchColumn = report.active_search_column;
-        var activeDatetimeColumn = report.active_datetime_column;
+        var activeDateTimeColumn = report.active_datetime_column;
         var reportStartDate = report.report_start_date;
         var reportEndDate = report.report_end_date;
         const startDate = moment(reportStartDate, 'DD-MM-YYYY');
@@ -66,7 +66,7 @@ $(document).ready(function() {
                     }
                     setTimeout(function() {
                         $(`#tab2 .right-panel .list .list-item.${activeSearchColumn}`).click();
-                        $(`#tab2 .initial-section .list .list-item.${activeDatetimeColumn}`).click();
+                        $(`#tab2 .initial-section .list .list-item.${activeDateTimeColumn}`).click();
                         cb(startDate, endDate);
                     }, 600);
                 }, 300);
@@ -481,38 +481,38 @@ $(document).ready(function() {
     
     
     // Datetime list selection toggle 
-    let dateTimeColumns = {};
+    let activeDateTimeColumns = {};
     $("#tab2 .initial-section .list").on('click', '.list-item', function() {
         var tableName = $(this).closest('.list').data('table-name');
-        dateTimeColumns = {};
-        dateTimeColumns[tableName] = [];         
+        activeDateTimeColumns = {};
+        activeDateTimeColumns[tableName] = [];         
         var columnName = $(this).text().trim();
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             $('#tab2 .date-section').css('display', 'none').hide();
-            dateTimeColumns = {};            
+            activeDateTimeColumns = {};            
         } else {
             $("#tab2 .initial-section .list-item").removeClass('active');
             $(this).addClass('active');
             $('#tab2 .date-section').css('display', '').show();            
-            dateTimeColumns[tableName].push(columnName);                        
+            activeDateTimeColumns[tableName].push(columnName);                        
         }            
     })
 
     // Search list selection toggle 
-    let searchColumns = {};
+    let activeSearchColumns = {};
     $("#tab2 .right-panel .list").on('click', '.list-item', function() {
         var tableName = $(this).closest('.list').data('table-name');
-        searchColumns = {};
-        searchColumns[tableName] = [];
+        activeSearchColumns = {};
+        activeSearchColumns[tableName] = [];
         var columnName = $(this).text().trim();
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
-            searchColumns = {};  
+            activeSearchColumns = {};  
         } else {
             $("#tab2 .right-panel .list-item").removeClass('active');
             $(this).addClass('active');
-            searchColumns[tableName].push(columnName);                        
+            activeSearchColumns[tableName].push(columnName);                        
         }
     })
     
@@ -550,9 +550,7 @@ $(document).ready(function() {
     $('#tab2 .generate-report-btn').click(function() {
         var activeListItems = $('#tab1 .list-item.active').map(function() {
             return $(this).text().trim(); 
-        }).get(); 
-        // distinct column names
-        // activeListItems = [... new Set(activeListItems)];
+        }).get();
 
         var activeTableNames = $('#tab1 .card.active .title').map(function() {
             return $(this).text().trim(); 
@@ -576,14 +574,14 @@ $(document).ready(function() {
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
-                activeListItems: activeListItems,
+                activeTableColumns: activeTableColumns,
                 activeTableNames: activeTableNames,
                 reportName: reportName,
                 reportStartDate: reportStartDate,
                 reportEndDate: reportEndDate,
-                columnsForSorting: columnsForSorting,
-                activeDateTimeColumn: activeDateTimeColumn,
-                activeSearchColumn: activeSearchColumn
+                activeSortingColumns: activeSortingColumns,
+                activeDateTimeColumns: activeDateTimeColumns,
+                activeSearchColumns: activeSearchColumns,                                
             }),
             success: function(response) {
                 console.log('Success:');
