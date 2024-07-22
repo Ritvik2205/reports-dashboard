@@ -820,6 +820,27 @@ $(document).ready(function() {
         a.remove();
     }
 
+    // Popup for filters
+    $('.filters').click(function() {
+        $('#filters-popup').css('display', 'block');
+    })
+
+    // Popup column search
+    $('.popup-columns-search').on('keyup', function() {
+        var nameValue = $(this).val().toUpperCase();
+        $('.popup-column-item').each(function() {        
+            var columnName = $(this).text().trim().toUpperCase();        
+            var matchesName = (columnName.indexOf(nameValue) > -1 || nameValue === '');
+
+            if (matchesName) {
+                $(this).css('display', '').show();
+            }
+            else {
+                $(this).css('display', 'none').hide();
+            }
+        });
+    })
+
 });
 
 

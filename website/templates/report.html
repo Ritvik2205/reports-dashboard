@@ -65,5 +65,17 @@
     </div>
     <div class="pagination-container"></div>
     
+    <div id="filters-popup" style="display: none;">
+        <div class="popup-content">
+            <span class="close"><img src="../static/assets/cross.svg" alt="cross"></span>
+            <div class="filter-popup-heading">Choose Filters</div>
+            <input type="text" class="popup-columns-search" placeholder="search columns">
+            <ul class="popup-columns-list">
+                {% for column in column_names %}
+                    <li class="popup-column-item" data-column-name="{{ column.split('.')[1] }}">{{ column }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
 {% endblock %}
