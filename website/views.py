@@ -55,7 +55,6 @@ def get_columns(table_name):
     if table_name != "undefined":    
         table = Table(table_name, meta, autoload_with=db.engine)
         columns = [column.name for column in table.columns]
-        # print({'column_names': column_names})
         return jsonify(columns)
     else:
         return jsonify([])
@@ -73,6 +72,9 @@ def report():
     active_search_columns = session.get('active_search_columns')
     table_relations = session.get('table_relations') #
 
+    table_rows = []
+    column_names = []
+
     if active_datetime_columns == "":
             report_start_date = ""
             report_end_date = ""
@@ -81,69 +83,91 @@ def report():
     join_columns = []
     used_tables = set()
 
-    for relation in table_relations:
-        table1 = Table(relation['table1'], meta, autoload_with=db.engine)
-        table2 = Table(relation['table2'], meta, autoload_with=db.engine)
-        used_tables.add(table1)
-        used_tables.add(table2)
-        
-        chain1 = find_chain(join_chains, relation['table1'])
-        chain2 = find_chain(join_chains, relation['table2'])
+    if table_relations != []:
+        for relation in table_relations:
+            table1 = Table(relation['table1'], meta, autoload_with=db.engine)
+            table2 = Table(relation['table2'], meta, autoload_with=db.engine)
+            used_tables.add(table1)
+            used_tables.add(table2)
+            
+            chain1 = find_chain(join_chains, relation['table1'])
+            chain2 = find_chain(join_chains, relation['table2'])
 
-        if chain1 and chain2 and chain1 != chain2:
-            new_chain = join(chain1, chain2, chain1.c[relation['column1']] == chain2.c[relation['column2']])            
-            join_chains.remove(chain1)
-            join_chains.remove(chain2)
-            join_chains.append(new_chain)
-        elif chain1 and not chain2:
-            new_chain = join(chain1, table2, chain1.c[relation['column1']] == table2.c[relation['column2']])
-            join_chains.remove(chain1)
-            join_chains.append(new_chain)
-        elif chain2 and not chain1:
-            new_chain = join(table1, chain2, table1.c[relation['column1']] == chain2.c[relation['column2']])
-            join_chains.remove(chain2)
-            join_chains.append(new_chain)
-        else:
-            new_chain = join(table1, table2, table1.c[relation['column1']] == table2.c[relation['column2']])
-            join_chains.append(new_chain)
-        join_columns.append(f"{relation['table2']}.{relation['column2']}")
+            if chain1 and chain2 and chain1 != chain2:
+                new_chain = join(chain1, chain2, chain1.c[relation['column1']] == chain2.c[relation['column2']])            
+                join_chains.remove(chain1)
+                join_chains.remove(chain2)
+                join_chains.append(new_chain)
+            elif chain1 and not chain2:
+                new_chain = join(chain1, table2, chain1.c[relation['column1']] == table2.c[relation['column2']])
+                join_chains.remove(chain1)
+                join_chains.append(new_chain)
+            elif chain2 and not chain1:
+                new_chain = join(table1, chain2, table1.c[relation['column1']] == chain2.c[relation['column2']])
+                join_chains.remove(chain2)
+                join_chains.append(new_chain)
+            else:
+                new_chain = join(table1, table2, table1.c[relation['column1']] == table2.c[relation['column2']])
+                join_chains.append(new_chain)
+            join_columns.append(f"{relation['table2']}.{relation['column2']}")
     
-    table_rows = []
-    column_names = []
+   
 
-    for chain in join_chains:
-        tables_in_chain = (get_joined_tables(chain))
+        for chain in join_chains:
+            tables_in_chain = (get_joined_tables(chain))
 
-        columns_to_select = []
-        for table_name in tables_in_chain:
-            if table_name in active_table_columns:
-                table = Table(table_name, meta, autoload_with=db.engine)
-                for column_name in active_table_columns[table_name]:
-                    columns_to_select.append(table.c[column_name])
-                    unique_column_name = f"{table_name}.{column_name}"
-                    if unique_column_name not in join_columns:
-                        column_names.append(unique_column_name)
-
-        if columns_to_select:
-            stmt = select(*columns_to_select).select_from(chain)
-            print(stmt)
-
+            columns_to_select = []
             for table_name in tables_in_chain:
-                if table_name in active_datetime_columns:
+                if table_name in active_table_columns:
                     table = Table(table_name, meta, autoload_with=db.engine)
-                    datetime_column = table.c[active_datetime_columns[table_name]]
-                    if report_start_date != "" and report_end_date != "":
-                        stmt = stmt.where(
-                            and_(
-                                datetime_column >= datetime.strptime(report_start_date, '%d-%m-%Y'),
-                                datetime_column <= datetime.strptime(report_end_date, '%d-%m-%Y')                
+                    for column_name in active_table_columns[table_name]:
+                        columns_to_select.append(table.c[column_name])
+                        unique_column_name = f"{table_name}.{column_name}"
+                        if unique_column_name not in join_columns:
+                            column_names.append(unique_column_name)
+
+            if columns_to_select:
+                stmt = select(*columns_to_select).select_from(chain)
+
+                for table_name in tables_in_chain:
+                    if table_name in active_datetime_columns:
+                        table = Table(table_name, meta, autoload_with=db.engine)
+                        datetime_column = table.c[active_datetime_columns[table_name]]
+                        if report_start_date != "" and report_end_date != "":
+                            stmt = stmt.where(
+                                and_(
+                                    datetime_column >= datetime.strptime(report_start_date, '%d-%m-%Y'),
+                                    datetime_column <= datetime.strptime(report_end_date, '%d-%m-%Y')                
+                                )
                             )
-                        )
-                
+                    
+                with db.engine.connect() as connection:
+                    result = connection.execute(stmt)
+                    table_rows += result.fetchall()
+
+    else:
+        table_name = active_table_names[0]
+        table = Table(table_name, meta, autoload_with=db.engine)
+        columns_to_select = []
+        for column_name in active_table_columns[table_name]:
+            columns_to_select.append(table.c[column_name])
+            column_names.append(f"{table_name}.{column_name}")
+        
+        if columns_to_select:
+            stmt = select(*columns_to_select).select_from(table)
+            if table_name in active_datetime_columns:
+                datetime_column = table.c[active_datetime_columns[table_name]]
+                stmt = select(*columns_to_select).where(
+                    and_(
+                        datetime_column >= datetime.strptime(report_start_date, '%d-%m-%Y'),
+                        datetime_column <= datetime.strptime(report_end_date, '%d-%m-%Y')                
+                    )
+                )
             with db.engine.connect() as connection:
                 result = connection.execute(stmt)
                 table_rows += result.fetchall()
-    print(table_rows)
+
+   
 
     if active_search_columns:    
         active_search_column = list(active_search_columns.values())[0][0]        
