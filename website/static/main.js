@@ -869,23 +869,34 @@ $(document).ready(function() {
 
         $('.filter-input').css('display', '');
         $('.filter-input-submit').css('display', '');
+        $('.clause-selection').css('display', '');
+        $('#andClause').addClass('active'); // default clause
+    })
+
+    $('.clause-btn').click(function() {
+        $('.clause-btn').removeClass('active');
+        $(this).addClass('active');
     })
 
     $('.filter-input-submit').click(function() {
         var selectedColumnName = $('.selected-column').text();
         var selectedFilter = $('.filter-display .filter-options li.active').text();
         var selectedValue = $('.filter-input').val();
+        var selectedClause = $('.clause-btn.active').text();
 
         const $appliedFilters = $('.applied-filters-list');
         const $filterItem = $('<div></div>', {
             'class': 'filter-item',
-            'html': `${selectedColumnName} : ${selectedFilter} : ${selectedValue}`
+            'html': `${selectedColumnName} : ${selectedFilter} : ${selectedValue} : ${selectedClause}`
         });
         $appliedFilters.append($filterItem);
 
         $('.filter-input').val('');
         $('.filter-input').css('display', 'none');
-        $('.filter-input-submit').css('display', 'none');
+        $('.filter-input-submit').css('display', 'none');   
+        $('.clause-selection').css('display', 'none');
+        $('.clause-btn').removeClass('active');
+        $('#andClause').addClass('active');
     })
 
     $('.popup-apply-btn').click(function() {
@@ -899,42 +910,61 @@ $(document).ready(function() {
 
 
 function applyFilters() {
-    
-    $('.applied-filters-list .filter-item').each(function() {
+    let allMatchingRows = new Set();
+    let currentMatchingRows = new Set();
+
+    $('.applied-filters-list .filter-item').each(function(index) {
         var filterText = $(this).text();
         var parts = filterText.split(" : ");
         var columnName = parts[0].replace('.', '-');
         var filterType = parts[1].toLowerCase();
         var filterValue = parts[2];
+        var filterClause = parts[3].toLowerCase();
+
         $('.leads-table tbody tr').each(function() {
             var row = $(this);
             var matchesCustomFilters = true;
             var cellValue = row.find(`td.${columnName}`).text().toUpperCase();            
-            if (filterType === "contains") {
-                if (cellValue.indexOf(filterValue.toUpperCase()) === -1) {
-                    matchesCustomFilters = false;
-                }                
-            } else if (filterType === "does not contain") {
-                if (cellValue.indexOf(filterValue.toUpperCase()) > -1) {
-                    matchesCustomFilters = false;
-                }
-            } else if (filterType === "equals") {
-                if (cellValue !== filterValue.toUpperCase()) {
-                    matchesCustomFilters = false;
-                }
-            } else if (filterType === "does not equal") {
-                if (cellValue === filterValue.toUpperCase()) {
-                    matchesCustomFilters = false;
-                }
-            } 
+            switch (filterType) {
+                case "contains":
+                    matchesCustomFilters = cellValue.includes(filterValue.toUpperCase());
+                    break;
+                case "does not contain":
+                    matchesCustomFilters = !cellValue.includes(filterValue.toUpperCase());
+                    break;
+                case "equals":
+                    matchesCustomFilters = cellValue === filterValue.toUpperCase();
+                    break;
+                case "does not equal":
+                    matchesCustomFilters = cellValue !== filterValue.toUpperCase();
+                    break;
+            }
+
             if (matchesCustomFilters) {
-                $(this).css('display', '').addClass('visible').show();
-            } else {
-                $(this).css('display', 'none').removeClass('visible').hide();
+               currentMatchingRows.add(row[0]); // row[0] returns DOM element
             }         
         });
+
+        if (index === 0 || filterClause === 'or') {
+            allMatchingRows = new Set([...allMatchingRows, ...currentMatchingRows]);
+        } else if (filterClause === 'and') {
+            if (index === 1) {
+                allMatchingRows = new Set([...currentMatchingRows]);
+            } else {
+                allMatchingRows = new Set([...allMatchingRows].filter(x => currentMatchingRows.has(x)));            
+            }
+        }
+
+        currentMatchingRows.clear();
     });
-    // displayTableRows(currentPage, rowsPerPage);
+    
+    $('.leads-table tbody tr').each(function() {
+        if (allMatchingRows.has(this)) {
+            $(this).css('display', '').addClass('visible').show();
+        } else {
+            $(this).css('display', 'none').removeClass('visible').hide();
+        }
+    });
 }
 
 function filterTableByLeadStatus() {
