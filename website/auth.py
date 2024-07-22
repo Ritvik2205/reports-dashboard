@@ -7,7 +7,7 @@ from datetime import datetime
 
 auth = Blueprint('auth', __name__)
 
-def log_reports(report_name, active_table_names, active_table_columns, active_sorting_columns, active_search_columns, active_datetime_columns, report_start_date, report_end_date):
+def log_reports(report_name, active_table_names, active_table_columns, active_sorting_columns, active_search_columns, active_datetime_columns, report_start_date, report_end_date, table_relations):
     report = {
         "report_name" : report_name,
         "active_table_names" : active_table_names,
@@ -17,6 +17,7 @@ def log_reports(report_name, active_table_names, active_table_columns, active_so
         "active_datetime_columns" : active_datetime_columns,
         "report_start_date" : report_start_date,
         "report_end_date" : report_end_date,
+        "table_relations" : table_relations,
         "date_time_created": datetime.now()
     }
     mongo.db.reports.insert_one(report)
