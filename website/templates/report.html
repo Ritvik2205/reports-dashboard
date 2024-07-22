@@ -12,16 +12,22 @@
 
     <div class="filter-container">
         <div class="container-1">
-            <div class="name-search-div">
-            <input type="text" name="name-search" id="name-search" placeholder="{{ ' '.join(active_search_column.split('_')) }}">
+            <div class="name-search-div container-1-item">
+            <input type="text" name="name-search" class="item-div" id="name-search" placeholder="{{ ' '.join(active_search_column.split('_')) }}">
             </div>
-            <div class="lead-status-select-div">
-                <select class="lead-status-select" >
+            <div class="lead-status-select-div container-1-item">
+                <select class="lead-status-select item-div" >
                     <option value="all">Select Lead Status</option>
                     {% for lead_status in lead_status_unique_values %}
                         <option value="{{ lead_status }}">{{ lead_status }}</option>
                     {% endfor %}
                 </select>
+            </div>
+            <div class="filters container-1-item">
+                <div class="item-div filter-item">
+                    Choose Filters
+                    <div class="filter-svg"><img src="../static/assets/burger.svg" alt="burger"></div>
+                </div>                
             </div>
         </div>
         <div class="container-2">
