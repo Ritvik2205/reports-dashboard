@@ -1507,7 +1507,7 @@ body {
 .popup-columns-list {
     display: flex;
     flex-direction: column;
-    height: 90%;
+    height: 100%;
     list-style: none;
     overflow: scroll;
     width: 50%;
@@ -1516,6 +1516,7 @@ body {
     border: 3px solid var(--secondary-color);
     border-radius: 16px;
     margin-right: 5px;
+    margin-bottom: 20px;
 }
 
 .popup-columns-list .popup-column-item {
@@ -1531,6 +1532,7 @@ body {
     color: var(--primary-color);
     cursor: pointer;
     font-size: 18px;
+    font-weight: 600;
     transition: all 0.2s ease;
 }
 
@@ -1549,9 +1551,99 @@ body {
 .filter-display {
     background-color: var(--secondary-color);
     color: var(--text-color);
-    height: 30%;
+    height: 40%;
     border-radius: 16px;
     padding: 5px;
+}
+
+.selected-column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 5px;
+    background-color: var(--primary-color);    
+    border-radius: 10px;
+    color: var(--secondary-color);
+    font-size: 18px;
+    font-weight: 600;    
+}
+
+.filter-options {
+    list-style: none;
+    padding-left: 30px;
+}
+
+.filter-options li {
+    font-size: 17px;
+    margin: 5px;
+    padding: 2px;
+    cursor: pointer;
+    transition: all 0.1s ease-out;
+    width: fit-content;
+    border-radius: 10px;
+    letter-spacing: 1px;
+}
+
+.filter-options li:hover {
+    background-color: var(--primary-hover-color);
+    color: var(--secondary-color);
+}
+
+.filter-options li.active {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.filter-input {
+    /* width: 100%; */
+    height: 20px;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-size: 16px;
+    font-weight: 500;
+    padding-left: 16px;    
+    margin-left: 30px;
+}
+
+.filter-input:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.clause-selection {
+    display: flex;
+    width: 30%;
+    margin-left: 30px;
+    justify-content: space-between;
+    margin-top: 10px;    
+}
+
+.clause-selection .clause-btn {
+    padding: 5px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.clause-selection .clause-btn:hover {
+    background-color: var(--primary-hover-color);
+    color: var(--secondary-color);
+}
+
+.clause-selection .clause-btn.active {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.filter-input-submit {
+    position: relative;
+    float: right;
+    right: 20px;
+    bottom: 20px;
+    cursor: pointer;
 }
 
 .applied-filters {
@@ -1564,6 +1656,18 @@ body {
     border-radius: 16px;
     padding: 5px;
     margin-top: 10px;
+}
+
+.applied-filters-list {
+    list-style: none;
+    color: var(--secondary-color);
+    font-size: 18px;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.applied-filters-list .filter-item {
+    color: var(--secondary-color);
 }
 
 #filters-popup .close {
