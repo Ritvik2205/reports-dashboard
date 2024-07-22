@@ -38,10 +38,10 @@
             <thead>
                 <tr>
                     {% for column in column_names %}
-                        {% if column in columns_for_sorting %}
-                            <th class="{{ column }} sort" data-column-name="{{ column }}">{{ column }} <span class="icon-arrow">&UpArrow;</span></th>
+                        {% if column.split('.')[1] in columns_for_sorting %}
+                            <th class="{{ column.split('.')[1] }} sort" data-column-name="{{ column.split('.')[1] }}">{{ column }} <span class="icon-arrow">&UpArrow;</span></th>
                         {% else %}
-                            <th class="{{ column }}" data-column-name="{{ column }}">{{ column }}</th>
+                            <th class="{{ column.split('.')[1] }}" data-column-name="{{ column.split('.')[1] }}">{{ column }}</th>
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -50,7 +50,7 @@
                 {% for row in table_rows %}
                     <tr class="visible">
                         {% for column in column_names %}
-                            <td class="{{ column }}">{{ row[column] }}</td>
+                            <td class="{{ column.split('.')[1] }}">{{ row[column.split('.')[1]] }}</td>
                         {% endfor %}
                     </tr>
                 {% endfor %}

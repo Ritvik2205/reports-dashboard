@@ -581,7 +581,8 @@ $(document).ready(function() {
                 reportEndDate: reportEndDate,
                 activeSortingColumns: activeSortingColumns,
                 activeDateTimeColumns: activeDateTimeColumns,
-                activeSearchColumns: activeSearchColumns,                                
+                activeSearchColumns: activeSearchColumns, 
+                tableRelations: tableRelations                               
             }),
             success: function(response) {
                 console.log('Success:');

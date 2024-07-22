@@ -7,14 +7,14 @@ from datetime import datetime
 
 auth = Blueprint('auth', __name__)
 
-def log_reports(report_name, active_table_names, active_list_items, columns_for_sorting, active_search_column, active_datetime_column, report_start_date, report_end_date):
+def log_reports(report_name, active_table_names, active_table_columns, active_sorting_columns, active_search_columns, active_datetime_columns, report_start_date, report_end_date):
     report = {
         "report_name" : report_name,
         "active_table_names" : active_table_names,
-        "active_list_items" : active_list_items,
-        "columns_for_sorting" : columns_for_sorting,
-        "active_search_column" : active_search_column,
-        "active_datetime_column" : active_datetime_column,
+        "active_table_columns" : active_table_columns,
+        "active_sorting_columns" : active_sorting_columns,
+        "active_search_columns" : active_search_columns,
+        "active_datetime_columns" : active_datetime_columns,
         "report_start_date" : report_start_date,
         "report_end_date" : report_end_date,
         "date_time_created": datetime.now()
