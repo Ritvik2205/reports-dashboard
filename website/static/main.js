@@ -1,6 +1,6 @@
 
 $(document).ready(function() {
-    $(".lead-status-select").change(applyFilters)
+    // $(".lead-status-select").change(applyFilters)
 
     // --------------------------------------------------------------------------------------------------------
     // ----------------------------------------------- Homepage -----------------------------------------------
@@ -626,7 +626,7 @@ $(document).ready(function() {
     function displayTableRows(currentPage, rowsPerPage) {
         var start = (currentPage - 1) * rowsPerPage;
         var end = start + rowsPerPage;
-        $('.table-wrapper tbody tr').hide().slice(start, end).show();
+        $('.table-wrapper tbody tr.visible').hide().slice(start, end).show();
     }
 
     function paginationControls(totalPages, currentPage) {
@@ -823,6 +823,18 @@ $(document).ready(function() {
     // Popup for filters
     $('.filters').click(function() {
         $('#filters-popup').css('display', 'block');
+    });
+
+    // Close popup
+    $('#filters-popup .close').click(function() {
+        $('#filters-popup').css('display', 'none');
+    });
+
+    $(window).click(function(event) {
+        var $popup = $('#filters-popup');
+        if (event.target === $popup[0]) {
+            $popup.css('display', 'none');
+        }
     })
 
     // Popup column search
@@ -841,28 +853,88 @@ $(document).ready(function() {
         });
     })
 
+    // Popup column selection
+    $('.popup-column-item').click(function() {
+        $('.popup-column-item').removeClass('active');
+        $(this).toggleClass('active');
+        $('.filter-display ul').css('display', 'block');
+        var selectedColumnName = $(this).data('column-name');
+        $('.selected-column').html(selectedColumnName);
+    });
+
+    $('.filter-display .filter-options li').click(function() {
+        $('.filter-display .filter-options li').removeClass('active');
+        $(this).addClass('active');
+        var selectedValue = $(this).text();
+
+        $('.filter-input').css('display', '');
+        $('.filter-input-submit').css('display', '');
+    })
+
+    $('.filter-input-submit').click(function() {
+        var selectedColumnName = $('.selected-column').text();
+        var selectedFilter = $('.filter-display .filter-options li.active').text();
+        var selectedValue = $('.filter-input').val();
+
+        const $appliedFilters = $('.applied-filters-list');
+        const $filterItem = $('<div></div>', {
+            'class': 'filter-item',
+            'html': `${selectedColumnName} : ${selectedFilter} : ${selectedValue}`
+        });
+        $appliedFilters.append($filterItem);
+
+        $('.filter-input').val('');
+        $('.filter-input').css('display', 'none');
+        $('.filter-input-submit').css('display', 'none');
+    })
+
+    $('.popup-apply-btn').click(function() {
+        console.log('clicked');
+        applyFilters();
+        displayTableRows(currentPage, rowsPerPage);
+    })
+
 });
 
 
 
 function applyFilters() {
-    var leadStatus = $(".lead-status-select").val().toUpperCase();
-    var nameValue = $("#name-search").val().toUpperCase();
-    $('.leads-table tbody tr').each(function() {
-        var tdLeadStatus = $(this).find(" .lead_status").text().toUpperCase();
-        var tdName = $(this).find(" .first_name").text().toUpperCase();
-
-        var matchesStatus = (leadStatus === tdLeadStatus || leadStatus === 'ALL');
-        var matchesName = (tdName.indexOf(nameValue) > -1 || nameValue === '');
-        
-
-        if (matchesName && matchesStatus) {
-            $(this).addClass('visible').show();
-        } else {
-            $(this).removeClass('visible').hide();
-        }
+    
+    $('.applied-filters-list .filter-item').each(function() {
+        var filterText = $(this).text();
+        var parts = filterText.split(" : ");
+        var columnName = parts[0].replace('.', '-');
+        var filterType = parts[1].toLowerCase();
+        var filterValue = parts[2];
+        $('.leads-table tbody tr').each(function() {
+            var row = $(this);
+            var matchesCustomFilters = true;
+            var cellValue = row.find(`td.${columnName}`).text().toUpperCase();            
+            if (filterType === "contains") {
+                if (cellValue.indexOf(filterValue.toUpperCase()) === -1) {
+                    matchesCustomFilters = false;
+                }                
+            } else if (filterType === "does not contain") {
+                if (cellValue.indexOf(filterValue.toUpperCase()) > -1) {
+                    matchesCustomFilters = false;
+                }
+            } else if (filterType === "equals") {
+                if (cellValue !== filterValue.toUpperCase()) {
+                    matchesCustomFilters = false;
+                }
+            } else if (filterType === "does not equal") {
+                if (cellValue === filterValue.toUpperCase()) {
+                    matchesCustomFilters = false;
+                }
+            } 
+            if (matchesCustomFilters) {
+                $(this).css('display', '').addClass('visible').show();
+            } else {
+                $(this).css('display', 'none').removeClass('visible').hide();
+            }         
+        });
     });
-    displayTableRows(currentPage, rowsPerPage);
+    // displayTableRows(currentPage, rowsPerPage);
 }
 
 function filterTableByLeadStatus() {

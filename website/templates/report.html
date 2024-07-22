@@ -56,7 +56,7 @@
                 {% for row in table_rows %}
                     <tr class="visible">
                         {% for column in column_names %}
-                            <td class="{{ column.split('.')[1] }}">{{ row[column.split('.')[1]] }}</td>
+                            <td class="{{ column.replace('.', '-') }}">{{ row[column.split('.')[1]] }}</td>
                         {% endfor %}
                     </tr>
                 {% endfor %}
@@ -70,12 +70,33 @@
             <span class="close"><img src="../static/assets/cross.svg" alt="cross"></span>
             <div class="filter-popup-heading">Choose Filters</div>
             <input type="text" class="popup-columns-search search-input" placeholder="search columns">
-            <ul class="popup-columns-list">
-                {% for column in column_names %}
-                    <li class="popup-column-item" data-column-name="{{ column.split('.')[1] }}">{{ column }}</li>
-                {% endfor %}
-            </ul>
+            <div class="popup-div">
+                <ul class="popup-columns-list">
+                    {% for column in column_names %}
+                        <li class="popup-column-item" data-column-name="{{ column }}">{{ column }}</li>
+                    {% endfor %}
+                </ul>
+                <div class="popup-right">
+                    <div class="filter-display" >
+                        <div class="selected-column"></div>
+                        <ul class="filter-options" style="display: none;">
+                            <li>Equals</li>
+                            <li>Does not Equal</li>
+                            <li>Includes</li>
+                            <li>Does not Include</li>
+                        </ul>
+                        <div class="filter-input-container">
+                            <input type="text" class="filter-input" placeholder="Enter value" style="display: none;">
+                            <div class="filter-input-submit" style="display: none;">Enter</div>
+                        </div>
+                    </div>
+                    <div class="applied-filters">
+                        <ul class="applied-filters-list"></ul>
+                    </div>                    
+                </div>
+            </div>            
         </div>
+        <div class="popup-apply-btn">Apply</div>
     </div>
 
 {% endblock %}
