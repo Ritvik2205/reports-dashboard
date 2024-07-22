@@ -99,14 +99,17 @@ $(document).ready(function() {
     $(".next").click(function() {
         var $currentActiveTab = $(".tablink.active");
         var $nextTab = $currentActiveTab.next(".tablink");
-        if ($nextTab.length) {
-            $currentActiveTab.removeClass("active");
-            $nextTab.addClass("active");
+        if (checkRelations()) {
+            if ($nextTab.length) {
+                $currentActiveTab.removeClass("active");
+                $nextTab.addClass("active");
 
-            var $tab = $nextTab.data("tab-value");
-            $(".tabcontent").removeClass("active").hide();
-            $($tab).addClass("active").show();
+                var $tab = $nextTab.data("tab-value");
+                $(".tabcontent").removeClass("active").hide();
+                $($tab).addClass("active").show();
+            }
         }
+        
     })
 
     // Navigation button - previous
@@ -122,6 +125,21 @@ $(document).ready(function() {
             $($tab).addClass("active").show();
         }
     })
+
+    function checkRelations() {
+        var $activeTableNames = $('#tab1 .card.active');
+        var $tableRelations = $('.table-relation');
+        if ($activeTableNames.length > 1 && $tableRelations.length == 0) {
+            $('#relationModal').show();
+
+            // Close modal when the user clicks on <span> (x)
+            $('#relationModal .close').click(function() {
+                $('#relationModal').hide();
+            });
+            return false;
+        }
+        return true;
+    }
 
     // Report Name entered
     $('.report-name-input').on('input', function() {
