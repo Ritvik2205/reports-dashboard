@@ -1440,11 +1440,28 @@ body {
     cursor: not-allowed;
 }
 
+#overlay {
+    display: none;
+    width: 100vw;
+    top:0;
+    left:0;
+    height: 100vh;
+    position: absolute;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.397);
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+  }
+
 #filters-popup {
+    z-index: 1001;
     position: absolute;
     float: left;
     left: 50%;
-    top: 55%;
+    top: 50%;
     width: 700px;
     height: 700px;
     transform: translate(-50%, -50%);
@@ -1454,6 +1471,7 @@ body {
     padding: 10px;
     border-radius: 10px;
     overflow: scroll;
+    backdrop-filter: blur(3px);
 }
 
 .popup-content {
@@ -1512,6 +1530,7 @@ body {
     border-radius: 10px;
     color: var(--primary-color);
     cursor: pointer;
+    font-size: 18px;
     transition: all 0.2s ease;
 }
 
@@ -1546,8 +1565,6 @@ body {
     padding: 5px;
     margin-top: 10px;
 }
-
-
 
 #filters-popup .close {
     position: absolute;

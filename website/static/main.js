@@ -823,17 +823,20 @@ $(document).ready(function() {
     // Popup for filters
     $('.filters').click(function() {
         $('#filters-popup').css('display', 'block');
+        $('#overlay').css('display', '').show();
     });
 
     // Close popup
     $('#filters-popup .close').click(function() {
         $('#filters-popup').css('display', 'none');
+        $('#overlay').css('display', 'none').hide();
     });
 
     $(window).click(function(event) {
         var $popup = $('#filters-popup');
         if (event.target === $popup[0]) {
             $popup.css('display', 'none');
+            $('#overlay').css('display', 'none').hide();
         }
     })
 
