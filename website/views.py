@@ -36,7 +36,7 @@ def dashboard():
             report_end_date = ""
         log_reports(report_name, active_table_names, active_table_columns,
                      active_sorting_columns, active_search_columns, active_datetime_columns,
-                       report_start_date, report_end_date)        
+                       report_start_date, report_end_date, table_relations)        
         session['active_table_columns'] = active_table_columns
         session['active_table_names'] = active_table_names
         session['report_name'] = report_name
@@ -132,7 +132,7 @@ def report():
                 for table_name in tables_in_chain:
                     if table_name in active_datetime_columns:
                         table = Table(table_name, meta, autoload_with=db.engine)
-                        datetime_column = table.c[active_datetime_columns[table_name]]
+                        datetime_column = table.c[active_datetime_columns[table_name][0]]
                         if report_start_date != "" and report_end_date != "":
                             stmt = stmt.where(
                                 and_(
@@ -156,7 +156,7 @@ def report():
         if columns_to_select:
             stmt = select(*columns_to_select).select_from(table)
             if table_name in active_datetime_columns:
-                datetime_column = table.c[active_datetime_columns[table_name]]
+                datetime_column = table.c[active_datetime_columns[table_name][0]]
                 stmt = select(*columns_to_select).where(
                     and_(
                         datetime_column >= datetime.strptime(report_start_date, '%d-%m-%Y'),
@@ -282,7 +282,7 @@ def load_report(report_id):
                 for table_name in tables_in_chain:
                     if table_name in active_datetime_columns:
                         table = Table(table_name, meta, autoload_with=db.engine)
-                        datetime_column = table.c[active_datetime_columns[table_name]]
+                        datetime_column = table.c[active_datetime_columns[table_name][0]]
                         if report_start_date != "" and report_end_date != "":
                             stmt = stmt.where(
                                 and_(
@@ -306,7 +306,7 @@ def load_report(report_id):
         if columns_to_select:
             stmt = select(*columns_to_select).select_from(table)
             if table_name in active_datetime_columns:
-                datetime_column = table.c[active_datetime_columns[table_name]]
+                datetime_column = table.c[active_datetime_columns[table_name][0]]
                 stmt = select(*columns_to_select).where(
                     and_(
                         datetime_column >= datetime.strptime(report_start_date, '%d-%m-%Y'),
