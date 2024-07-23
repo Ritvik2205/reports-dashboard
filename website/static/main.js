@@ -111,7 +111,7 @@ $(document).ready(function() {
         var $currentActiveTab = $(".tablink.active");
         var $nextTab = $currentActiveTab.next(".tablink");        
         checkReportName().then(isUnique => {    
-            if (checkRelations() && checkStep1() && isUnique && checkTableSelection()) {
+            if (checkRelations() && checkStep1() && isUnique && checkTableSelection() && checkColumnSelection()) {
                 if ($nextTab.length) {
                     $currentActiveTab.removeClass("active");
                     $nextTab.addClass("active");
@@ -220,6 +220,25 @@ $(document).ready(function() {
             const modalContent = $('#step1Modal p');
             modalContent.empty();
             modalContent.text('Please select a table');
+            $('#step1Modal').show();
+
+            // Close modal when the user clicks on <span> (x)
+            $('#step1Modal .close').click(function() {
+                $('#step1Modal').hide();
+            });
+            return false;
+        }
+        return true;
+    }
+
+    // checking if a column is selected or not
+    function checkColumnSelection() {
+        var $activeTableNames = $('#tab1 .card.active');
+        var $activeColumns = $('#tab1 .list-item.active');
+        if ($activeTableNames.length != 0 && $activeColumns.length == 0) {
+            const modalContent = $('#step1Modal p');
+            modalContent.empty();
+            modalContent.text('Please select a column');
             $('#step1Modal').show();
 
             // Close modal when the user clicks on <span> (x)
