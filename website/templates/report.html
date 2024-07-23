@@ -56,7 +56,7 @@
                 {% for row in table_rows %}
                     <tr class="visible">
                         {% for column in column_names %}
-                            <td class="{{ column.replace('.', '-') }}">{{ row[column.split('.')[1]] }}</td>
+                            <td class="{{ column.replace('.', '-') }}" data-column-name="{{ column.split('.')[1] }}">{{ row[column.split('.')[1]] }}</td>
                         {% endfor %}
                     </tr>
                 {% endfor %}

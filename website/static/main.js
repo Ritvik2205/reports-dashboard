@@ -1,3 +1,9 @@
+// fix single table - jinja
+// tab1 right panel
+// remove foreign key btn
+// check duplicate report name
+//remove heading report
+// decrease report container length]
 
 $(document).ready(function() {
     // $(".lead-status-select").change(applyFilters)
@@ -711,8 +717,8 @@ $(document).ready(function() {
     
     function sortTable(column, sort_asc) {
         tableRows.sort(function(a, b) {
-            var first_row = $(a).find(`td.${column}`).text().toLowerCase().trim();
-            var second_row = $(b).find(`td.${column}`).text().toLowerCase().trim();
+            var first_row = $(a).find(`td[data-column-name="${column}"]`).text().toLowerCase().trim();
+            var second_row = $(b).find(`td[data-column-name="${column}"]`).text().toLowerCase().trim();
 
             var first_row_num = isNaN(+first_row) ? first_row : +first_row;
             var second_row_num = isNaN(+second_row) ? second_row : +second_row;
