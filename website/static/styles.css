@@ -363,6 +363,10 @@ body {
     margin-bottom: 20px;
     background-color: var(--secondary-color);
     border-radius: 10px;
+    height: 30%;
+}
+
+#tab1 .initial-section {
     height: 15%;
 }
 
@@ -403,7 +407,7 @@ body {
     justify-content: center;
     align-items: center;
     background-color: transparent;
-    width: 60%;
+    width: 70%;
     height: 35px;
     border-radius: 50px;
     border: var(--primary-color) 2px solid;
@@ -419,11 +423,15 @@ body {
     background-color: transparent;
     border-radius: 10px;
     border: var(--secondary-color) 5px solid;
-    height: 85%;
+    height: 60%;
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow: scroll;
+}
+
+#tab1 .cards-section {
+    height: 85%;
 }
 
 .subheading-left-panel {
@@ -1152,6 +1160,7 @@ body {
     -webkit-backdrop-filter: blur(6.2px);
     font-size: 17px;
     transition: transform 0.2s ease;
+    z-index: 100;
 }
 
 #tab2 .navigation-btn {
