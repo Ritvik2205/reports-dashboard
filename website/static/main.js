@@ -109,26 +109,24 @@ $(document).ready(function() {
     // Navigation button - next
     $(".next").click(function() {
         var $currentActiveTab = $(".tablink.active");
-        var $nextTab = $currentActiveTab.next(".tablink");
-        checkReportName();
-        var reportNameIsUnique = $('#isUniqueDiv').html().trim() === 'true';  
-        console.log($('#isUniqueDiv').html());      
-        if (checkRelations() && checkStep1() && reportNameIsUnique && checkTableSelection()) {
-            if ($nextTab.length) {
-                $currentActiveTab.removeClass("active");
-                $nextTab.addClass("active");
+        var $nextTab = $currentActiveTab.next(".tablink");        
+        checkReportName().then(isUnique => {    
+            if (checkRelations() && checkStep1() && isUnique && checkTableSelection()) {
+                if ($nextTab.length) {
+                    $currentActiveTab.removeClass("active");
+                    $nextTab.addClass("active");
 
-                var $tab = $nextTab.data("tab-value");
-                $(".tabcontent").removeClass("active").hide();
-                $($tab).addClass("active").show();
+                    var $tab = $nextTab.data("tab-value");
+                    $(".tabcontent").removeClass("active").hide();
+                    $($tab).addClass("active").show();
+                }
+            } else {           
+                console.log('step 1 not completed');
             }
-        } else {
-            console.log(checkRelations());
-            console.log(checkStep1());
-            console.log(reportNameIsUnique);
-            console.log(checkTableSelection());            
-            console.log('step 1 not completed');
-        }
+        }).catch(error => {
+            console.error('Error:',error);
+        });
+        
         
     })
 
@@ -182,32 +180,37 @@ $(document).ready(function() {
 
     // checking if report name is unique
     function checkReportName() {
-        var reportName = $('#tab1 .report-name-input').val();        
-        $.ajax({
-            url: '/check-report-name',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                reportName: reportName
-            }),
-            dataType: 'json',
-            success: function(response) {
-                var isUnique = response.unique;
-                $('#isUniqueDiv').empty();
-                $('#isUniqueDiv').html(isUnique); 
-                if (!isUnique) {
-                    const modalContent = $('#step1Modal p');
-                    modalContent.empty();
-                    modalContent.text('Report name already exists. Please enter a unique name.');
-                    $('#step1Modal').show();
-                                                   
-                    // Close modal when the user clicks on <span> (x)
-                    $('#step1Modal .close').click(function() {
-                        $('#step1Modal').hide();
-                    });                
-                }               
-            }
-        });        
+        return new Promise((resolve, reject) => {
+            var reportName = $('#tab1 .report-name-input').val();        
+            $.ajax({
+                url: '/check-report-name',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    reportName: reportName
+                }),
+                dataType: 'json',
+                success: function(response) {
+                    var isUnique = response.unique;
+                    if (!isUnique) {
+                        const modalContent = $('#step1Modal p');
+                        modalContent.empty();
+                        modalContent.text('Report name already exists. Please enter a unique name.');
+                        $('#step1Modal').show();
+                                                    
+                        // Close modal when the user clicks on <span> (x)
+                        $('#step1Modal .close').click(function() {
+                            $('#step1Modal').hide();
+                        });                
+                    } 
+                    resolve(isUnique);              
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    reject(error);
+                }
+            }); 
+        });            
     }
 
     // checking if a table is selected
