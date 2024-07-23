@@ -1,9 +1,5 @@
-// fix single table - jinja
-// tab1 right panel
 // remove foreign key btn
 // check duplicate report name
-//remove heading report
-// decrease report container length]
 
 $(document).ready(function() {
     // $(".lead-status-select").change(applyFilters)
@@ -36,6 +32,7 @@ $(document).ready(function() {
     // ---------------------------------------------- Dashboard -----------------------------------------------
     // --------------------------------------------------------------------------------------------------------
     
+    // Edit Report button functionality
     var storedReport = localStorage.getItem('reportData');
     if (storedReport) {
         console.log('exists');
@@ -115,7 +112,7 @@ $(document).ready(function() {
     $(".next").click(function() {
         var $currentActiveTab = $(".tablink.active");
         var $nextTab = $currentActiveTab.next(".tablink");
-        if (checkRelations()) {
+        if (checkRelations() && checkStep1()) {
             if ($nextTab.length) {
                 $currentActiveTab.removeClass("active");
                 $nextTab.addClass("active");
@@ -151,6 +148,20 @@ $(document).ready(function() {
             // Close modal when the user clicks on <span> (x)
             $('#relationModal .close').click(function() {
                 $('#relationModal').hide();
+            });
+            return false;
+        }
+        return true;
+    }
+
+    function checkStep1() {
+        var reportName = $('#tab1 .report-name-input').val();
+        if (reportName === '') {
+            $('#step1Modal').show();
+
+            // Close modal when the user clicks on <span> (x)
+            $('#step1Modal .close').click(function() {
+                $('#step1Modal').hide();
             });
             return false;
         }
@@ -849,8 +860,9 @@ $(document).ready(function() {
     });
 
     $(window).click(function(event) {
+        var $overlay = $('#overlay');
         var $popup = $('#filters-popup');
-        if (event.target === $popup[0]) {
+        if (event.target === $overlay[0]) {
             $popup.css('display', 'none');
             $('#overlay').css('display', 'none').hide();
         }
