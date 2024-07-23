@@ -721,12 +721,15 @@ $(document).ready(function() {
     // --------------------------------------------------- Report ---------------------------------------------------
     // --------------------------------------------------------------------------------------------------------------
        
+    // Pagination controls
     var currentPage = 1;
     var rowsPerPage = 10;
     var pageWindow = 5;
     var totalPages = Math.ceil($('.table-wrapper tbody tr').length / rowsPerPage);
     displayTableRows(currentPage, rowsPerPage);
-    paginationControls(totalPages, currentPage);
+    if (totalPages != 1) {        
+        paginationControls(totalPages, currentPage);
+    }
 
     function displayTableRows(currentPage, rowsPerPage) {
         var start = (currentPage - 1) * rowsPerPage;
@@ -736,6 +739,7 @@ $(document).ready(function() {
 
     function paginationControls(totalPages, currentPage) {
         var $paginationContainer = $('.pagination-container');
+        $('.pagination-container').show();
         $paginationContainer.empty();
 
         var maxLeft = currentPage - Math.floor(pageWindow / 2);
@@ -1011,7 +1015,14 @@ $(document).ready(function() {
     $('.popup-apply-btn').click(function() {
         console.log('clicked');
         applyFilters();
-        displayTableRows(currentPage, rowsPerPage);
+        var totalPages = Math.ceil($('.table-wrapper tbody tr.visible').length / rowsPerPage);
+        console.log(totalPages);
+        displayTableRows(currentPage, rowsPerPage);        
+        if (totalPages !== 1) {
+            paginationControls(totalPages, currentPage);
+        } else {
+            $('.pagination-container').hide();
+        }
     })
 
 });
@@ -1035,10 +1046,10 @@ function applyFilters() {
             var matchesCustomFilters = true;
             var cellValue = row.find(`td.${columnName}`).text().toUpperCase();            
             switch (filterType) {
-                case "contains":
+                case "includes":
                     matchesCustomFilters = cellValue.includes(filterValue.toUpperCase());
                     break;
-                case "does not contain":
+                case "does not include":
                     matchesCustomFilters = !cellValue.includes(filterValue.toUpperCase());
                     break;
                 case "equals":
