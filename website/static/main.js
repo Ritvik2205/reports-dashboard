@@ -1,5 +1,4 @@
 // remove foreign key btn
-// check duplicate report name
 
 $(document).ready(function() {
     // $(".lead-status-select").change(applyFilters)
@@ -112,7 +111,10 @@ $(document).ready(function() {
     $(".next").click(function() {
         var $currentActiveTab = $(".tablink.active");
         var $nextTab = $currentActiveTab.next(".tablink");
-        if (checkRelations() && checkStep1() && checkReportName()) {
+        checkReportName();
+        var reportNameIsUnique = $('#isUniqueDiv').html().trim() === 'true';  
+        console.log($('#isUniqueDiv').html());      
+        if (checkRelations() && checkStep1() && reportNameIsUnique && checkTableSelection()) {
             if ($nextTab.length) {
                 $currentActiveTab.removeClass("active");
                 $nextTab.addClass("active");
@@ -121,6 +123,12 @@ $(document).ready(function() {
                 $(".tabcontent").removeClass("active").hide();
                 $($tab).addClass("active").show();
             }
+        } else {
+            console.log(checkRelations());
+            console.log(checkStep1());
+            console.log(reportNameIsUnique);
+            console.log(checkTableSelection());            
+            console.log('step 1 not completed');
         }
         
     })
@@ -139,6 +147,7 @@ $(document).ready(function() {
         }
     })
 
+    // checking if relations are selected when required
     function checkRelations() {
         var $activeTableNames = $('#tab1 .card.active');
         var $tableRelations = $('.table-relation');
@@ -154,6 +163,7 @@ $(document).ready(function() {
         return true;
     }
 
+    // checking if report name is entered
     function checkStep1() {
         var reportName = $('#tab1 .report-name-input').val();
         if (reportName === '') {
@@ -171,8 +181,9 @@ $(document).ready(function() {
         return true;
     }
 
+    // checking if report name is unique
     function checkReportName() {
-        var reportName = $('#tab1 .report-name-input').val();
+        var reportName = $('#tab1 .report-name-input').val();        
         $.ajax({
             url: '/check-report-name',
             type: 'POST',
@@ -183,19 +194,39 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 var isUnique = response.unique;
+                $('#isUniqueDiv').empty();
+                $('#isUniqueDiv').html(isUnique); 
                 if (!isUnique) {
                     const modalContent = $('#step1Modal p');
                     modalContent.empty();
                     modalContent.text('Report name already exists. Please enter a unique name.');
                     $('#step1Modal').show();
-
+                                                   
                     // Close modal when the user clicks on <span> (x)
                     $('#step1Modal .close').click(function() {
                         $('#step1Modal').hide();
-                    });
-                }
+                    });                
+                }               
             }
-        });
+        });        
+    }
+
+    // checking if a table is selected
+    function checkTableSelection() {
+        var $activeTableNames = $('#tab1 .card.active');
+        if ($activeTableNames.length == 0) {
+            const modalContent = $('#step1Modal p');
+            modalContent.empty();
+            modalContent.text('Please select a table');
+            $('#step1Modal').show();
+
+            // Close modal when the user clicks on <span> (x)
+            $('#step1Modal .close').click(function() {
+                $('#step1Modal').hide();
+            });
+            return false;
+        }
+        return true;
     }
 
     // Report Name entered
