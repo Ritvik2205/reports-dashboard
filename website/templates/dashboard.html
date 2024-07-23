@@ -49,31 +49,23 @@
         </div>
         <div class="right-panel">
                 <div class="preview">
-                    <div class="subheading">Default Reports</div>
-                    <div class="preview-item">
-                        <div class="image-placeholder"></div>
-                        <div class="preview-item-body">
-                            <div class="preview-title">Title</div>
-                            <div class="preview-body">Body text for whatever you'd like to say.</div>
-                            <button class="btn">Button</button>
-                        </div>    
-                    </div>
-                    <div class="preview-item">
-                        <div class="image-placeholder"></div>
-                        <div class="preview-item-body">
-                            <div class="preview-title">Title</div>
-                            <div class="preview-body">Body text for whatever you'd like to say.</div>
-                            <button class="btn">Button</button>
-                        </div>    
-                    </div>
-                    <div class="preview-item">
-                        <div class="image-placeholder"></div>
-                        <div class="preview-item-body">
-                            <div class="preview-title">Title</div>
-                            <div class="preview-body">Body text for whatever you'd like to say.</div>
-                            <button class="btn">Button</button>
-                        </div>    
-                    </div>
+                    <div class="subheading">Recent Reports</div>
+                    {% for report in last_three_reports %}
+                        <div class="preview-item report">
+                            <div class="image-placeholder">
+                                <div class="report-created-date"> {{ report['date_time_created'].strftime('%d-%m-%Y') }} </div>
+                                <div class="report-created-date"> at {{ report['date_time_created'].strftime('%H:%M') }} </div>
+                            </div>
+                            <div class="preview-item-body">
+                                <div class="preview-title report-name">{{ report['report_name']}}</div>
+                                <div class="preview-body report-tables">Tables used: {{ report['active_table_names'] }}</div>
+                                <div class="report-buttons">
+                                    <a href="/report/{{ report['_id'] }}" class="generate-report">Generate report</a>
+                                    <a class="load-report" data-report-id="{{ report['_id'] }}">Edit report</a>
+                                </div>
+                            </div>    
+                        </div>
+                    {% endfor %}
                 </div>
                 <div class="table-relations">
                     <div class="relations-subheading">Selected Table relations</div>
