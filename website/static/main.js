@@ -1,4 +1,3 @@
-// remove foreign key btn
 
 $(document).ready(function() {
     // $(".lead-status-select").change(applyFilters)
@@ -323,8 +322,7 @@ $(document).ready(function() {
                             'html': 
                             '<input type="checkbox" class="list-item-checkbox"><span class="checkbox-span"></span>',
                             'css': {
-                                'float': 'left',
-                                'display': 'none'
+                                'float': 'left'
                             }
                         })
 
@@ -359,16 +357,7 @@ $(document).ready(function() {
     $(".card").on('click', function() {
         activeTableColumns = onCardClick($(this), activeTableColumns);
     });
-
-    // Foreign key button toggle view
-    $('.foreign-key-btn').on('click', function() {
-        $(this).toggleClass('active');
-        if ($(this).hasClass('active')) {
-            $('.checkbox-container').css('display', '');
-        } else {
-            $('.checkbox-container').css('display', 'none');
-        }
-    })
+    
 
     // Foreign key relations
     let tableRelations = [];
@@ -388,13 +377,19 @@ $(document).ready(function() {
         }   
         
         if (selectedColumns.length == 2) {
-            addForeignKeyRelation(selectedTables[0], selectedTables[1], selectedColumns[0], selectedColumns[1]);
-            displayForeignKeyRelation(selectedTables, selectedColumns);
-            selectedColumns = [];
-            selectedTables = [];
-            $('#tab1 .checkbox-container input').prop('checked', false);            
-            $('#tab1 .checkbox-container input').removeClass('active');                        
+            $('.foreign-key-btn').show();                                   
         }
+    });
+
+    // Foreign key button enter
+    $('.foreign-key-btn').on('click', function() {
+        addForeignKeyRelation(selectedTables[0], selectedTables[1], selectedColumns[0], selectedColumns[1]);
+        displayForeignKeyRelation(selectedTables, selectedColumns);
+        selectedColumns = [];
+        selectedTables = [];
+        $('#tab1 .checkbox-container input').prop('checked', false);            
+        $('#tab1 .checkbox-container input').removeClass('active'); 
+        $(this).hide();
     })
 
     // function for display FK relations
