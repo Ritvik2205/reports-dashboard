@@ -37,12 +37,13 @@ $(document).ready(function() {
 
         var reportName = report.report_name;
         var tableNames = report.active_table_names;
-        var listItems = report.active_list_items;
-        var sortingColumns = report.columns_for_sorting;
-        var activeSearchColumn = report.active_search_column;
-        var activeDateTimeColumn = report.active_datetime_column;
+        var tableColumns = report.active_table_columns;
+        var sortingColumns = report.active_sorting_columns;
+        var searchColumns = report.active_search_columns;
+        var dateTimeColumns = report.active_datetime_columns;
         var reportStartDate = report.report_start_date;
         var reportEndDate = report.report_end_date;
+        var allTableRelations = report.table_relations;
         const startDate = moment(reportStartDate, 'DD-MM-YYYY');
         const endDate = moment(reportEndDate, 'DD-MM-YYYY');
 
@@ -52,31 +53,40 @@ $(document).ready(function() {
             var $activeTableNames = $('#tab1 .card.active').map(function() {
                 return $(this).attr('table-name'); 
             }).get();
-            for (var i in tableNames) {  
-                console.log(tableNames[i]);     
-                $(`.card.${tableNames[i]}`).click();
+            for (var i in tableNames) {     
+                $(`.card.${tableNames[i]}`).click();                                
+            }    
+            for (var i in allTableRelations) {
+                var relation = allTableRelations[i];
+                var selectedTables = [relation.table1, relation.table2];
+                var selectedColumns = [relation.column1, relation.column2];
+                displayForeignKeyRelation(selectedTables, selectedColumns);
             }
             setTimeout(function() {
-                for (var i in listItems) {
-                    $(`#tab1 .list .list-item.${listItems[i]}`).click();
-                }
+                for (var i in tableNames) {
+                    var columns = tableColumns[tableNames[i]];                    
+                    for (var j in columns) {
+                        $(`#tab1 .middle-panel .list.${tableNames[i]} .list-item.${columns[j]}`).click();                                             
+                    }     
+                }               
                 setTimeout(function() {
-                    for (var i in sortingColumns) {
-                        $(`#tab2 .middle-panel .list .list-item.${sortingColumns[i]}`).click();
+                    for (var i in tableNames) {
+                        var columnsToSort = sortingColumns[tableNames[i]];
+                        for (var j in columnsToSort) {
+                            $(`#tab2 .middle-panel .list.${tableNames[i]} .list-item.${columnsToSort[j]}`).click();
+                        }
                     }
                     setTimeout(function() {
-                        $(`#tab2 .right-panel .list .list-item.${activeSearchColumn}`).click();
-                        $(`#tab2 .initial-section .list .list-item.${activeDateTimeColumn}`).click();
+                        var searchTable = Object.keys(searchColumns)[0];
+                        var dateTimeTable = Object.keys(dateTimeColumns)[0];                            
+                        $(`#tab2 .right-panel .list.${searchTable} .list-item.${searchColumns[searchTable][0]}`).click();
+                        $(`#tab2 .initial-section .list.${dateTimeTable} .list-item.${dateTimeColumns[dateTimeTable][0]}`).click();
                         cb(startDate, endDate);
-                    }, 600);
-                }, 300);
-            }, 50);
+                    }, 600);                  
+                }, 300);                                
+            }, 150);
         },5);
         
-        
-        
-
-        // $('#reportrange span').html(report.reportStartDate + ' - ' + report.reportEndDate);
 
         localStorage.removeItem('reportData');
     }
@@ -536,7 +546,7 @@ $(document).ready(function() {
     
 
     // Columns list selection toggle for tab2 middle list (sorting)
-    let activeSortingColumns = {};
+    var activeSortingColumns = {};
     $("#tab2 .middle-panel .list").on('click', '.list-item', function() {
         $(this).toggleClass('active');
         var tableName = $(this).closest('.list').data('table-name');
