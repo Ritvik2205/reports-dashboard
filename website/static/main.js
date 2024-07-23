@@ -671,9 +671,6 @@ $(document).ready(function() {
 
     // Generate Report button 
     $('#tab2 .generate-report-btn').click(function() {
-        var activeListItems = $('#tab1 .list-item.active').map(function() {
-            return $(this).text().trim(); 
-        }).get();
 
         var activeTableNames = $('#tab1 .card.active .title').map(function() {
             return $(this).text().trim(); 
@@ -681,15 +678,8 @@ $(document).ready(function() {
 
         var reportName = $('.report-name-title').text();
 
-        var activeDateTimeColumn = $('#tab2 .initial-section .list-item.active').text();
-        var activeSearchColumn = $('#tab2 .right-panel .list-item.active').text();
         var reportStartDate = $('#reportrange').data('daterangepicker').startDate.format('DD-MM-YYYY');
         var reportEndDate = $('#reportrange').data('daterangepicker').endDate.format('DD-MM-YYYY');
-
-        var columnsForSorting = $('#tab2 .middle-panel .list-item.active').map(function() {
-            return $(this).text().trim(); 
-        }).get();
-        
 
         // Sending POST request to backend
         $.ajax({
