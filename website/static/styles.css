@@ -17,7 +17,7 @@
 
 ::selection {
     color: var(--secondary-color);
-    background: #E2E3DD;
+    background: var(--text-color);
   }
 
 html {
@@ -1755,6 +1755,12 @@ body {
     width: 25px;
     filter: invert(17%) sepia(7%) saturate(195%) hue-rotate(22deg) brightness(100%) contrast(93%);
     cursor: pointer;
+}
+
+.filter-item .close {
+    position: absolute;
+    right: 0;
+    margin-right: 15px;
 }
 
 .popup-apply-btn {
