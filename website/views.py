@@ -49,6 +49,15 @@ def dashboard():
         session['table_relations'] = table_relations
         return redirect(url_for('views.report'))
 
+@views.route('/check-report-name', methods=['POST'])
+def check_report_name():
+    report_name = request.get_json()['reportName']
+    existing_report_names = mongo.db.reports.find(filter={'report_name':f'{report_name}'}, projection={'_id':False, 'report_name':True}).sort([('_id', -1)])
+    report_list = list(existing_report_names)    
+    if len(report_list) != 0:
+        return jsonify({'unique': False})
+    else:
+        return jsonify({'unique': True})
 
 
 @views.route('/get-columns/<table_name>')

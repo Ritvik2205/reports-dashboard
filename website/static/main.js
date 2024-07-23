@@ -112,7 +112,7 @@ $(document).ready(function() {
     $(".next").click(function() {
         var $currentActiveTab = $(".tablink.active");
         var $nextTab = $currentActiveTab.next(".tablink");
-        if (checkRelations() && checkStep1()) {
+        if (checkRelations() && checkStep1() && checkReportName()) {
             if ($nextTab.length) {
                 $currentActiveTab.removeClass("active");
                 $nextTab.addClass("active");
@@ -157,6 +157,9 @@ $(document).ready(function() {
     function checkStep1() {
         var reportName = $('#tab1 .report-name-input').val();
         if (reportName === '') {
+            const modalContent = $('#step1Modal p');
+            modalContent.empty();
+            modalContent.text('Please enter a report Name');
             $('#step1Modal').show();
 
             // Close modal when the user clicks on <span> (x)
@@ -166,6 +169,33 @@ $(document).ready(function() {
             return false;
         }
         return true;
+    }
+
+    function checkReportName() {
+        var reportName = $('#tab1 .report-name-input').val();
+        $.ajax({
+            url: '/check-report-name',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                reportName: reportName
+            }),
+            dataType: 'json',
+            success: function(response) {
+                var isUnique = response.unique;
+                if (!isUnique) {
+                    const modalContent = $('#step1Modal p');
+                    modalContent.empty();
+                    modalContent.text('Report name already exists. Please enter a unique name.');
+                    $('#step1Modal').show();
+
+                    // Close modal when the user clicks on <span> (x)
+                    $('#step1Modal .close').click(function() {
+                        $('#step1Modal').hide();
+                    });
+                }
+            }
+        });
     }
 
     // Report Name entered
