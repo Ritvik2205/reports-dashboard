@@ -13,6 +13,10 @@ MYSQL_USERNAME = getenv("MYSQL_USERNAME")
 MYSQL_PASSWORD = getenv("MYSQL_PASSWORD")
 MYSQL_PORT = getenv("MYSQL_PORT")
 MYSQL_HOST = getenv("MYSQL_HOST")
+MONGO_DB_NAME = getenv("MONGO_DB_NAME")
+MONGO_HOST = getenv("MONGO_HOST")
+MONGO_PORT = getenv("MONGO_PORT")
+
 
 db = SQLAlchemy()
 mongo = PyMongo()
@@ -28,7 +32,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = \
             f'mysql+pymysql://{MYSQL_USERNAME}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB_NAME}'
     
-    app.config['MONGO_URI'] = 'mongodb://localhost:27017/tjReports'
+    app.config['MONGO_URI'] = f'mongodb://{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB_NAME}'
 
 
     db.init_app(app)
