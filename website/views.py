@@ -20,7 +20,8 @@ def home():
 @views.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     if request.method == 'GET':
-        return render_template('dashboard.html', table_names=table_names)
+        last_three_reports =  mongo.db.reports.find().sort([('_id', -1)]).limit(3)
+        return render_template('dashboard.html', table_names=table_names, last_three_reports=last_three_reports)
     else:
         active_table_columns =  request.get_json()['activeTableColumns']
         active_table_names =  request.get_json()['activeTableNames']
