@@ -705,10 +705,77 @@ body {
     padding: 0;
 }
 
+.table-relations {
+    height: 55%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.relations-subheading {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.relations-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+}
+
+.table-relation {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    align-items: center;
+    margin: 5px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+    border-bottom: 2px solid  var(--primary-hover-color);
+}
+
+.table-relation-tables {
+    font-size: 22px;
+}
+
+.table-relation-columns {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.remove-relation-btn {
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-column-start: 2;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.remove-relation-btn img {
+    height: 60%;
+    width: 60%;
+    filter: invert(88%) sepia(7%) saturate(291%) hue-rotate(22deg) brightness(92%) contrast(83%);
+}
+
+.remove-relation-btn:hover {
+    transform: scale(1.1);
+}
+
 .preview {
     display: flex;
     flex-direction: column;
     padding: 15px;
+    margin-top: 20px;
     background-color: transparent;
     border: 5px solid var(--secondary-color);
     color: var(--secondary-color);
@@ -827,73 +894,6 @@ body {
 #tab1 .report-buttons a:hover::before {
     width: 100%;
     opacity: 1;
-}
-
-.table-relations {
-    height: 55%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-    background-color: var(--secondary-color);
-    color: var(--text-color);
-    border-radius: 10px;
-    padding: 10px;
-}
-
-.relations-subheading {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
-.relations-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-}
-
-.table-relation {
-    display: grid;
-    grid-template-columns: 4fr 1fr;
-    align-items: center;
-    margin: 5px;
-    padding-left: 10px;
-    padding-bottom: 10px;
-    width: 100%;
-    border-bottom: 2px solid  var(--primary-hover-color);
-}
-
-.table-relation-tables {
-    font-size: 22px;
-}
-
-.table-relation-columns {
-    font-size: 17px;
-    font-weight: 500;
-}
-
-.remove-relation-btn {
-    grid-row-start: 1;
-    grid-row-end: 3;
-    grid-column-start: 2;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.remove-relation-btn img {
-    height: 60%;
-    width: 60%;
-    filter: invert(88%) sepia(7%) saturate(291%) hue-rotate(22deg) brightness(92%) contrast(83%);
-}
-
-.remove-relation-btn:hover {
-    transform: scale(1.1);
 }
 
 #relationModal {
