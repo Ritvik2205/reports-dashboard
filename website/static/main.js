@@ -671,41 +671,63 @@ $(document).ready(function() {
 
     // Generate Report button 
     $('#tab2 .generate-report-btn').click(function() {
+        if (checkSearchColumn()) {
+            var activeTableNames = $('#tab1 .card.active .title').map(function() {
+                return $(this).text().trim(); 
+            }).get();
+    
+            var reportName = $('.report-name-title').text();
+    
+            var reportStartDate = $('#reportrange').data('daterangepicker').startDate.format('DD-MM-YYYY');
+            var reportEndDate = $('#reportrange').data('daterangepicker').endDate.format('DD-MM-YYYY');
+    
+            // Sending POST request to backend
+            $.ajax({
+                url: '/dashboard',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    activeTableColumns: activeTableColumns,
+                    activeTableNames: activeTableNames,
+                    reportName: reportName,
+                    reportStartDate: reportStartDate,
+                    reportEndDate: reportEndDate,
+                    activeSortingColumns: activeSortingColumns,
+                    activeDateTimeColumns: activeDateTimeColumns,
+                    activeSearchColumns: activeSearchColumns, 
+                    tableRelations: tableRelations                               
+                }),
+                success: function(response) {
+                    console.log('Success:');
+                    window.location.href = '/report'; 
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
 
-        var activeTableNames = $('#tab1 .card.active .title').map(function() {
-            return $(this).text().trim(); 
-        }).get();
-
-        var reportName = $('.report-name-title').text();
-
-        var reportStartDate = $('#reportrange').data('daterangepicker').startDate.format('DD-MM-YYYY');
-        var reportEndDate = $('#reportrange').data('daterangepicker').endDate.format('DD-MM-YYYY');
-
-        // Sending POST request to backend
-        $.ajax({
-            url: '/dashboard',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                activeTableColumns: activeTableColumns,
-                activeTableNames: activeTableNames,
-                reportName: reportName,
-                reportStartDate: reportStartDate,
-                reportEndDate: reportEndDate,
-                activeSortingColumns: activeSortingColumns,
-                activeDateTimeColumns: activeDateTimeColumns,
-                activeSearchColumns: activeSearchColumns, 
-                tableRelations: tableRelations                               
-            }),
-            success: function(response) {
-                console.log('Success:');
-                window.location.href = '/report'; 
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-            }
-        });
+        
     });
+
+    // check if search column is Selected
+    function checkSearchColumn() {
+        var $activeTableNames = $('#tab1 .card.active');
+        var $activeSearchColumns = $('#tab2 .right-panel .list-item.active');
+        if ($activeTableNames.length != 0 && $activeSearchColumns.length == 0) {
+            const modalContent = $('#step2Modal p');
+            modalContent.empty();
+            modalContent.text('Please select a column for searching');
+            $('#step2Modal').show();
+
+            // Close modal when the user clicks on <span> (x)
+            $('#step2Modal .close').click(function() {
+                $('#step2Modal').hide();
+            });
+            return false;
+        }
+        return true;
+    }
 
     // --------------------------------------------------------------------------------------------------------------
     // --------------------------------------------------- Report ---------------------------------------------------
@@ -839,9 +861,11 @@ $(document).ready(function() {
 
         var headings = [];
         tHeads.each(function() {
-            var head = $(this).text().trim().split(' ');
-            var headText = head.splice(0, head.length - 1).join(" ").toLowerCase();
-            headings.push(headText);        
+            var head = $(this).text().trim();
+            if (head.includes('↑')) {
+                head = head.replace('↑', '');
+            }            
+            headings.push(head);        
         });
         var headingsCsv = headings.join(',');
 
@@ -990,7 +1014,7 @@ $(document).ready(function() {
         const $appliedFilters = $('.applied-filters-list');
         const $filterItem = $('<div></div>', {
             'class': 'filter-item',
-            'html': `${selectedColumnName} : ${selectedFilter} : ${selectedValue} : ${selectedClause}`
+            'html': `${selectedColumnName} : ${selectedFilter} : ${selectedValue} : ${selectedClause} <span class="close filter-close"><img src="../static/assets/cross.svg" alt="cross"></span>`
         });
         $appliedFilters.append($filterItem);
 
@@ -1000,19 +1024,27 @@ $(document).ready(function() {
         $('.clause-selection').css('display', 'none');
         $('.clause-btn').removeClass('active');
         $('#andClause').addClass('active');
-    })
+    });
+
+    $('.applied-filters-list').on('click', '.filter-close', function() {
+        $(this).closest('.filter-item').remove();
+    });
 
     $('.popup-apply-btn').click(function() {
         console.log('clicked');
-        applyFilters();
-        var totalPages = Math.ceil($('.table-wrapper tbody tr.visible').length / rowsPerPage);
-        console.log(totalPages);
-        displayTableRows(currentPage, rowsPerPage);        
-        if (totalPages !== 1) {
-            paginationControls(totalPages, currentPage);
-        } else {
-            $('.pagination-container').hide();
-        }
+        var filtersList = $('.applied-filters-list .filter-item');
+        if (filtersList.length !== 0) {
+            applyFilters();
+            var totalPages = Math.ceil($('.table-wrapper tbody tr.visible').length / rowsPerPage);
+            console.log(totalPages);
+            displayTableRows(currentPage, rowsPerPage);        
+            if (totalPages !== 1) {
+                paginationControls(totalPages, currentPage);
+            } else {
+                $('.pagination-container').hide();
+            }                      
+        }   
+        $('#filters-popup .close').click();      
     })
 
 });
