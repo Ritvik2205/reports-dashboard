@@ -93,17 +93,17 @@ $(document).ready(function() {
     }
 
     // Tabs logic
-    $(".tablink").click(function() {
-        $(".tablink").removeClass("active");
-        $(".tabcontent").removeClass("active").hide();
+    // $(".tablink").click(function() {
+    //     $(".tablink").removeClass("active");
+    //     $(".tabcontent").removeClass("active").hide();
 
-        $(this).addClass("active");
+    //     $(this).addClass("active");
 
-        var $tab = $(this).data("tab-value");
+    //     var $tab = $(this).data("tab-value");
 
-        $($tab).addClass("active").show();
+    //     $($tab).addClass("active").show();
 
-    })
+    // })
     
 
     // Navigation button - next
